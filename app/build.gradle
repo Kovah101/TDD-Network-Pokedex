@@ -19,6 +19,17 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.0"
+    }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 
     buildTypes {
         release {
@@ -60,6 +71,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1'
 
     implementation 'androidx.room:room-runtime:2.5.0'
+    implementation 'androidx.core:core-ktx:+'
     annotationProcessor 'androidx.room:room-compiler:2.5.0'
     ksp 'androidx.room:room-compiler:2.5.0'
     implementation 'androidx.room:room-ktx:2.5.0'
