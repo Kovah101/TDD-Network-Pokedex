@@ -6,7 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.tddnetworkpokedex.core.ui.pokedexHome.PokedexHomeScreen
 import com.example.tddnetworkpokedex.core.ui.pokedexHome.PokedexHomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

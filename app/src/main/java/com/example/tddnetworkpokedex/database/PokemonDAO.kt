@@ -10,7 +10,7 @@ interface PokemonDAO {
     fun getAllPokemon(): Flow<List<Pokemon>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPokemon(vararg pokemon: Pokemon)
+    fun insertPokemon(pokemon: Pokemon)
 
     @Update
     fun updatePokemon(vararg pokemon: Pokemon)
