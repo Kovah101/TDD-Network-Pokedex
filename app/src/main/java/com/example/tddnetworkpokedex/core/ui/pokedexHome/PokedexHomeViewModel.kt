@@ -46,12 +46,19 @@ class PokedexHomeViewModel @Inject constructor(
         }
         val pokemonDataOne = pokemonRawData[0]
         val rawPokemonDataOne = pokemonDataOne.split("name:",",")
+
         val namePokemonDataOne = rawPokemonDataOne[0]
         val namePokemonOne = namePokemonDataOne.split(":")[1]
-        val urlPokemonDataOne = rawPokemonDataOne[1].replace("^\"|\"$", "")
+        val pokemonOneName = namePokemonOne.substring(1, namePokemonOne.length - 1)
+
+        val urlPokemonDataOne = rawPokemonDataOne[1]
         val urlPokemonOne = urlPokemonDataOne.split(":")[1] + ":" + urlPokemonDataOne.split(":")[2]
+        val pokemonOneUrl = urlPokemonOne.substring(1, urlPokemonOne.length - 1)
+
+        val pokemonDataTwo = pokemonRawData[1]
+
         Log.d("Pokemon", "Pokemon Data 1: $pokemonDataOne --- Raw Poke Data 1 = ${rawPokemonDataOne[0]} --- Raw Poke Data 2 = ${rawPokemonDataOne[1]} --- Raw Poke Data 3 = ${urlPokemonDataOne[0]} --- Raw Poke Data 4 = ${urlPokemonDataOne[0]}  ")
-        Log.d("Pokemon", "Pokemon 1 name = $namePokemonOne, url = $urlPokemonOne")
+        Log.d("Pokemon", "Pokemon 1 name = $pokemonOneName, url = $pokemonOneUrl")
         pokemonData.forEach {
             pokemonRepository.insertPokemon(pokemon = it)
         }
