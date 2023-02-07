@@ -8,7 +8,35 @@ data class PokedexHomeState(
 ){
     companion object{
         val default = PokedexHomeState(
-            pokemon = emptyList(),
+            pokemon = listOf(
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+                Pokemon( id = 3, name = "Steve", url = "something"),
+
+
+            ),
             loading = false
         )
     }

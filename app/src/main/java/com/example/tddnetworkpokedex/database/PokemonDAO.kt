@@ -18,7 +18,7 @@ interface PokemonDAO {
     @Delete
     fun deletePokemon(vararg pokemon: Pokemon)
 
-    @Query("DELETE * FROM pokemon_table")
+    @Query("DELETE FROM pokemon_table")
     fun deleteAllPokemon()
 
     @Query ("SELECT * FROM pokemon_table WHERE id LIKE :id")

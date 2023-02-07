@@ -1,9 +1,12 @@
 package com.example.tddnetworkpokedex.core.ui.pokedexHome
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import android.util.Log
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -18,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tddnetworkpokedex.R
+import com.example.tddnetworkpokedex.core.models.Pokemon
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -69,12 +73,36 @@ fun PokedexHomeScreen(
                 .fillMaxSize()
                 .background(color = colorResource(id = R.color.cream))
         ) {
-            Text(
-                modifier = Modifier.align(Alignment.Center),
-                text = "Pokemon coming soon....",
-                style = MaterialTheme.typography.subtitle1
-            )
+            LazyVerticalGrid(
+                modifier = Modifier.fillMaxSize(),
+                columns = GridCells.Adaptive(minSize = 128.dp)
+            ){
+                items(state.pokemon){ pokemon: Pokemon ->  
+                    PokemonGridItem(pokemon = pokemon)
+                }
+            }
         }
 
+    }
+}
+
+@Composable
+fun PokemonGridItem(
+    pokemon: Pokemon
+){
+    Box(modifier = Modifier
+        .size(128.dp)
+        .background(color = colorResource(id = R.color.cream))
+        .border(BorderStroke(width = 2.dp, color = colorResource(id = R.color.brown)))
+        .clickable { Log.d("Pokemon Clicked", "You have clicked: ${pokemon.name}") }
+    ){
+        Text(
+            modifier = Modifier.align(Alignment.TopStart),
+            text = pokemon.id.toString())
+
+        Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = pokemon.name)
+        
     }
 }
