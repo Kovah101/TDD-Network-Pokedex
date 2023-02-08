@@ -15,13 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tddnetworkpokedex.R
-import com.example.tddnetworkpokedex.core.models.Pokemon
+import com.example.tddnetworkpokedex.database.Pokemon
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -77,8 +76,11 @@ fun PokedexHomeScreen(
                 modifier = Modifier.fillMaxSize(),
                 columns = GridCells.Adaptive(minSize = 128.dp)
             ){
-                items(state.pokemon){ pokemon: Pokemon ->  
-                    PokemonGridItem(pokemon = pokemon)
+                items(state.pokemon){ pokemon ->
+                    PokemonGridItem(
+                        pokemon = pokemon,
+                        onClick = {pokedexHomeViewModel.pokemonClicked(pokemon = pokemon)}
+                    )
                 }
             }
         }
@@ -88,16 +90,19 @@ fun PokedexHomeScreen(
 
 @Composable
 fun PokemonGridItem(
-    pokemon: Pokemon
+    pokemon: Pokemon,
+    onClick: () -> Unit
 ){
     Box(modifier = Modifier
         .size(128.dp)
         .background(color = colorResource(id = R.color.cream))
         .border(BorderStroke(width = 2.dp, color = colorResource(id = R.color.brown)))
-        .clickable { Log.d("Pokemon Clicked", "You have clicked: ${pokemon.name}") }
+        .clickable { onClick() }
     ){
         Text(
-            modifier = Modifier.align(Alignment.TopStart),
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(8.dp),
             text = pokemon.id.toString())
 
         Text(
