@@ -77,7 +77,10 @@ fun PokedexHomeScreen(
                 columns = GridCells.Adaptive(minSize = 128.dp)
             ){
                 items(state.pokemon){ pokemon ->
-                    PokemonGridItem(pokemon = pokemon)
+                    PokemonGridItem(
+                        pokemon = pokemon,
+                        onClick = {pokedexHomeViewModel.pokemonClicked(pokemon = pokemon)}
+                    )
                 }
             }
         }
@@ -87,13 +90,14 @@ fun PokedexHomeScreen(
 
 @Composable
 fun PokemonGridItem(
-    pokemon: Pokemon
+    pokemon: Pokemon,
+    onClick: () -> Unit
 ){
     Box(modifier = Modifier
         .size(128.dp)
         .background(color = colorResource(id = R.color.cream))
         .border(BorderStroke(width = 2.dp, color = colorResource(id = R.color.brown)))
-        .clickable { Log.d("Pokemon Clicked", "You have clicked: ${pokemon.name}") }
+        .clickable { onClick() }
     ){
         Text(
             modifier = Modifier
