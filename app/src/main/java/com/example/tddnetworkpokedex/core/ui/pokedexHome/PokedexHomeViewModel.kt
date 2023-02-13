@@ -40,7 +40,6 @@ class PokedexHomeViewModel @Inject constructor(
         val pokemonRawData = DUMMY_POKEMON_DATA.split("}").dropLast(1)
         val pokemonData = pokemonRawData.map { rawPokemon ->
             val rawPokeData = rawPokemon.split("name:", ",")
-            //Log.d("Pokemon", "Raw Pokemon = $rawPokemon")
             val nameRawPokeData = rawPokeData[1]
             val namePokeData = nameRawPokeData.split(":")[1]
 

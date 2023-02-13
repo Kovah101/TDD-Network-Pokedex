@@ -27,7 +27,6 @@ class PokemonRepositoryImpl @Inject constructor(
 
     @SuppressLint("SuspiciousIndentation")
     override suspend fun getOriginalPokemonFromNetwork() {
-        Log.d("Pokemon", "Really starting network call")
         val pokemonResponse = pokeService.getOriginalPokemon()
         if (pokemonResponse.isSuccessful){
             Log.d("Pokemon Success","Total pokemon = ${pokemonResponse.body()?.result?.size}}")
