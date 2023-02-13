@@ -30,6 +30,7 @@ class PokedexHomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            getPokemonFromService()
             insertDummyPokemonData()
             getPokemon()
         }
@@ -39,7 +40,6 @@ class PokedexHomeViewModel @Inject constructor(
         val pokemonRawData = DUMMY_POKEMON_DATA.split("}").dropLast(1)
         val pokemonData = pokemonRawData.map { rawPokemon ->
             val rawPokeData = rawPokemon.split("name:", ",")
-            Log.d("Pokemon", "Raw Pokemon = $rawPokemon")
             val nameRawPokeData = rawPokeData[1]
             val namePokeData = nameRawPokeData.split(":")[1]
 
@@ -61,6 +61,11 @@ class PokedexHomeViewModel @Inject constructor(
         pokemonRepository.getAllPokemon().collect { allPokemon ->
             _state.update { it.copy(pokemon = allPokemon) }
         }
+    }
+
+    private suspend fun getPokemonFromService(){
+        Log.d("Pokemon", "Starting Network call")
+        pokemonRepository.getOriginalPokemonFromNetwork()
     }
 
     override fun pokemonClicked(pokemon: Pokemon) {

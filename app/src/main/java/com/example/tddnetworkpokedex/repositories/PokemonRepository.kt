@@ -14,4 +14,6 @@ interface PokemonRepository {
     fun deleteAllPokemon()
 
     suspend fun insertPokemon(pokemon: Pokemon)
+
+    suspend fun getOriginalPokemonFromNetwork()
 }
