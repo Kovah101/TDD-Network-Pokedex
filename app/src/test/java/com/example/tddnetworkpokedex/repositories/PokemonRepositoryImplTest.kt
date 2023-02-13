@@ -30,7 +30,7 @@ import java.net.HttpURLConnection
 class PokemonRepositoryImplTest {
     // Trying to test 200, 404, and 5xx http codes
     // conflicting tutorials online, currently doesn't use mockWebServer at all
-
+    // possibly add single pokemon data retrieval for testing?
 
     private lateinit var repository: PokemonRepository
     private lateinit var testService: PokeService
