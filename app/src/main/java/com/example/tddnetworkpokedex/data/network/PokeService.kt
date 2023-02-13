@@ -1,5 +1,6 @@
 package com.example.tddnetworkpokedex.data.network
 
+import com.example.tddnetworkpokedex.BuildConfig
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -17,7 +18,7 @@ interface PokeService {
 
         val pokeService: PokeService by lazy {
             val builder = Retrofit.Builder()
-                .baseUrl("https://pokeapi.co/api/v2/")
+                .baseUrl(BuildConfig.POKEMON_API_URL)
                 .addConverterFactory(NonStrictJsonSerializer.serializer.asConverterFactory("application/json".toMediaType()))
                 .client(httpClient)
                 .build()
