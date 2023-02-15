@@ -10,6 +10,7 @@ buildscript {
     dependencies {
         classpath("com.google.dagger:hilt-android-gradle-plugin:$hilt_version")
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.0"
+
     }
     repositories {
         mavenCentral()

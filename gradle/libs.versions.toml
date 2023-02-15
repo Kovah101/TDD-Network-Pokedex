@@ -38,11 +38,12 @@ test-ui-junit4 = "1.3.3"
 [libraries]
 
 
+
 [bundles]
 
 
 [plugins]
-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 application = { id = "com.android.application", version.ref = "androidBuildTools" }
 library = { id = "com.android.library", version.ref = "androidBuildTools" }
 devtools = { id = "com.google.devtools.ksp", version.ref = "devtools-ksp"}
