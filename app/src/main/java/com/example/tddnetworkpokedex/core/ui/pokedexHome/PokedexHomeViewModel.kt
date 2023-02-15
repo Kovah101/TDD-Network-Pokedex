@@ -31,7 +31,6 @@ class PokedexHomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             getPokemonFromService()
-           // insertDummyPokemonData()
             getPokemon()
         }
     }
