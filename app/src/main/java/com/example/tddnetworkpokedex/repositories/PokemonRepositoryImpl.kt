@@ -28,10 +28,17 @@ class PokemonRepositoryImpl @Inject constructor(
     @SuppressLint("SuspiciousIndentation")
     override suspend fun getOriginalPokemonFromNetwork() {
         val pokemonResponse = pokeService.getOriginalPokemon()
-        if (pokemonResponse.isSuccessful){
-            Log.d("Pokemon Success","Total pokemon = ${pokemonResponse.body()?.result?.size}}")
+
+        if (pokemonResponse.isSuccessful) {
+            Log.d("Pokemon Success", "Total pokemon = ${pokemonResponse.body()?.result?.size}")
             pokemonResponse.body()?.result?.forEach { pokemonDto ->
-                Log.d("Pokemon", "PokeID:${pokemonResponse.body()!!.result.indexOf(pokemonDto) + 1}, name: ${pokemonDto.name}, url: ${pokemonDto.url}")
+                insertPokemon(
+                    pokemon = Pokemon(
+                        id = pokemonResponse.body()!!.result.indexOf(pokemonDto) + 1,
+                        name = pokemonDto.name,
+                        url = pokemonDto.url
+                    )
+                )
             }
         } else {
             Log.e("Pokemon Error", pokemonResponse.code().toString())
