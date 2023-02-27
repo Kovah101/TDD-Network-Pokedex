@@ -4,14 +4,17 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.example.data.network.PokeService
+import com.example.data.network.PokemonDto
 import com.example.data.network.PokemonResponse
 import com.example.database.PokemonDAO
 import com.example.database.PokemonDatabase
 import com.example.repositories.PokemonRepository
+import com.example.repositories.PokemonRepositoryImpl
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.*
@@ -26,9 +29,6 @@ import java.net.HttpURLConnection
 
 @RunWith(RobolectricTestRunner::class)
 class PokemonRepositoryImplTest {
-    // Trying to test 200, 404, and 5xx http codes
-    // conflicting tutorials online, currently doesn't use mockWebServer at all
-    // possibly add single pokemon data retrieval for testing?
 
     private lateinit var repository: PokemonRepository
     private lateinit var testService: PokeService
@@ -37,30 +37,58 @@ class PokemonRepositoryImplTest {
     private lateinit var db: PokemonDatabase
     private lateinit var actualResponse: Response<PokemonResponse>
 
-    // function to return different mock service responses
-//    private val mockServiceError = object : PokeService{
-//        override suspend fun getOriginalPokemon(): Response<PokemonResponse> {
-//            return Response.error(500, ResponseBody.create(""))
-//        }
-//    }
+
+    // ADD HTTP enums
+    private fun mockService(response: Int): PokeService {
+        return when (response) {
+            0 -> {
+                object : PokeService {
+                    override suspend fun getOriginalPokemon(): Response<PokemonResponse> {
+                        return Response.success(
+                            200,
+                            PokemonResponse(
+                                result = listOf(
+                                    PokemonDto(name = "Electabuzz", url = "electabuzz.com"),
+                                    PokemonDto(name = "Rhydon", url = "rhydon.com"),
+                                    PokemonDto(name = "Lapras", url = "lapras.com"),
+                                    PokemonDto(name = "Arcanine", url = "arcanine.com"),
+                                    PokemonDto(name = "Exeggutor", url = "exeggutor.com"),
+                                    PokemonDto(name = "aerodactyl", url = "aerodactyl.com"),
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+            1 -> {
+                object : PokeService {
+                    override suspend fun getOriginalPokemon(): Response<PokemonResponse> {
+                        return Response.error(404, ResponseBody.create(contentType = null, "HTTP 404 Not found"))
+                    }
+                }
+            }
+            else -> {
+                object : PokeService {
+                    override suspend fun getOriginalPokemon(): Response<PokemonResponse> {
+                        return Response.error(500, ResponseBody.create(null, "HTTP 500 Internal server error"))
+                    }
+                }
+            }
+        }
+    }
 
     @Before
     fun setUp() {
         mockWebServer = MockWebServer()
         mockWebServer.start()
 
-        testService = com.example.data.network.PokeService.pokeService
-        testService = Retrofit.Builder()
-            .baseUrl(mockWebServer.url("/").toString())
-            .addConverterFactory(com.example.data.network.PokeService.NonStrictJsonSerializer.serializer.asConverterFactory("application/json".toMediaType()))
-            .client(OkHttpClient.Builder().build())
-            .build()
-            .create(com.example.data.network.PokeService::class.java)
+        testService = mockService(response = 0)
 
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(context, com.example.database.PokemonDatabase::class.java).build()
+        db = Room.inMemoryDatabaseBuilder(context, PokemonDatabase::class.java)
+            .build()
         pokemonDAO = db.pokemonDao()
-        repository = com.example.repositories.PokemonRepositoryImpl(pokemonDAO, testService)
+        repository = PokemonRepositoryImpl(pokemonDAO, testService)
     }
 
     @After
@@ -71,16 +99,35 @@ class PokemonRepositoryImplTest {
 
     @Test
     @Throws(Exception::class)
-    fun OneFiveOne_Pokemon_Returned_With_TwoHundred_Http_Code() {
-        val expectedResponse = MockResponse()
-            .setResponseCode(HttpURLConnection.HTTP_OK)
-
-        mockWebServer.enqueue(expectedResponse)
+    fun Http200() {
+        testService = mockService(response = 0)
 
         runBlocking {
             actualResponse = testService.getOriginalPokemon()
         }
-        assert(actualResponse.body()?.result?.size == 151)
+        assert(actualResponse.body()?.result?.size == 6)
         assert(actualResponse.code() == HttpURLConnection.HTTP_OK)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun Http400(){
+        testService = mockService(response = 1)
+
+        runBlocking {
+            actualResponse = testService.getOriginalPokemon()
+        }
+        assert(actualResponse.code() == HttpURLConnection.HTTP_NOT_FOUND)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun Http500(){
+        testService = mockService(response = 3)
+
+        runBlocking {
+            actualResponse = testService.getOriginalPokemon()
+        }
+        assert(actualResponse.code() == HttpURLConnection.HTTP_INTERNAL_ERROR)
     }
 }
