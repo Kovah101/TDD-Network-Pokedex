@@ -1,4 +1,4 @@
-package com.example.tddnetworkpokedex.repositories
+package com.example.data
 
 import android.content.Context
 import androidx.room.Room
@@ -7,12 +7,11 @@ import com.example.data.network.PokeService
 import com.example.data.network.PokemonResponse
 import com.example.database.PokemonDAO
 import com.example.database.PokemonDatabase
+import com.example.repositories.PokemonRepository
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.*
@@ -23,7 +22,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.create
 import java.net.HttpURLConnection
 
 @RunWith(RobolectricTestRunner::class)
@@ -32,12 +30,12 @@ class PokemonRepositoryImplTest {
     // conflicting tutorials online, currently doesn't use mockWebServer at all
     // possibly add single pokemon data retrieval for testing?
 
-    private lateinit var repository: com.example.repositories.PokemonRepository
-    private lateinit var testService: com.example.data.network.PokeService
+    private lateinit var repository: PokemonRepository
+    private lateinit var testService: PokeService
     private lateinit var mockWebServer: MockWebServer
-    private lateinit var pokemonDAO: com.example.database.PokemonDAO
-    private lateinit var db: com.example.database.PokemonDatabase
-    private lateinit var actualResponse: Response<com.example.data.network.PokemonResponse>
+    private lateinit var pokemonDAO: PokemonDAO
+    private lateinit var db: PokemonDatabase
+    private lateinit var actualResponse: Response<PokemonResponse>
 
     // function to return different mock service responses
 //    private val mockServiceError = object : PokeService{
