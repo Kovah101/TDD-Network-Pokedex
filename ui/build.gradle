@@ -1,36 +1,30 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.devtools.ksp'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'org.jetbrains.kotlin.plugin.serialization'
+
 }
 
 android {
-    namespace 'com.example.tddnetworkpokedex'
+    namespace 'com.example.ui'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.tddnetworkpokedex"
         minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
     }
     buildFeatures {
         compose true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "$compose_compiler_version"
-    }
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
     }
 
     buildTypes {
@@ -49,39 +43,14 @@ android {
 }
 
 dependencies {
-    implementation project(":ui")
+    implementation project(":data")
 
     implementation libs.bundles.android
     implementation libs.bundles.compose
     implementation libs.bundles.lifecycle
-    implementation libs.bundles.room
     implementation libs.bundles.stdlib
     implementation libs.bundles.coroutines
     implementation libs.bundles.hilt
-    implementation libs.bundles.networking
-    testImplementation project(path: ':data')
-    androidTestImplementation project(path: ':data')
 
-    kapt libs.room.compiler
     kapt libs.hilt.compiler
-
-
-    // UI Tests
-    androidTestImplementation libs.uiTest.junit4
-    debugImplementation libs.uiTest.debug
-
-    // Unit Tests
-    testImplementation libs.bundles.unitTests
-
-    // Coroutine test
-    testImplementation libs.coroutines.test
-
-    // Mock web server
-    testImplementation libs.squareup.test
-
-    // Google truth for assertion
-    testImplementation libs.google.truth
-
-    // Android Tests
-    androidTestImplementation libs.bundles.androidTest
 }
