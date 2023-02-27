@@ -12,6 +12,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.*
@@ -38,18 +39,25 @@ class PokemonRepositoryImplTest {
     private lateinit var db: PokemonDatabase
     private lateinit var actualResponse: Response<PokemonResponse>
 
+    // function to return different mock service responses
+//    private val mockServiceError = object : PokeService{
+//        override suspend fun getOriginalPokemon(): Response<PokemonResponse> {
+//            return Response.error(500, ResponseBody.create(""))
+//        }
+//    }
+
     @Before
     fun setUp() {
         mockWebServer = MockWebServer()
         mockWebServer.start()
 
         testService = PokeService.pokeService
-//        testService = Retrofit.Builder()
-//            .baseUrl(mockWebServer.url("/").toString())
-//            .addConverterFactory(PokeService.NonStrictJsonSerializer.serializer.asConverterFactory("application/json".toMediaType()))
-//            .client(OkHttpClient.Builder().build())
-//            .build()
-//            .create(PokeService::class.java)
+        testService = Retrofit.Builder()
+            .baseUrl(mockWebServer.url("/").toString())
+            .addConverterFactory(PokeService.NonStrictJsonSerializer.serializer.asConverterFactory("application/json".toMediaType()))
+            .client(OkHttpClient.Builder().build())
+            .build()
+            .create(PokeService::class.java)
 
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(context, PokemonDatabase::class.java).build()
