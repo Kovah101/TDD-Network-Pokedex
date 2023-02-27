@@ -3,10 +3,10 @@ package com.example.tddnetworkpokedex.repositories
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import com.example.tddnetworkpokedex.data.network.PokeService
-import com.example.tddnetworkpokedex.data.network.PokemonResponse
-import com.example.tddnetworkpokedex.database.PokemonDAO
-import com.example.tddnetworkpokedex.database.PokemonDatabase
+import com.example.data.network.PokeService
+import com.example.data.network.PokemonResponse
+import com.example.database.PokemonDAO
+import com.example.database.PokemonDatabase
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
@@ -32,12 +32,12 @@ class PokemonRepositoryImplTest {
     // conflicting tutorials online, currently doesn't use mockWebServer at all
     // possibly add single pokemon data retrieval for testing?
 
-    private lateinit var repository: PokemonRepository
-    private lateinit var testService: PokeService
+    private lateinit var repository: com.example.repositories.PokemonRepository
+    private lateinit var testService: com.example.data.network.PokeService
     private lateinit var mockWebServer: MockWebServer
-    private lateinit var pokemonDAO: PokemonDAO
-    private lateinit var db: PokemonDatabase
-    private lateinit var actualResponse: Response<PokemonResponse>
+    private lateinit var pokemonDAO: com.example.database.PokemonDAO
+    private lateinit var db: com.example.database.PokemonDatabase
+    private lateinit var actualResponse: Response<com.example.data.network.PokemonResponse>
 
     // function to return different mock service responses
 //    private val mockServiceError = object : PokeService{
@@ -51,18 +51,18 @@ class PokemonRepositoryImplTest {
         mockWebServer = MockWebServer()
         mockWebServer.start()
 
-        testService = PokeService.pokeService
+        testService = com.example.data.network.PokeService.pokeService
         testService = Retrofit.Builder()
             .baseUrl(mockWebServer.url("/").toString())
-            .addConverterFactory(PokeService.NonStrictJsonSerializer.serializer.asConverterFactory("application/json".toMediaType()))
+            .addConverterFactory(com.example.data.network.PokeService.NonStrictJsonSerializer.serializer.asConverterFactory("application/json".toMediaType()))
             .client(OkHttpClient.Builder().build())
             .build()
-            .create(PokeService::class.java)
+            .create(com.example.data.network.PokeService::class.java)
 
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(context, PokemonDatabase::class.java).build()
+        db = Room.inMemoryDatabaseBuilder(context, com.example.database.PokemonDatabase::class.java).build()
         pokemonDAO = db.pokemonDao()
-        repository = PokemonRepositoryImpl(pokemonDAO, testService)
+        repository = com.example.repositories.PokemonRepositoryImpl(pokemonDAO, testService)
     }
 
     @After

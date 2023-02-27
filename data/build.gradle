@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.devtools.ksp'
     id 'kotlin-kapt'
@@ -8,11 +8,10 @@ plugins {
 }
 
 android {
-    namespace 'com.example.tddnetworkpokedex'
+    namespace 'com.example.data'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.tddnetworkpokedex"
         minSdk 24
         targetSdk 33
         versionCode 1
@@ -20,18 +19,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-    }
-    buildFeatures {
-        compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "$compose_compiler_version"
-    }
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
+        buildConfigField 'String', 'POKEMON_API_URL', '"https://pokeapi.co/api/v2/"'
+   }
 
     buildTypes {
         release {
@@ -49,8 +38,6 @@ android {
 }
 
 dependencies {
-    implementation project(":ui")
-    implementation project(":data")
 
     implementation libs.bundles.android
     implementation libs.bundles.compose
@@ -60,12 +47,9 @@ dependencies {
     implementation libs.bundles.coroutines
     implementation libs.bundles.hilt
     implementation libs.bundles.networking
-    testImplementation project(path: ':data')
-    androidTestImplementation project(path: ':data')
 
     kapt libs.room.compiler
     kapt libs.hilt.compiler
-
 
     // UI Tests
     androidTestImplementation libs.uiTest.junit4

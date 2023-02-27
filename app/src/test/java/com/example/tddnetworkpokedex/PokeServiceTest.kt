@@ -1,7 +1,7 @@
 package com.example.tddnetworkpokedex
 
-import com.example.tddnetworkpokedex.data.network.PokeService
-import com.example.tddnetworkpokedex.data.network.PokemonResponse
+
+import com.example.data.network.PokemonResponse
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import retrofit2.Response
@@ -11,7 +11,7 @@ class PokeServiceTest {
 
     @Test
     fun testPokeServiceInstance(){
-        val service = PokeService.pokeService
+        val service = com.example.data.network.PokeService.pokeService
 
         runBlocking {
             response = service.getOriginalPokemon()
