@@ -24,15 +24,16 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import retrofit2.Response
 import java.net.HttpURLConnection
 
 @RunWith(RobolectricTestRunner::class)
+@Config(manifest = Config.NONE)
 class PokemonRepositoryImplTest {
 
     private lateinit var repository: PokemonRepository
     private lateinit var testService: PokeService
-    private lateinit var mockWebServer: MockWebServer
     private lateinit var pokemonDAO: PokemonDAO
     private lateinit var db: PokemonDatabase
     private lateinit var actualResponse: Response<PokemonResponse>
@@ -46,12 +47,12 @@ class PokemonRepositoryImplTest {
         PokemonDto(name = "Aerodactyl", url = "aerodactyl.com"),
     )
     private val dummyPokemonList = listOf(
-        Pokemon(name = "Electabuzz", url = "electabuzz.com"),
-        Pokemon(name = "Rhydon", url = "rhydon.com"),
-        Pokemon(name = "Lapras", url = "lapras.com"),
-        Pokemon(name = "Arcanine", url = "arcanine.com"),
-        Pokemon(name = "Exeggutor", url = "exeggutor.com"),
-        Pokemon(name = "Aerodactyl", url = "aerodactyl.com"),
+        Pokemon(id = 1, name = "Electabuzz", url = "electabuzz.com"),
+        Pokemon(id = 2, name = "Rhydon", url = "rhydon.com"),
+        Pokemon(id = 3, name = "Lapras", url = "lapras.com"),
+        Pokemon(id = 4, name = "Arcanine", url = "arcanine.com"),
+        Pokemon(id = 5, name = "Exeggutor", url = "exeggutor.com"),
+        Pokemon(id = 6, name = "Aerodactyl", url = "aerodactyl.com"),
     )
     private val dummyPokemon = Pokemon(
         id = 0,
@@ -105,9 +106,6 @@ class PokemonRepositoryImplTest {
 
     @Before
     fun setUp() {
-        mockWebServer = MockWebServer()
-        mockWebServer.start()
-
         testService = mockService(response = DummyPokeResponse.HTTP_OK)
 
         val context = ApplicationProvider.getApplicationContext<Context>()
@@ -120,7 +118,6 @@ class PokemonRepositoryImplTest {
     @After
     fun tearDown() {
         db.close()
-        mockWebServer.shutdown()
     }
 
     @Test
@@ -159,14 +156,13 @@ class PokemonRepositoryImplTest {
 
     @Test
     @Throws(Exception::class)
-    fun getOriginalPokemonFromNetworkTest(){
+    fun getOriginalPokemonFromNetworkTest() {
         testService = mockService(response = DummyPokeResponse.HTTP_OK)
         repository = PokemonRepositoryImpl(pokemonDAO, testService)
         var pokemonNumber: Int
 
         runBlocking {
-            withContext(Dispatchers.IO){
-                pokemonDAO.deleteAllPokemon()
+            withContext(Dispatchers.IO) {
                 repository.getOriginalPokemonFromNetwork()
                 pokemonNumber = pokemonDAO.pokemonCount()
             }
@@ -174,34 +170,27 @@ class PokemonRepositoryImplTest {
 
         assert(pokemonNumber == 6)
     }
- // This test does not work
+
     @Test
     @Throws(Exception::class)
-    fun getAllPokemonTest(){
-        testService = mockService(response = DummyPokeResponse.HTTP_OK)
-        repository = PokemonRepositoryImpl(pokemonDAO, testService)
+    fun getAllPokemonTest() {
         var pokemonList: List<Pokemon>
         runBlocking {
-            withContext(Dispatchers.IO){
-                pokemonDAO.deleteAllPokemon()
+            withContext(Dispatchers.IO) {
                 repository.getOriginalPokemonFromNetwork()
                 pokemonList = repository.getAllPokemon().first()
             }
         }
         assert(pokemonList == dummyPokemonList)
-
     }
 
     @Test
     @Throws(Exception::class)
-    fun getPokemonByIdTest(){
-        testService = mockService(response = DummyPokeResponse.HTTP_OK)
-        repository = PokemonRepositoryImpl(pokemonDAO, testService)
+    fun getPokemonByIdTest() {
         var pokemon: Pokemon
 
         runBlocking {
-            withContext(Dispatchers.IO){
-                pokemonDAO.deleteAllPokemon()
+            withContext(Dispatchers.IO) {
                 repository.getOriginalPokemonFromNetwork()
                 pokemon = repository.getPokemonById(id = 1).first()
             }
@@ -212,14 +201,11 @@ class PokemonRepositoryImplTest {
 
     @Test
     @Throws(Exception::class)
-    fun getPokemonByNameTest(){
-        testService = mockService(response = DummyPokeResponse.HTTP_OK)
-        repository = PokemonRepositoryImpl(pokemonDAO, testService)
+    fun getPokemonByNameTest() {
         var pokemon: Pokemon
 
         runBlocking {
-            withContext(Dispatchers.IO){
-                pokemonDAO.deleteAllPokemon()
+            withContext(Dispatchers.IO) {
                 repository.getOriginalPokemonFromNetwork()
                 pokemon = repository.getPokemonByName(name = "Lapras").first()
             }
@@ -230,14 +216,11 @@ class PokemonRepositoryImplTest {
 
     @Test
     @Throws(Exception::class)
-    fun insertPokemonTest(){
-        testService = mockService(response = DummyPokeResponse.HTTP_OK)
-        repository = PokemonRepositoryImpl(pokemonDAO, testService)
-        var pokemon : Pokemon
+    fun insertPokemonTest() {
+        var pokemon: Pokemon
 
         runBlocking {
-            withContext(Dispatchers.IO){
-                pokemonDAO.deleteAllPokemon()
+            withContext(Dispatchers.IO) {
                 repository.insertPokemon(dummyPokemon)
                 pokemon = repository.getPokemonById(id = 0).first()
             }
@@ -247,13 +230,11 @@ class PokemonRepositoryImplTest {
 
     @Test
     @Throws(Exception::class)
-    fun deleteAllPokemonTest(){
-        testService = mockService(response = DummyPokeResponse.HTTP_OK)
-        repository = PokemonRepositoryImpl(pokemonDAO, testService)
-        var pokemonNumber : Int
+    fun deleteAllPokemonTest() {
+        var pokemonNumber: Int
 
         runBlocking {
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 repository.getOriginalPokemonFromNetwork()
                 repository.deleteAllPokemon()
                 pokemonNumber = pokemonDAO.pokemonCount()
