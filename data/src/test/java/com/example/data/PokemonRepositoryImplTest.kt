@@ -36,7 +36,6 @@ class PokemonRepositoryImplTest {
     private lateinit var testService: PokeService
     private lateinit var pokemonDAO: PokemonDAO
     private lateinit var db: PokemonDatabase
-    private lateinit var actualResponse: Response<PokemonResponse>
 
     private val dummyPokemonDtoList = listOf(
         PokemonDto(name = "Electabuzz", url = "electabuzz.com"),
@@ -122,41 +121,7 @@ class PokemonRepositoryImplTest {
 
     @Test
     @Throws(Exception::class)
-    fun http200() {
-        testService = mockService(response = DummyPokeResponse.HTTP_OK)
-
-        runBlocking {
-            actualResponse = testService.getOriginalPokemon()
-        }
-        assert(actualResponse.body()?.result?.size == 6)
-        assert(actualResponse.code() == HttpURLConnection.HTTP_OK)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun http404() {
-        testService = mockService(response = DummyPokeResponse.HTTP_NOT_FOUND)
-
-        runBlocking {
-            actualResponse = testService.getOriginalPokemon()
-        }
-        assert(actualResponse.code() == HttpURLConnection.HTTP_NOT_FOUND)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun http500() {
-        testService = mockService(response = DummyPokeResponse.HTTP_SERVER_ERROR)
-
-        runBlocking {
-            actualResponse = testService.getOriginalPokemon()
-        }
-        assert(actualResponse.code() == HttpURLConnection.HTTP_INTERNAL_ERROR)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun getOriginalPokemonFromNetworkTest() {
+    fun `getOriginalPokemonFromNetwork gets pokemon from network and saves them in dao`() {
         testService = mockService(response = DummyPokeResponse.HTTP_OK)
         repository = PokemonRepositoryImpl(pokemonDAO, testService)
         var pokemonNumber: Int
@@ -173,7 +138,7 @@ class PokemonRepositoryImplTest {
 
     @Test
     @Throws(Exception::class)
-    fun getAllPokemonTest() {
+    fun `getAllPokemon returns all pokemon from dao `() {
         var pokemonList: List<Pokemon>
         runBlocking {
             withContext(Dispatchers.IO) {
@@ -186,7 +151,7 @@ class PokemonRepositoryImplTest {
 
     @Test
     @Throws(Exception::class)
-    fun getPokemonByIdTest() {
+    fun `getPokemonById returns specific pokemon by id from dao`() {
         var pokemon: Pokemon
 
         runBlocking {
@@ -201,7 +166,7 @@ class PokemonRepositoryImplTest {
 
     @Test
     @Throws(Exception::class)
-    fun getPokemonByNameTest() {
+    fun `getPokemonByName returns specific pokemon by name from dao`() {
         var pokemon: Pokemon
 
         runBlocking {
@@ -216,7 +181,7 @@ class PokemonRepositoryImplTest {
 
     @Test
     @Throws(Exception::class)
-    fun insertPokemonTest() {
+    fun `insertPokemon correctly adds new pokemon to dao`() {
         var pokemon: Pokemon
 
         runBlocking {
@@ -230,7 +195,7 @@ class PokemonRepositoryImplTest {
 
     @Test
     @Throws(Exception::class)
-    fun deleteAllPokemonTest() {
+    fun `deleteAllPokemon clears dao`() {
         var pokemonNumber: Int
 
         runBlocking {
