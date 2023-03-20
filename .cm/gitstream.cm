@@ -36,4 +36,3 @@ calc:
 is:
   docs: {{ files | allDocs }}
   asset: {{ files | match(regex=r/\.(png|svg|xml) | every }}
-#  resource: {{ files | match(regex=r/res\//) | every }}
