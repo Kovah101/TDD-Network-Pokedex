@@ -14,7 +14,7 @@ automations:
           
   safe_changes:
     if:
-      - {{ is.docs or is.resource or is.asset }}
+      - {{ is.docs or is.asset }}
     run: 
       - action: add-label@v1
         args:
@@ -36,4 +36,4 @@ calc:
 is:
   docs: {{ files | allDocs }}
   asset: {{ files | match(regex=r/\.(png|svg|xml) | every }}
-  resource: {{ files | match(regex=r/res\//) | every }}
+#  resource: {{ files | match(regex=r/res\//) | every }}
