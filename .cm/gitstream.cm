@@ -14,7 +14,7 @@ automations:
           
   safe_changes:
     if:
-      - {{ is.docs or is.resource is.asset }}
+      - {{ is.docs or is.resource or is.asset }}
     run: 
       - action: add-label@v1
         args:
