@@ -37,4 +37,4 @@ calc:
 is:
   docs: {{ files | allDocs }}
   asset: {{ files | match(regex=r/\.(png|svg|xml)$/) | every }}
-  safeAsset: {{ (files | match(regex=r/res$/) | every ) }}
+  safeAsset: {{ (files | match(regex=r/res\/.*$/) | every ) }}
