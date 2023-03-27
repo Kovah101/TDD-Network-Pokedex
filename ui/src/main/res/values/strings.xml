@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">TDD Network Pokedex</string>
-    <string name="auto_approval_test">Test 2</string>
+    <string name="auto_approval_test">Test 1</string>
 </resources>
