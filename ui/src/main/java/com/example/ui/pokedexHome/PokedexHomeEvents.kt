@@ -4,5 +4,5 @@ import com.example.database.Pokemon
 
 
 interface PokedexHomeEvents {
-    fun pokemonClicked(pokemon: com.example.database.Pokemon)
+    fun pokemonClicked(pokemon: Pokemon)
 }
