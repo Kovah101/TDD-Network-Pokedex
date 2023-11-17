@@ -1,4 +1,4 @@
-package com.example.dependencyInjection
+package com.example.dependencyinjection
 
 import com.example.repositories.PokemonRepository
 import com.example.repositories.PokemonRepositoryImpl

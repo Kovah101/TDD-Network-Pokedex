@@ -4,7 +4,7 @@ import com.example.database.Pokemon
 
 
 data class PokedexHomeState(
-    val pokemon : List<com.example.database.Pokemon>,
+    val pokemon : List<Pokemon>,
     val loading : Boolean
 ){
     companion object{

@@ -1,16 +1,14 @@
-package com.example.dependencyInjection
+package com.example.dependencyinjection
 
 import android.content.Context
 import androidx.room.Room
-import com.example.data.network.PokeService
-import com.example.database.PokemonDAO
-import com.example.database.PokemonDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+import com.example.data.network.PokeService.Companion.pokeService
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -33,5 +31,5 @@ class PokemonModule {
 
     @Singleton
     @Provides
-    fun providePokeService() = com.example.data.network.PokeService.pokeService
+    fun providePokeService() = pokeService
 }
