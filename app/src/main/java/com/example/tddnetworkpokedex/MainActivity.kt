@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         supportActionBar?.hide()
-        window.navigationBarColor = resources.getColor(R.color.red)
+        window.navigationBarColor = resources.getColor(R.color.red, theme)
 
         setContent {
           PokedexHomeScreen()

@@ -7,7 +7,7 @@ targetSdk = "33"
 applicationId = "com.example.tddnetworkpokedex"
 
 kotlin = "1.8.10"
-androidBuildTools = "7.4.2"
+androidBuildTools = "8.2.0-rc03"
 devtools-ksp = "1.8.10-1.0.9"
 
 android-material = "1.8.0"
