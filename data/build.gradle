@@ -46,8 +46,8 @@ dependencies {
     implementation libs.bundles.hilt
     implementation libs.bundles.networking
 
-    kapt libs.room.compiler
-    kapt libs.hilt.compiler
+    ksp libs.room.compiler
+    ksp libs.hilt.compiler
 
     // UI Tests
     androidTestImplementation libs.uiTest.junit4

@@ -50,5 +50,5 @@ dependencies {
     implementation libs.bundles.coroutines
     implementation libs.bundles.hilt
 
-    kapt libs.hilt.compiler
+    ksp libs.hilt.compiler
 }
