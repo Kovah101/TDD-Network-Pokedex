@@ -4,9 +4,13 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.database.Pokemon
+import com.example.navigation.NavigationRoute
+import com.example.navigation.PokedexScreens
 import com.example.repositories.PokemonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -26,6 +30,9 @@ class PokedexHomeViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(PokedexHomeState.default)
     val state = _state.asStateFlow()
+
+    private val _navigationEvent = MutableSharedFlow<NavigationRoute>()
+    val navigationEvent = _navigationEvent.asSharedFlow()
 
 
     // TODO extension to add navigation to Pokemon details page
@@ -72,5 +79,10 @@ class PokedexHomeViewModel @Inject constructor(
 
     override fun pokemonClicked(pokemon: Pokemon) {
         Log.d(TAG, "Pokemon ID: ${pokemon.id}, name: ${pokemon.name}, url: ${pokemon.url}")
+       _state.update { it.copy(selectedPokemon = pokemon) }
+
+        viewModelScope.launch {
+           _navigationEvent.emit(PokedexScreens.PokedexDetails)
+       }
     }
 }
