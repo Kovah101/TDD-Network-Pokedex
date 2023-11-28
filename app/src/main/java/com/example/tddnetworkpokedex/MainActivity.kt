@@ -3,6 +3,9 @@ package com.example.tddnetworkpokedex
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.navigation.compose.rememberNavController
+import com.example.navigation.AppNavigation
+import com.example.tddnetworkpokedex.core.PokedexApp
 import com.example.ui.pokedexHome.PokedexHomeScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -12,10 +15,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         supportActionBar?.hide()
-        window.navigationBarColor = resources.getColor(R.color.red)
+        window.navigationBarColor = resources.getColor(R.color.red, theme)
 
         setContent {
-          PokedexHomeScreen()
+          //PokedexHomeScreen()
+            PokedexApp()
         }
     }
 }

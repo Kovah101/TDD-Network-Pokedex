@@ -5,12 +5,14 @@ import com.example.database.Pokemon
 
 data class PokedexHomeState(
     val pokemon : List<Pokemon>,
-    val loading : Boolean
+    val loading : Boolean,
+    val selectedPokemon : Pokemon
 ){
     companion object{
         val default = PokedexHomeState(
             pokemon = emptyList(),
-            loading = false
+            loading = false,
+            selectedPokemon = Pokemon()
         )
     }
 }

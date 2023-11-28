@@ -1,32 +1,38 @@
-package com.example.ui.pokedexHome
+package com.example.ui.pokedexDetails
 
 import android.annotation.SuppressLint
-import android.util.Log
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.*
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ui.R
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun PokedexHomeScreen(
-    state: PokedexHomeState,
-    events: PokedexHomeEvents,
+fun PokedexDetailsScreen(
+     state: PokedexDetailsState,
+     events: PokedexDetailsEvents
 ) {
+
+    BackHandler( enabled = true, onBack ={ events.backClicked()} )
 
     Scaffold(
         topBar = {
@@ -54,9 +60,11 @@ fun PokedexHomeScreen(
                 },
                 actions = {
                     Icon(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "Add search bottom sheet in future",
+                        modifier = Modifier
+                            .clickable{ events.backClicked() }
+                            .padding(horizontal = 16.dp),
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "back to home",
                         tint = colorResource(id = R.color.cream)
                     )
                 }
@@ -69,42 +77,16 @@ fun PokedexHomeScreen(
                 .fillMaxSize()
                 .background(color = colorResource(id = R.color.cream))
         ) {
-            LazyVerticalGrid(
-                modifier = Modifier.fillMaxSize(),
-                columns = GridCells.Adaptive(minSize = 128.dp)
-            ){
-                items(state.pokemon){ pokemon ->
-                    PokemonGridItem(
-                        pokemon = pokemon,
-                        onClick = {events.pokemonClicked(pokemon = pokemon)}
-                    )
-                }
-            }
+            Text(
+                text = state.data?.id.toString(),
+                style = MaterialTheme.typography.h2.copy(
+                    color = colorResource(id = R.color.red),
+                    textAlign = TextAlign.Center
+                ),
+                modifier = Modifier.padding(16.dp).align(Alignment.Center)
+            )
         }
 
     }
-}
 
-@Composable
-fun PokemonGridItem(
-    pokemon: com.example.database.Pokemon,
-    onClick: () -> Unit
-){
-    Box(modifier = Modifier
-        .size(128.dp)
-        .background(color = colorResource(id = R.color.cream))
-        .border(BorderStroke(width = 2.dp, color = colorResource(id = R.color.brown)))
-        .clickable { onClick() }
-    ){
-        Text(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(8.dp),
-            text = pokemon.id.toString())
-
-        Text(
-            modifier = Modifier.align(Alignment.Center),
-            text = pokemon.name)
-        
-    }
 }
