@@ -32,22 +32,15 @@ fun PokedexHomeScreen(
     events: PokedexHomeEvents,
 ) {
 
-    Scaffold(
-        topBar = {
+    Scaffold {
+        Column {
             HomeTopBar()
-//            TopAppBar(
-//                title = {
-//                    HomeTopBar()
-//                },
-//                backgroundColor = colorResource(id = R.color.red),
-//                modifier = Modifier.fillMaxWidth(),
-//                elevation = 4.dp,
-//                actions = {}
-//            )
-        }
-    ) {
 
-        PokemonGrid(state, events)
+            PokemonGrid(
+                state = state,
+                events = events
+            )
+        }
 
     }
 }
