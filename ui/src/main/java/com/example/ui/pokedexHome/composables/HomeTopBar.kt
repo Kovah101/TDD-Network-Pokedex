@@ -29,8 +29,6 @@ fun HomeTopBar() {
         Column {
             SymbolAndTitle()
 
-            Spacer(modifier = Modifier.height(16.dp))
-
             SearchRow()
         }
 
