@@ -8,15 +8,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +25,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.ui.R
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PokedexDetailsScreen(
      state: PokedexDetailsState,
@@ -41,15 +42,15 @@ fun PokedexDetailsScreen(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = "Pokedex",
-                        style = MaterialTheme.typography.h5.copy(
+                        style = MaterialTheme.typography.headlineMedium.copy(
                             color = colorResource(id = R.color.cream),
                             textAlign = TextAlign.Center
                         )
                     )
                 },
-                backgroundColor = colorResource(id = R.color.red),
+              //  backgroundColor = colorResource(id = R.color.red),
                 modifier = Modifier.fillMaxWidth(),
-                elevation = 4.dp,
+              //  elevation = 4.dp,
                 navigationIcon = {
                     Icon(
                         modifier = Modifier.padding(start = 16.dp),
@@ -79,7 +80,7 @@ fun PokedexDetailsScreen(
         ) {
             Text(
                 text = state.data?.id.toString(),
-                style = MaterialTheme.typography.h2.copy(
+                style = MaterialTheme.typography.headlineSmall.copy(
                     color = colorResource(id = R.color.red),
                     textAlign = TextAlign.Center
                 ),

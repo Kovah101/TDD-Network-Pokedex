@@ -19,6 +19,7 @@ androidx-lifecycle = "2.6.2"
 compose = "1.5.4"
 compose-compiler = "1.5.4"
 compose-material-foundation = "1.5.4"
+compose-material-material3 = "1.1.2"
 compose-navigation = "2.7.5"
 hilt = "2.48"
 hilt-navigation = "1.1.0"
@@ -52,7 +53,7 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "compose"}
 compose-runtime-rxjava = { module = "androidx.compose.runtime:runtime-rxjava2", version.ref = "compose"}
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose-material-foundation"}
-compose-material = { module = "androidx.compose.material:material", version.ref = "compose-material-foundation"}
+compose-material = { module = "androidx.compose.material3:material3", version.ref = "compose-material-material3"}
 compose-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "compose-material-foundation"}
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-material-foundation"}
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation"}
