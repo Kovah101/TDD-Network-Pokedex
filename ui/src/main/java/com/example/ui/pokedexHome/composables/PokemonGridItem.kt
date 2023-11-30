@@ -20,22 +20,24 @@ import com.example.ui.R
 fun PokemonGridItem(
     pokemon: Pokemon,
     onClick: () -> Unit
-){
+) {
     Box(modifier = Modifier
         .size(128.dp)
         .background(color = colorResource(id = R.color.cream))
         .border(BorderStroke(width = 2.dp, color = colorResource(id = R.color.brown)))
         .clickable { onClick() }
-    ){
+    ) {
         Text(
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(8.dp),
-            text = pokemon.id.toString())
+            text = pokemon.id.toString()
+        )
 
         Text(
             modifier = Modifier.align(Alignment.Center),
-            text = pokemon.name)
+            text = pokemon.name
+        )
 
     }
 }
