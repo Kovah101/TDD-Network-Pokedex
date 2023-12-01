@@ -4,8 +4,12 @@ import com.example.data.BuildConfig
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.ResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
@@ -15,7 +19,14 @@ interface PokeService {
     companion object {
         private const val TAG = "PokeService"
 
-        private val httpClient = OkHttpClient.Builder().build()
+        private val httpClient = OkHttpClient.Builder().apply {
+            addInterceptor(
+                HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                }
+            )
+        }
+            .build()
 
         @OptIn(ExperimentalSerializationApi::class)
         val pokeService: PokeService by lazy {
