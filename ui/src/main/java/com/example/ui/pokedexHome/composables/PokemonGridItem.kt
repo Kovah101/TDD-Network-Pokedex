@@ -31,7 +31,7 @@ fun PokemonGridItem(
 
     Surface(
         modifier = Modifier.clip(RoundedCornerShape(8.dp)),
-        shadowElevation = 80.dp // does this do anything??
+       // shadowElevation = 80.dp // does this do anything??
     ) {
         Box(modifier = Modifier
             .size(128.dp)

@@ -1,14 +1,11 @@
 package com.example.ui.pokedexHome.composables
 
 import android.util.Log
-import android.widget.EditText
-import android.widget.ImageButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,15 +13,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SearchBar
-import androidx.compose.material3.SearchBarColors
 import androidx.compose.material3.SearchBarDefaults
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,20 +31,24 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.ui.R
+import com.example.ui.pokedexHome.PokedexHomeEvents
+import com.example.ui.pokedexHome.PokedexHomeState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchRow() {
+fun SearchRow(
+    searchMode: SearchMode,
+    searchText: String,
+    onSearchTextUpdate: (String) -> Unit,
+    onSearchModeSwitch: () -> Unit,
+    onClearClicked: () -> Unit
+
+) {
     val TAG = "HomeTopBar"
-    var searchText = ""
-    var sortMode = SortMode.NUMERICAL
-    var textColors = TextFieldDefaults.colors()
-    val searchColors = SearchBarDefaults.colors().containerColor.copy(
-        red = 0.8f
-    )
 
     Row(
         modifier = Modifier
@@ -62,15 +60,17 @@ fun SearchRow() {
         PokedexSearchBar(
             text = searchText,
             modifier = Modifier.weight(1f),
-            sortMode = sortMode
+            sortMode = searchMode,
+            onSearchTextUpdate = { onSearchTextUpdate(it) },
+            onClearClicked = { onClearClicked() }
         )
 
         Spacer(modifier = Modifier.width(16.dp))
 
         SearchRowIcon(
             symbol = Symbol.SORT,
-            sortMode = SortMode.NUMERICAL,
-            onClick = { Log.d(TAG, "sort clicked") }
+            sortMode = searchMode,
+            onClick = { onSearchModeSwitch() }
         )
     }
 }
@@ -78,13 +78,13 @@ fun SearchRow() {
 @Composable
 private fun SearchRowIcon(
     symbol: Symbol,
-    sortMode: SortMode,
+    sortMode: SearchMode,
     onClick: () -> Unit
 ) {
     val imageVector = when (symbol) {
         Symbol.SEARCH -> ImageVector.vectorResource(id = R.drawable.search)
         Symbol.CLEAR -> ImageVector.vectorResource(id = R.drawable.close)
-        Symbol.SORT -> if (sortMode == SortMode.NUMERICAL) {
+        Symbol.SORT -> if (sortMode == SearchMode.NUMERICAL) {
             ImageVector.vectorResource(id = R.drawable.tag)
         } else {
             ImageVector.vectorResource(id = R.drawable.text_format)
@@ -115,18 +115,16 @@ private fun SearchRowIcon(
 fun PokedexSearchBar(
     text: String,
     modifier: Modifier,
-    sortMode: SortMode
+    sortMode: SearchMode,
+    onSearchTextUpdate : (String) -> Unit = {},
+    onClearClicked: () -> Unit = {}
 ) {
     val TAG = "pokedexSearchBar"
-    var testText by remember { mutableStateOf("") }
-    val dummyText = "dummy text"
 
     Box(modifier = modifier) {
         TextField(
-            value = testText,
-            onValueChange = {
-                testText = it
-                Log.d(TAG, "key hit $dummyText") },
+            value = text,
+            onValueChange = { onSearchTextUpdate(it) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp)
@@ -153,10 +151,17 @@ fun PokedexSearchBar(
                     SearchRowIcon(
                         symbol = Symbol.CLEAR,
                         sortMode = sortMode,
-                        onClick = { Log.d(TAG, "clear clicked") }
+                        onClick = { onClearClicked() }
                     )
                 }
-            }
+            },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = if (sortMode == SearchMode.NUMERICAL) {
+                    KeyboardType.Number
+                } else {
+                    KeyboardType.Text
+                }
+            )
 
         )
     }
@@ -169,7 +174,7 @@ enum class Symbol {
     SORT
 }
 
-enum class SortMode {
+enum class SearchMode {
     NUMERICAL,
     NAME
 }

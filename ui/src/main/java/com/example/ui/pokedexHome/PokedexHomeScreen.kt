@@ -34,7 +34,10 @@ fun PokedexHomeScreen(
 
     Scaffold {
         Column {
-            HomeTopBar()
+            HomeTopBar(
+                state = state,
+                events = events
+            )
 
             PokemonGrid(
                 state = state,
