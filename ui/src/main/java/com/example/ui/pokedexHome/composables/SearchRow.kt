@@ -126,7 +126,7 @@ fun PokedexSearchBar(
             value = testText,
             onValueChange = {
                 testText = it
-                Log.d("PokedexSearchBar", "key hit $dummyText") },
+                Log.d(TAG, "key hit $dummyText") },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp)
