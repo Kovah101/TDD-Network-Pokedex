@@ -35,10 +35,30 @@ fun PokemonGrid(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(state.pokemon) { pokemon ->
-                PokemonGridItem(
-                    pokemon = pokemon,
-                    onClick = { events.pokemonClicked(pokemon = pokemon) }
-                )
+                when(state.searchMode) {
+                    SearchMode.NAME -> {
+                        if (pokemon.name.contains(state.searchText, ignoreCase = true)) {
+                            PokemonGridItem(
+                                pokemon = pokemon,
+                                onClick = { events.pokemonClicked(pokemon = pokemon) }
+                            )
+                        }
+
+                    }
+
+                    SearchMode.NUMERICAL -> {
+                        if (pokemon.id.toString().contains(state.searchText, ignoreCase = true)) {
+                            PokemonGridItem(
+                                pokemon = pokemon,
+                                onClick = { events.pokemonClicked(pokemon = pokemon) }
+                            )
+                        }
+                    }
+                }
+//                PokemonGridItem(
+//                    pokemon = pokemon,
+//                    onClick = { events.pokemonClicked(pokemon = pokemon) }
+//                )
             }
         }
     }
