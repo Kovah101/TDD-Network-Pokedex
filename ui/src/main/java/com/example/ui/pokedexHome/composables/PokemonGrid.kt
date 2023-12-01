@@ -22,6 +22,18 @@ fun PokemonGrid(
     events: PokedexHomeEvents,
 ) {
 
+    val pokemon = state.pokemon.filter {
+        when (state.searchMode) {
+            SearchMode.NAME -> {
+                it.name.contains(state.searchText, ignoreCase = true)
+            }
+
+            SearchMode.NUMERICAL -> {
+                it.id.toString().contains(state.searchText, ignoreCase = true)
+            }
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -34,31 +46,11 @@ fun PokemonGrid(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(state.pokemon) { pokemon ->
-                when(state.searchMode) {
-                    SearchMode.NAME -> {
-                        if (pokemon.name.contains(state.searchText, ignoreCase = true)) {
-                            PokemonGridItem(
-                                pokemon = pokemon,
-                                onClick = { events.pokemonClicked(pokemon = pokemon) }
-                            )
-                        }
-
-                    }
-
-                    SearchMode.NUMERICAL -> {
-                        if (pokemon.id.toString().contains(state.searchText, ignoreCase = true)) {
-                            PokemonGridItem(
-                                pokemon = pokemon,
-                                onClick = { events.pokemonClicked(pokemon = pokemon) }
-                            )
-                        }
-                    }
-                }
-//                PokemonGridItem(
-//                    pokemon = pokemon,
-//                    onClick = { events.pokemonClicked(pokemon = pokemon) }
-//                )
+            items(pokemon) { pokemon ->
+                PokemonGridItem(
+                    pokemon = pokemon,
+                    onClick = { events.pokemonClicked(pokemon = pokemon) }
+                )
             }
         }
     }
