@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.database.Pokemon
 import com.example.ui.R
 
@@ -31,7 +32,6 @@ fun PokemonGridItem(
 
     Surface(
         modifier = Modifier.clip(RoundedCornerShape(8.dp)),
-       // shadowElevation = 80.dp // does this do anything??
     ) {
         Box(modifier = Modifier
             .size(128.dp)
@@ -52,6 +52,13 @@ fun PokemonGridItem(
                 .background(color = colorResource(id = R.color.dark_cream))
             )
 
+            AsyncImage(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(80.dp),
+                model = pokemon.sprite,
+                contentDescription = null
+            )
 
             Text(
                 modifier = Modifier
