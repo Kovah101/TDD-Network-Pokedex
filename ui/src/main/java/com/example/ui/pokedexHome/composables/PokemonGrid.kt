@@ -38,10 +38,12 @@ fun PokemonGrid(
         modifier = Modifier
             .fillMaxSize()
             .background(color = colorResource(id = R.color.cream))
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
     ) {
         LazyVerticalGrid(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .padding(vertical = 16.dp)
+                .fillMaxSize(),
             columns = GridCells.Fixed(count = 3),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
