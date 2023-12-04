@@ -1,5 +1,7 @@
 package com.example.data.network
 
+import com.example.database.Pokemon
+import com.example.database.PokemonType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -72,6 +74,32 @@ data class PokemonAbilityDto(
 data class PokemonAbilityDetailsDto(
     @SerialName("name") val name: String
 )
+
+fun PokemonDto.toDataModel(index: Int): Pokemon {
+    return Pokemon(
+        id = index,
+        name = name,
+        url = url,
+        height = 0,
+        weight = 0,
+        types = mutableListOf(PokemonType.UNKNOWN),
+        sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png",//pokemonDto.url
+        stats = emptyList(),
+    )
+}
+
+fun PokemonDetailsResponse.toDataModel(): Pokemon {
+    return Pokemon(
+        id = id,
+        name = name,
+        url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png",//pokemonDto.url
+        height = height,
+        weight = weight,
+        types = types.map { it.type.name }.map { PokemonType.valueOf(it.uppercase()) }.toMutableList(),
+        sprite = sprites.other.officialArtwork.frontDefault,
+        stats = stats.map { it.baseStat },
+    )
+}
 
 
 

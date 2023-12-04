@@ -40,9 +40,11 @@ class PokedexHomeViewModel @Inject constructor(
     // TODO extension to add navigation to Pokemon details page
 
     init {
+        viewModelScope.launch { getPokemon() }
+
         viewModelScope.launch {
-            getPokemonFromService()
-            viewModelScope.launch { getPokemon() }
+            //getPokemonFromService()
+
             getPokemonDetailsFromService()
         }
     }
@@ -71,7 +73,7 @@ class PokedexHomeViewModel @Inject constructor(
     private suspend fun getPokemon() {
         pokemonRepository.getAllPokemon().collect { allPokemon ->
             _state.update { it.copy(pokemon = allPokemon) }
-            Log.d(TAG, "Pokemon: $allPokemon")
+            Log.d(TAG, "Pokemon number: ${allPokemon.size}")
         }
     }
 

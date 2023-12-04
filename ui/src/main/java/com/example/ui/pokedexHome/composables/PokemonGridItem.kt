@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -57,7 +58,8 @@ fun PokemonGridItem(
                     .align(Alignment.Center)
                     .size(80.dp),
                 model = pokemon.sprite,
-                contentDescription = null
+                contentDescription = null,
+                placeholder = painterResource(id = R.drawable.ditto)
             )
 
             Text(

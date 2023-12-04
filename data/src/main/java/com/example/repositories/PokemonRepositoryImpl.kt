@@ -3,12 +3,15 @@ package com.example.repositories
 import android.annotation.SuppressLint
 import android.util.Log
 import com.example.data.network.PokeService
+import com.example.data.network.PokemonDto
+import com.example.data.network.toDataModel
 import com.example.database.Pokemon
 import com.example.database.PokemonDAO
 import com.example.database.PokemonType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -18,6 +21,23 @@ class PokemonRepositoryImpl @Inject constructor(
 ) : PokemonRepository {
 
     override suspend fun getAllPokemon(): Flow<List<Pokemon>> = pokemonDAO.getAllPokemon()
+        .also { databasePokemon ->
+            val pokemonResponse = pokeService.getOriginalPokemon()
+
+            if (pokemonResponse.isSuccessful) {
+                replaceIncompletePokemonData(databasePokemon.firstOrNull(), pokemonResponse.body().result)
+                Log.d("Pokemon Success", "Total pokemon = ${pokemonResponse.body()?.result?.size}")
+                pokemonResponse.body()?.result?.forEach { pokemonDto ->
+                    insertPokemon(
+                        pokemon = pokemonDto
+                            .toDataModel( index = pokemonResponse.body()!!.result.indexOf(pokemonDto) + 1 )
+                    )
+                }
+                Log.d("Pokemon Success", "Basic Pokemon data added to database")
+            } else {
+                Log.e("Pokemon Error", pokemonResponse.code().toString())
+            }
+        }
 
     override fun deleteAllPokemon() = pokemonDAO.deleteAllPokemon()
 
@@ -89,6 +109,19 @@ class PokemonRepositoryImpl @Inject constructor(
         Log.d("Pokemon Details Timer", "Finished getting pokemon details")
     }
 
+    private fun replaceIncompletePokemonData(
+        databasePokemon: List<Pokemon>?,
+        networkPokemon: List<PokemonDto>
+    ) {
+        if (databasePokemon != null) {
+            for (i in 0 until databasePokemon.size) {
+                if(databasePokemon[i].isIncomplete()){
+
+                }
+            }
+        }
+    }
+
     private fun getPokemonType(type: String): PokemonType {
         return when (type) {
             "normal" -> PokemonType.NORMAL
@@ -111,5 +144,9 @@ class PokemonRepositoryImpl @Inject constructor(
             "fairy" -> PokemonType.FAIRY
             else -> PokemonType.UNKNOWN
         }
+    }
+
+    private fun Pokemon.isIncomplete(): Boolean {
+        return height == 0 || weight == 0 || types.contains(PokemonType.UNKNOWN)
     }
 }
