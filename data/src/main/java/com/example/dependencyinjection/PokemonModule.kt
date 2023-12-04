@@ -26,6 +26,7 @@ class PokemonModule {
             com.example.database.PokemonDatabase::class.java,
             "pokemon_database"
         ).fallbackToDestructiveMigration()
+           // .addTypeConverter(PokemonTypeConverter())
             .build()
     }
 

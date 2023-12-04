@@ -13,6 +13,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface PokeService {
 
@@ -51,4 +52,9 @@ interface PokeService {
 
     @GET("pokemon/?limit=151")
     suspend fun getOriginalPokemon(): Response<PokemonResponse>
+
+    @GET("pokemon/{id}")
+    suspend fun getPokemonById(
+       @Path("id") id: Int
+    ): Response<PokemonDetailsResponse>
 }

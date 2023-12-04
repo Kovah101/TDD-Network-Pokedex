@@ -42,7 +42,8 @@ class PokedexHomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             getPokemonFromService()
-            getPokemon()
+            viewModelScope.launch { getPokemon() }
+            getPokemonDetailsFromService()
         }
     }
 
@@ -77,6 +78,11 @@ class PokedexHomeViewModel @Inject constructor(
     private suspend fun getPokemonFromService() {
         Log.d(ALT_TAG, "Starting Network call")
         pokemonRepository.getOriginalPokemonFromNetwork()
+    }
+
+    private suspend fun getPokemonDetailsFromService(){
+        Log.d(ALT_TAG, "Starting Pokemon Details call")
+        pokemonRepository.getOriginalPokemonDetailsFromNetwork()
     }
 
     override fun pokemonClicked(pokemon: Pokemon) {
