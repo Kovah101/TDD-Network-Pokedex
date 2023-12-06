@@ -42,11 +42,7 @@ class PokedexHomeViewModel @Inject constructor(
     init {
         viewModelScope.launch { getPokemon() }
 
-        viewModelScope.launch {
-            //getPokemonFromService()
-
-            getPokemonDetailsFromService()
-        }
+        viewModelScope.launch { getPokemonDetails() }
     }
 
     private suspend fun insertDummyPokemonData() {
@@ -82,7 +78,7 @@ class PokedexHomeViewModel @Inject constructor(
         pokemonRepository.getOriginalPokemonFromNetwork()
     }
 
-    private suspend fun getPokemonDetailsFromService(){
+    private suspend fun getPokemonDetails() {
         Log.d(ALT_TAG, "Starting Pokemon Details call")
         pokemonRepository.getOriginalPokemonDetailsFromNetwork()
     }

@@ -83,7 +83,7 @@ fun PokemonDto.toDataModel(index: Int): Pokemon {
         height = 0,
         weight = 0,
         types = mutableListOf(PokemonType.UNKNOWN),
-        sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png",//pokemonDto.url
+        sprite = "",
         stats = emptyList(),
     )
 }
@@ -92,7 +92,7 @@ fun PokemonDetailsResponse.toDataModel(): Pokemon {
     return Pokemon(
         id = id,
         name = name,
-        url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png",//pokemonDto.url
+        url = "", //TODO sort on details data section
         height = height,
         weight = weight,
         types = types.map { it.type.name }.map { PokemonType.valueOf(it.uppercase()) }.toMutableList(),

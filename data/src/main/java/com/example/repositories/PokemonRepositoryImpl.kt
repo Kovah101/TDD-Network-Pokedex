@@ -20,24 +20,23 @@ class PokemonRepositoryImpl @Inject constructor(
     private val pokeService: PokeService
 ) : PokemonRepository {
 
-    override suspend fun getAllPokemon(): Flow<List<Pokemon>> = pokemonDAO.getAllPokemon()
-        .also { databasePokemon ->
-            val pokemonResponse = pokeService.getOriginalPokemon()
+    companion object {
+        private val TAG = PokemonRepositoryImpl::class.java.simpleName
+    }
 
-            if (pokemonResponse.isSuccessful) {
-                replaceIncompletePokemonData(databasePokemon.firstOrNull(), pokemonResponse.body().result)
-                Log.d("Pokemon Success", "Total pokemon = ${pokemonResponse.body()?.result?.size}")
-                pokemonResponse.body()?.result?.forEach { pokemonDto ->
-                    insertPokemon(
-                        pokemon = pokemonDto
-                            .toDataModel( index = pokemonResponse.body()!!.result.indexOf(pokemonDto) + 1 )
-                    )
-                }
-                Log.d("Pokemon Success", "Basic Pokemon data added to database")
-            } else {
-                Log.e("Pokemon Error", pokemonResponse.code().toString())
-            }
-        }
+    override suspend fun getAllPokemon(): Flow<List<Pokemon>> = pokemonDAO.getAllPokemon()
+//        .also { databasePokemon ->
+//            Log.d(TAG, "Fetching new pokemon, old pokemon : ${databasePokemon.firstOrNull()?.size}")
+//            val pokemonResponse = pokeService.getOriginalPokemon()
+//
+//            if (pokemonResponse.isSuccessful) {
+//                pokemonResponse.body()
+//                    ?.let { replaceIncompletePokemonData(databasePokemon.firstOrNull(), it.result) }
+//                Log.d(TAG, "Basic Pokemon data added to database")
+//            } else {
+//                Log.e(TAG, pokemonResponse.code().toString())
+//            }
+//        }
 
     override fun deleteAllPokemon() = pokemonDAO.deleteAllPokemon()
 
@@ -79,7 +78,7 @@ class PokemonRepositoryImpl @Inject constructor(
         Log.d("Pokemon Details Timer", "Getting pokemon details")
         for (i in 1..151) {
             withContext(Dispatchers.IO) {
-                val pokemonDetailsResponse = pokeService.getPokemonById( id = i )
+                val pokemonDetailsResponse = pokeService.getPokemonById(id = i)
                 Log.d("Pokemon Details", "Pokemon details response = $pokemonDetailsResponse")
                 if (pokemonDetailsResponse.isSuccessful) {
                     pokemonDetailsResponse.body()?.let { pokemonDetailsDto ->
@@ -109,16 +108,37 @@ class PokemonRepositoryImpl @Inject constructor(
         Log.d("Pokemon Details Timer", "Finished getting pokemon details")
     }
 
-    private fun replaceIncompletePokemonData(
+    private suspend fun replaceIncompletePokemonData(
         databasePokemon: List<Pokemon>?,
         networkPokemon: List<PokemonDto>
     ) {
-        if (databasePokemon != null) {
-            for (i in 0 until databasePokemon.size) {
-                if(databasePokemon[i].isIncomplete()){
+        if (!databasePokemon.isNullOrEmpty()) {
+            for (pokemon in databasePokemon) {
+                if (pokemon.isIncomplete()) {
+                    Log.d(TAG, "Incomplete Pokemon: $pokemon")
+                    val index = databasePokemon.indexOf(pokemon)
 
+                    insertPokemon(pokemon = networkPokemon[index].toDataModel(index = index + 1))
                 }
             }
+        } else {
+            inputPokemonData(networkPokemon)
+        }
+    }
+
+    private suspend fun inputPokemonData(networkPokemon: List<PokemonDto>) {
+        for (i in networkPokemon.indices) {
+            val pokemon = Pokemon(
+                id = i + 1,
+                name = networkPokemon[i].name,
+                url = networkPokemon[i].url,
+                height = 0,
+                weight = 0,
+                types = mutableListOf(PokemonType.UNKNOWN),
+                sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png",//pokemonDto.url
+                stats = emptyList(),
+            )
+            insertPokemon(pokemon)
         }
     }
 
@@ -147,6 +167,6 @@ class PokemonRepositoryImpl @Inject constructor(
     }
 
     private fun Pokemon.isIncomplete(): Boolean {
-        return height == 0 || weight == 0 || types.contains(PokemonType.UNKNOWN)
+        return id == 0 || name == "" || url == "" || types.contains(PokemonType.UNKNOWN)
     }
 }
