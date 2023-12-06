@@ -42,7 +42,7 @@ class PokedexHomeViewModel @Inject constructor(
     init {
         viewModelScope.launch { getPokemon() }
 
-        viewModelScope.launch { getPokemonDetails() }
+       // viewModelScope.launch { getPokemonDetails() }
     }
 
     private suspend fun insertDummyPokemonData() {
@@ -67,6 +67,7 @@ class PokedexHomeViewModel @Inject constructor(
     }
 
     private suspend fun getPokemon() {
+        Log.d(TAG, "Starting Pokemon call")
         pokemonRepository.getAllPokemon().collect { allPokemon ->
             _state.update { it.copy(pokemon = allPokemon) }
             Log.d(TAG, "Pokemon number: ${allPokemon.size}")

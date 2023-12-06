@@ -12,7 +12,11 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.CloudOff
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -39,12 +43,41 @@ fun PokedexHomeScreen(
                 events = events
             )
 
-            PokemonGrid(
-                state = state,
-                events = events
-            )
+            if (state.pokemon.isNotEmpty()) {
+                PokemonGrid(
+                    state = state,
+                    events = events
+                )
+            } else {
+                OfflineAndNoData()
+            }
         }
 
+    }
+}
+
+@Composable
+private fun OfflineAndNoData(){
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(color = colorResource(id = R.color.cream))
+    ) {
+        Column(
+            modifier = Modifier.align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                modifier = Modifier.size(128.dp),
+                imageVector = Icons.Outlined.CloudOff,
+                contentDescription = "Offline"
+            )
+
+            Text(
+                text = "No data available",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.headlineMedium
+            )
+        }
     }
 }
 
