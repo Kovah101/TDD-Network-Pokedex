@@ -21,11 +21,12 @@ compose-compiler = "1.5.4"
 compose-material-foundation = "1.5.4"
 compose-material-material3 = "1.1.2"
 compose-navigation = "2.7.5"
+coil-compose = "2.5.0"
 hilt = "2.48"
 hilt-navigation = "1.1.0"
 kotlin-gradlePlugin = "1.8.10"
 kotlinx-coroutines = "1.7.1"
-kotlinx-serialization = "1.4.1"
+kotlinx-serialization = "1.6.0"
 kotlinx-serialization-converter = "0.8.0"
 okhttp = "4.11.0"
 retrofit = "2.9.0"
@@ -58,6 +59,8 @@ compose-material-icons-core = { module = "androidx.compose.material:material-ico
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-material-foundation"}
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation"}
 
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose"}
+
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines"}
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines"}
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines"}
@@ -83,6 +86,7 @@ lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmo
 
 squareup-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit"}
 squareup-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp"}
+squareup-okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp"}
 squareup-test = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp"}
 serialization-kotlinx = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization"}
 serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "kotlinx-serialization-converter"}
@@ -120,7 +124,8 @@ compose = [
     "compose-material",
     "compose-material-icons-core",
     "compose-material-icons-extended",
-    "compose-navigation"
+    "compose-navigation",
+    "coil-compose"
 ]
 
 coroutines = [
@@ -143,6 +148,7 @@ lifecycle = [
 networking =  [
     "squareup-retrofit",
     "squareup-okhttp",
+    "squareup-okhttp-logging",
     "serialization-kotlinx",
     "serialization-converter"
 ]

@@ -15,9 +15,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.ui.R
+import com.example.ui.pokedexHome.PokedexHomeEvents
+import com.example.ui.pokedexHome.PokedexHomeState
 
 @Composable
-fun HomeTopBar() {
+fun HomeTopBar(
+    state: PokedexHomeState,
+    events: PokedexHomeEvents,
+) {
 
     Box(
         modifier = Modifier
@@ -29,7 +34,13 @@ fun HomeTopBar() {
         Column {
             SymbolAndTitle()
 
-            SearchRow()
+            SearchRow(
+                searchMode = state.searchMode,
+                searchText = state.searchText,
+                onSearchTextUpdate = { events.updateSearchText(it) },
+                onSearchModeSwitch = { events.switchSearchMode() },
+                onClearClicked = { events.onClearClicked() }
+            )
         }
 
     }
