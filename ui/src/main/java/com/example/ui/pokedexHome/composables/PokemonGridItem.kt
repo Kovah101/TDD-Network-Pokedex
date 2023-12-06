@@ -1,6 +1,7 @@
 package com.example.ui.pokedexHome.composables
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -45,21 +46,18 @@ fun PokemonGridItem(
                 shape = RoundedCornerShape(8.dp)
             )
         ) {
-            Box(modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .clip(RoundedCornerShape(8.dp))
-                .fillMaxWidth()
-                .fillMaxHeight(fraction = 0.4f)
-                .background(color = colorResource(id = R.color.dark_cream))
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .clip(RoundedCornerShape(8.dp))
+                    .fillMaxWidth()
+                    .fillMaxHeight(fraction = 0.4f)
+                    .background(color = colorResource(id = R.color.dark_cream))
             )
 
-            AsyncImage(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .size(80.dp),
-                model = pokemon.sprite,//.ifEmpty { painterResource(id = R.drawable.ditto) },
-                contentDescription = null,
-                placeholder = painterResource(id = R.drawable.ditto)
+            PokemonSprite(
+                modifier = Modifier.align(Alignment.Center),
+                pokemon = pokemon
             )
 
             Text(
@@ -76,6 +74,27 @@ fun PokemonGridItem(
                 text = pokemon.name.replaceFirstChar { it.uppercase() }
             )
         }
+    }
+}
+
+@Composable
+fun PokemonSprite(
+    modifier: Modifier,
+    pokemon: Pokemon
+) {
+    if (pokemon.sprite.isEmpty()) {
+        Image(
+            modifier = modifier.size(80.dp),
+            painter = painterResource(id = R.drawable.ditto),
+            contentDescription = null
+        )
+    } else {
+        AsyncImage(
+            modifier = modifier.size(80.dp),
+            model = pokemon.sprite,
+            contentDescription = null,
+            placeholder = painterResource(id = R.drawable.ditto)
+        )
     }
 }
 
