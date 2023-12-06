@@ -57,7 +57,7 @@ fun PokemonGridItem(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .size(80.dp),
-                model = pokemon.sprite.ifEmpty { painterResource(id = R.drawable.ditto) },
+                model = pokemon.sprite,//.ifEmpty { painterResource(id = R.drawable.ditto) },
                 contentDescription = null,
                 placeholder = painterResource(id = R.drawable.ditto)
             )

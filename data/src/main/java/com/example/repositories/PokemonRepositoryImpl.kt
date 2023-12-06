@@ -25,18 +25,18 @@ class PokemonRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAllPokemon(): Flow<List<Pokemon>> = pokemonDAO.getAllPokemon()
-//        .also { databasePokemon ->
-//            Log.d(TAG, "Fetching new pokemon, old pokemon : ${databasePokemon.firstOrNull()?.size}")
-//            val pokemonResponse = pokeService.getOriginalPokemon()
-//
-//            if (pokemonResponse.isSuccessful) {
-//                pokemonResponse.body()
-//                    ?.let { replaceIncompletePokemonData(databasePokemon.firstOrNull(), it.result) }
-//                Log.d(TAG, "Basic Pokemon data added to database")
-//            } else {
-//                Log.e(TAG, pokemonResponse.code().toString())
-//            }
-//        }
+        .also { databasePokemon ->
+            Log.d(TAG, "Fetching new pokemon, old pokemon : ${databasePokemon.firstOrNull()?.size}")
+            val pokemonResponse = pokeService.getOriginalPokemon()
+
+            if (pokemonResponse.isSuccessful) {
+                pokemonResponse.body()
+                    ?.let { replaceIncompletePokemonData(databasePokemon.firstOrNull(), it.result) }
+                Log.d(TAG, "Basic Pokemon data added to database")
+            } else {
+                Log.e(TAG, pokemonResponse.code().toString())
+            }
+        }
 
     override fun deleteAllPokemon() = pokemonDAO.deleteAllPokemon()
 
@@ -113,6 +113,7 @@ class PokemonRepositoryImpl @Inject constructor(
         networkPokemon: List<PokemonDto>
     ) {
         if (!databasePokemon.isNullOrEmpty()) {
+            Log.d(TAG, "Replacing incomplete Pokemon data - old data : ${databasePokemon.size}")
             for (pokemon in databasePokemon) {
                 if (pokemon.isIncomplete()) {
                     Log.d(TAG, "Incomplete Pokemon: $pokemon")
@@ -127,19 +128,11 @@ class PokemonRepositoryImpl @Inject constructor(
     }
 
     private suspend fun inputPokemonData(networkPokemon: List<PokemonDto>) {
-        for (i in networkPokemon.indices) {
-            val pokemon = Pokemon(
-                id = i + 1,
-                name = networkPokemon[i].name,
-                url = networkPokemon[i].url,
-                height = 0,
-                weight = 0,
-                types = mutableListOf(PokemonType.UNKNOWN),
-                sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png",//pokemonDto.url
-                stats = emptyList(),
-            )
-            insertPokemon(pokemon)
+        Log.d(TAG, "Inputting Pokemon data")
+        val pokemonList = networkPokemon.mapIndexed { index, pokemonDto ->
+            pokemonDto.toDataModel(index = index + 1)
         }
+        pokemonDAO.insertAllPokemon(pokemonList)
     }
 
     private fun getPokemonType(type: String): PokemonType {
@@ -167,6 +160,6 @@ class PokemonRepositoryImpl @Inject constructor(
     }
 
     private fun Pokemon.isIncomplete(): Boolean {
-        return id == 0 || name == "" || url == "" || types.contains(PokemonType.UNKNOWN)
+        return id == 0 || name == "" || url == ""
     }
 }
