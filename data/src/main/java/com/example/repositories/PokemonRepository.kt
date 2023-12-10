@@ -15,7 +15,5 @@ interface PokemonRepository {
 
     suspend fun insertPokemon(pokemon: Pokemon)
 
-    suspend fun getOriginalPokemonFromNetwork()
-
-    suspend fun getOriginalPokemonDetailsFromNetwork()
+    suspend fun getOriginalPokemonDetails()
 }
