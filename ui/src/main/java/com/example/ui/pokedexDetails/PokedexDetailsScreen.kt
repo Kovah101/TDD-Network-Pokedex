@@ -5,6 +5,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -48,7 +49,7 @@ fun PokedexDetailsScreen(
                         )
                     )
                 },
-              //  backgroundColor = colorResource(id = R.color.red),
+              //  colors = colorResource(id = R.color.red),
                 modifier = Modifier.fillMaxWidth(),
               //  elevation = 4.dp,
                 navigationIcon = {
@@ -62,7 +63,7 @@ fun PokedexDetailsScreen(
                 actions = {
                     Icon(
                         modifier = Modifier
-                            .clickable{ events.backClicked() }
+                            .clickable { events.backClicked() }
                             .padding(horizontal = 16.dp),
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "back to home",
@@ -78,14 +79,27 @@ fun PokedexDetailsScreen(
                 .fillMaxSize()
                 .background(color = colorResource(id = R.color.cream))
         ) {
-            Text(
-                text = state.data?.id.toString(),
-                style = MaterialTheme.typography.headlineSmall.copy(
-                    color = colorResource(id = R.color.red),
-                    textAlign = TextAlign.Center
-                ),
-                modifier = Modifier.padding(16.dp).align(Alignment.Center)
-            )
+            Column (modifier = Modifier.align(Alignment.Center)){
+
+                Text(
+                    text = state.pokemon?.name.toString(),
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        color = colorResource(id = R.color.red),
+                        textAlign = TextAlign.Center
+                    ),
+                    modifier = Modifier.padding(16.dp)
+                )
+
+                Text(
+                    text = state.pokemon?.types.toString(),
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        color = colorResource(id = R.color.red),
+                        textAlign = TextAlign.Center
+                    ),
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+
         }
 
     }

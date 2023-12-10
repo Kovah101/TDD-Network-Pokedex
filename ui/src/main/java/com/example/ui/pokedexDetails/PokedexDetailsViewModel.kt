@@ -8,18 +8,21 @@ import com.example.database.Pokemon
 import com.example.navigation.NavArguments
 import com.example.navigation.NavigateBack
 import com.example.navigation.NavigationRoute
+import com.example.repositories.PokemonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PokedexDetailsViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val pokemonRepository: PokemonRepository
 ) : ViewModel(), PokedexDetailsEvents {
 
     companion object {
@@ -37,14 +40,16 @@ class PokedexDetailsViewModel @Inject constructor(
 
     init {
         Log.d(TAG, "init: $pokemonId")
-        // TODO get detailed pokemon info using id
-        val dummyPokemon = Pokemon(
-            name = "dummy",
-            url = "dummy",
-            id = pokemonId?.toInt() ?: 0
-        )
-        _state.update { it.copy(data = dummyPokemon) }
-        Log.d(TAG, "${state.value.data}")
+
+        if (pokemonId != null) {
+            viewModelScope.launch {
+                 val pokemon = pokemonRepository.getPokemonById(pokemonId.toInt()).firstOrNull()
+                Log.d(TAG, "$pokemon")
+                _state.update { it.copy(pokemon = pokemon) }
+            }
+        }
+
+
     }
 
     override fun backClicked() {
