@@ -57,7 +57,7 @@ fun PokedexHomeScreen(
 }
 
 @Composable
-private fun OfflineAndNoData(){
+fun OfflineAndNoData(){
     Box(modifier = Modifier
         .fillMaxSize()
         .background(color = colorResource(id = R.color.cream))
