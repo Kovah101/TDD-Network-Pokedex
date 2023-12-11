@@ -1,6 +1,7 @@
 package com.example.ui.pokedexDetails.composables
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,6 +31,7 @@ fun PokemonTopBar(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
+           // .background(color = colorResource(id= R.color.red)), // TODO try framing in red to stop glitching of status bar colors
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(

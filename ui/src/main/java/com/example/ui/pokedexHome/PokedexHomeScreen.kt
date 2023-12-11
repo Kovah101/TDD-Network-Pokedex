@@ -1,6 +1,7 @@
 package com.example.ui.pokedexHome
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.res.Resources.Theme
 import android.util.Log
 import androidx.compose.foundation.*
@@ -21,11 +22,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ui.R
+import com.example.ui.pokedexDetails.composables.pokemonTypeToColor
 import com.example.ui.pokedexHome.composables.HomeTopBar
 import com.example.ui.pokedexHome.composables.PokemonGrid
 
@@ -35,6 +39,10 @@ fun PokedexHomeScreen(
     state: PokedexHomeState,
     events: PokedexHomeEvents,
 ) {
+
+    val activity = LocalView.current.context as Activity
+    activity.window.statusBarColor = colorResource(id = R.color.red).toArgb()
+    activity.window.navigationBarColor = colorResource(id = R.color.red).toArgb()
 
     Scaffold {
         Column {

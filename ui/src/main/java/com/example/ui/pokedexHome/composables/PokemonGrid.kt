@@ -3,6 +3,8 @@ package com.example.ui.pokedexHome.composables
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -38,16 +40,16 @@ fun PokemonGrid(
         modifier = Modifier
             .fillMaxSize()
             .background(color = colorResource(id = R.color.cream))
-            .padding(horizontal = 16.dp)
     ) {
+
         LazyVerticalGrid(
-            modifier = Modifier
-                .padding(vertical = 16.dp)
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             columns = GridCells.Fixed(count = 3),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
         ) {
+
             items(pokemon) { pokemon ->
                 PokemonGridItem(
                     pokemon = pokemon,
