@@ -26,15 +26,20 @@ fun PokemonDetails(
     pokemon: Pokemon,
     events: PokedexDetailsEvents
 ) {
+    // TODO change navigation bar color and status bar color to match pokemon type,
+    //  add sprite and basic card info,
+    //  add swipe and click to next pokemon
+
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(color = colorResource(id = pokemonTypeToColor(pokemon)))
     ) {
-        PokeballBackground(modifier = Modifier
-            .align(Alignment.TopEnd)
-            .padding(16.dp)
+        PokeballBackground(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(16.dp)
         )
 
         PokemonTopBar(
@@ -58,17 +63,17 @@ fun PokemonDetails(
         }
 
     }
-
 }
 
 @Composable
 fun PokeballBackground(
     modifier: Modifier
-){
+) {
     Image(
         modifier = modifier.size(208.dp),
         painter = painterResource(id = R.drawable.pokeball),
-        contentDescription = null)
+        contentDescription = null
+    )
 }
 
 @Composable
