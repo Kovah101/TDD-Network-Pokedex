@@ -56,17 +56,19 @@ fun PokemonDetails(
             events = events
         )
 
-        Column(modifier = Modifier.align(Alignment.Center)) {
+        PokemonInfo(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(8.dp),
+            pokemon = pokemon
+        )
 
-            Text(
-                text = pokemon.types.toString(),
-                style = MaterialTheme.typography.headlineSmall.copy(
-                    color = colorResource(id = R.color.white),
-                    textAlign = TextAlign.Center
-                ),
-                modifier = Modifier.padding(16.dp)
-            )
-        }
+        PokemonImage(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(8.dp),
+            pokemon = pokemon
+        )
 
     }
 }
