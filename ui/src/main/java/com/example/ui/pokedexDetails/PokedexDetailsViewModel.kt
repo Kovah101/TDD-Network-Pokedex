@@ -29,7 +29,7 @@ class PokedexDetailsViewModel @Inject constructor(
         private val TAG = PokedexDetailsViewModel::class.java.simpleName
     }
 
-    val pokemonId: String? = savedStateHandle[NavArguments.POKEMON_ID.navString]
+    private var pokemonId: String? = savedStateHandle[NavArguments.POKEMON_ID.navString]
 
     private val _state = MutableStateFlow(PokedexDetailsState())
     val state: StateFlow<PokedexDetailsState>
@@ -43,9 +43,7 @@ class PokedexDetailsViewModel @Inject constructor(
 
         if (pokemonId != null) {
             viewModelScope.launch {
-                 val pokemon = pokemonRepository.getPokemonById(pokemonId.toInt()).firstOrNull()
-                Log.d(TAG, "$pokemon")
-                _state.update { it.copy(pokemon = pokemon) }
+                getPokemonById(pokemonId!!.toInt())
             }
         }
 
@@ -55,6 +53,21 @@ class PokedexDetailsViewModel @Inject constructor(
     override fun backClicked() {
         viewModelScope.launch {
             _navigationEvent.emit(NavigateBack)
+        }
+    }
+
+    override fun nextClicked() {
+        getPokemonById(id = state.value.pokemon!!.id + 1)
+    }
+
+    override fun previousClicked() {
+        getPokemonById(id = state.value.pokemon!!.id - 1)
+    }
+
+    private fun getPokemonById(id: Int) {
+        viewModelScope.launch {
+            val pokemon = pokemonRepository.getPokemonById(id).firstOrNull()
+            _state.update { it.copy(pokemon = pokemon) }
         }
     }
 }

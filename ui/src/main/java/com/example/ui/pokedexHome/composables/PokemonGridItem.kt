@@ -81,7 +81,8 @@ fun PokemonGridItem(
 fun PokemonSprite(
     modifier: Modifier,
     pokemon: Pokemon,
-    size: Int = 80
+    size: Int = 80,
+    usePlaceholder : Boolean = true
 ) {
     if (pokemon.sprite.isEmpty()) {
         Image(
@@ -94,7 +95,7 @@ fun PokemonSprite(
             modifier = modifier.size(size.dp),
             model = pokemon.sprite,
             contentDescription = null,
-            placeholder = painterResource(id = R.drawable.ditto)
+            placeholder = if (usePlaceholder)painterResource(id = R.drawable.ditto) else null
         )
     }
 }

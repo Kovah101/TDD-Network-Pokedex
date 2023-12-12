@@ -30,8 +30,7 @@ fun PokemonDetails(
     pokemon: Pokemon,
     events: PokedexDetailsEvents
 ) {
-    // TODO add sprite and basic card info,
-    //  add swipe and click to next pokemon
+    // TODO add swipe for next or previous behaviour
 
     val activity = LocalView.current.context as Activity
     activity.window.statusBarColor = colorResource(id = pokemonTypeToColor(pokemon)).toArgb()
@@ -67,6 +66,7 @@ fun PokemonDetails(
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(8.dp),
+            events= events,
             pokemon = pokemon
         )
 
