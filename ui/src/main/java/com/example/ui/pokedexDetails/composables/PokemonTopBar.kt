@@ -58,7 +58,7 @@ fun PokemonTopBar(
             modifier = Modifier
                 .padding(8.dp),
             text = "#${idString(pokemon.id)}",
-            style = MaterialTheme.typography.headlineSmall.copy(
+            style = MaterialTheme.typography.titleLarge.copy(
                 color = colorResource(id = R.color.white),
                 textAlign = TextAlign.Center
             )
