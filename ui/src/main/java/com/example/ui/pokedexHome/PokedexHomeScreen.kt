@@ -48,15 +48,14 @@ fun PokedexHomeScreen(
                 events = events
             )
 
-//            if (state.pokemon.isNotEmpty()) {
-//                PokemonGrid(
-//                    state = state,
-//                    events = events
-//                )
-//            } else {
-                //TODO Change this to loading wheel if connected to the internet else offlineAndNoData
+            if (state.pokemon.isNotEmpty()) {
+                PokemonGrid(
+                    state = state,
+                    events = events
+                )
+            } else {
                 OfflineOrNoData()
-           // }
+            }
         }
 
     }

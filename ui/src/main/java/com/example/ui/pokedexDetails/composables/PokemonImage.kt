@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.ExperimentalMaterialApi
@@ -44,7 +45,6 @@ fun PokemonImage(
     pokemon: Pokemon
 ) {
     val swipeableState = rememberSwipeableState(initialValue = PokemonOrder.CURRENT)
-    // TODO check with other whether swipe behaviour is correct
 
     when (swipeableState.currentValue) {
         PokemonOrder.CURRENT -> {
@@ -92,7 +92,7 @@ fun PokemonImage(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Spacer(modifier = Modifier.weight(0.20f))
+        Spacer(modifier = Modifier.weight(0.2f))
 
         Row(
             modifier = modifier,
@@ -107,9 +107,8 @@ fun PokemonImage(
             )
 
             PokemonSprite(
-                modifier = Modifier,
+                modifier = Modifier.fillMaxWidth(0.7f),
                 pokemon = pokemon,
-                size = 280,
                 usePlaceholder = false
             )
 
