@@ -35,9 +35,12 @@ class PokedexHomeViewModel @Inject constructor(
     val navigationEvent = _navigationEvent.asSharedFlow()
 
     init {
-        viewModelScope.launch { getPokemon() }
+        viewModelScope.launch {
+            getPokemon()
+          //  getPokemonDetails()
+        }
 
-        viewModelScope.launch { getPokemonDetails() }
+        //viewModelScope.launch { getPokemonDetails() }
     }
 
     override fun pokemonClicked(pokemon: Pokemon) {
@@ -71,10 +74,7 @@ class PokedexHomeViewModel @Inject constructor(
     private suspend fun getPokemon() {
         pokemonRepository.getAllPokemon().collect { allPokemon ->
             _state.update { it.copy(pokemon = allPokemon) }
+            pokemonRepository.getOriginalPokemonDetails()
         }
-    }
-
-    private suspend fun getPokemonDetails() {
-        pokemonRepository.getOriginalPokemonDetails()
     }
 }

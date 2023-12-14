@@ -7,7 +7,7 @@ targetSdk = "34"
 applicationId = "com.example.tddnetworkpokedex"
 
 kotlin = "1.9.20"
-androidBuildTools = "8.2.0-rc03"
+androidBuildTools = "8.2.0"
 devtools-ksp = "1.9.21-1.0.15"
 
 android-material = "1.10.0"
@@ -54,7 +54,8 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "compose"}
 compose-runtime-rxjava = { module = "androidx.compose.runtime:runtime-rxjava2", version.ref = "compose"}
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose-material-foundation"}
-compose-material = { module = "androidx.compose.material3:material3", version.ref = "compose-material-material3"}
+compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material-material3"}
+compose-material2 = { module = "androidx.compose.material:material", version.ref = "compose"}
 compose-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "compose-material-foundation"}
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-material-foundation"}
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation"}
@@ -121,7 +122,8 @@ compose = [
     "compose-runtime-livedata",
     "compose-runtime-rxjava",
     "compose-foundation",
-    "compose-material",
+    "compose-material3",
+    "compose-material2",
     "compose-material-icons-core",
     "compose-material-icons-extended",
     "compose-navigation",

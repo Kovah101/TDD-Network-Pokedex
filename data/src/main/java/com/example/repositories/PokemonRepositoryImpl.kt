@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -36,6 +37,7 @@ class PokemonRepositoryImpl @Inject constructor(
             } else {
                 Log.e(TAG, pokemonResponse.code().toString())
             }
+
         }
 
     override fun deleteAllPokemon() = pokemonDAO.deleteAllPokemon()
@@ -49,13 +51,16 @@ class PokemonRepositoryImpl @Inject constructor(
         pokemonDAO.insertPokemon(pokemon = pokemon)
 
     override suspend fun getOriginalPokemonDetails() {
+        Log.d(TAG, "getOriginalPokemonDetails:  Start")
         val currentPokemonList = pokemonDAO.getAllPokemon().firstOrNull()
 
         for (pokemonIndex in 0..<currentPokemonList?.size!!) {
             if (currentPokemonList[pokemonIndex].isDetailsIncomplete()) {
+                Log.d(TAG, "getOriginalPokemonDetails: $pokemonIndex")
                 replaceIncompletePokemonDetails(pokemonIndex)
             }
         }
+        Log.d(TAG, "getOriginalPokemonDetails:  End")
     }
 
     private suspend fun replaceIncompletePokemonData(
