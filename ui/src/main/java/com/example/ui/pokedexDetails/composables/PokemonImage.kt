@@ -83,8 +83,8 @@ fun PokemonImage(
                 state = swipeableState,
                 anchors = mapOf(
                     0f to PokemonOrder.CURRENT,
-                    -1f to PokemonOrder.PREVIOUS,
-                    1f to PokemonOrder.NEXT
+                    -1f to PokemonOrder.NEXT,
+                    1f to PokemonOrder.PREVIOUS
                 ),
                 orientation = Orientation.Horizontal,
                 thresholds = { _, _ -> FractionalThreshold(0.3f) },

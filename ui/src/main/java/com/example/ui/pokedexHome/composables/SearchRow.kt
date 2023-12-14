@@ -134,16 +134,19 @@ fun PokedexSearchBar(
                 textAlign = TextAlign.Left
             ),
             colors = TextFieldDefaults.colors(
-                focusedTextColor = colorResource(id = R.color.black),
+                focusedTextColor = colorResource(id = R.color.cream),
                 focusedContainerColor = colorResource(id = R.color.cream),
                 unfocusedContainerColor = colorResource(id = R.color.cream),
                 disabledContainerColor = colorResource(id = R.color.cream),
+                focusedIndicatorColor = colorResource(id = R.color.cream),
+                unfocusedIndicatorColor = colorResource(id = R.color.cream),
+                disabledIndicatorColor = colorResource(id = R.color.cream),
             ),
             leadingIcon = {
                 SearchRowIcon(
                     symbol = Symbol.SEARCH,
                     sortMode = sortMode,
-                    onClick = { Log.d(TAG, "sort clicked") }
+                    onClick = { Log.d(TAG, "search clicked") }
                 )
             },
             trailingIcon = {

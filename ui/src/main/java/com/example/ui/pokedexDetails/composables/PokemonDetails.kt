@@ -32,11 +32,6 @@ fun PokemonDetails(
     pokemon: Pokemon,
     events: PokedexDetailsEvents
 ) {
-    // TODO add swipe for next or previous behaviour
-
-    val activity = LocalView.current.context as Activity
-    activity.window.statusBarColor = colorResource(id = pokemonTypeToColor(pokemon)).toArgb()
-    activity.window.navigationBarColor = colorResource(id = pokemonTypeToColor(pokemon)).toArgb()
 
     Box(
         modifier = Modifier
@@ -47,14 +42,6 @@ fun PokemonDetails(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(16.dp)
-        )
-
-        PokemonTopBar(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(16.dp),
-            pokemon = pokemon,
-            events = events
         )
 
         PokemonInfo(
@@ -70,6 +57,14 @@ fun PokemonDetails(
                 .padding(8.dp),
             events= events,
             pokemon = pokemon
+        )
+
+        PokemonTopBar(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .background(color = colorResource(id = R.color.red)),
+            pokemon = pokemon,
+            events = events
         )
 
     }

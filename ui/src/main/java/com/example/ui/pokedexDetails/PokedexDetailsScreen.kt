@@ -6,7 +6,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import com.example.ui.pokedexDetails.composables.PokemonDetails
-import com.example.ui.pokedexHome.OfflineAndNoData
+import com.example.ui.pokedexHome.composables.OfflineOrNoData
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -19,7 +19,7 @@ fun PokedexDetailsScreen(
 
     Scaffold {
         if (state.pokemon == null) {
-            OfflineAndNoData()
+            OfflineOrNoData()
         } else {
             PokemonDetails(
                 pokemon = state.pokemon,
