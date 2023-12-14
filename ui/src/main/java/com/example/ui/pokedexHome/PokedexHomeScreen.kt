@@ -57,6 +57,7 @@ fun PokedexHomeScreen(
                     events = events
                 )
             } else {
+                //TODO Change this to loading wheel if connected to the internet else offlineAndNoData
                 OfflineAndNoData()
             }
         }

@@ -1,17 +1,28 @@
 package com.example.ui.pokedexDetails.composables
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FractionalThreshold
+import androidx.compose.material.rememberSwipeableState
+import androidx.compose.material.swipeable
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -19,15 +30,65 @@ import com.example.database.Pokemon
 import com.example.ui.R
 import com.example.ui.pokedexDetails.PokedexDetailsEvents
 import com.example.ui.pokedexHome.composables.PokemonSprite
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
+@ExperimentalMaterial3Api
 @Composable
 fun PokemonImage(
     modifier: Modifier,
     events: PokedexDetailsEvents,
     pokemon: Pokemon
 ) {
+    val swipeableState = rememberSwipeableState(initialValue = PokemonOrder.CURRENT)
+    // TODO check with other whether swipe behaviour is correct
+
+    when (swipeableState.currentValue) {
+        PokemonOrder.CURRENT -> {
+            Log.d("PokemonImage", "PokemonOrder.CURRENT")
+        }
+
+        PokemonOrder.PREVIOUS -> {
+            Log.d("PokemonImage", "PokemonOrder.PREVIOUS")
+            LaunchedEffect(key1 = Unit) {
+                CoroutineScope(Dispatchers.Default).launch {
+                    swipeableState.snapTo(PokemonOrder.CURRENT)
+                    if (pokemon.id != PokemonOrder.PREVIOUS.limitId) {
+                        events.previousClicked()
+                    }
+                }
+            }
+        }
+
+        PokemonOrder.NEXT -> {
+            Log.d("PokemonImage", "PokemonOrder.NEXT")
+            LaunchedEffect(key1 = Unit) {
+                CoroutineScope(Dispatchers.Default).launch {
+                    swipeableState.snapTo(PokemonOrder.CURRENT)
+                    if (pokemon.id != PokemonOrder.NEXT.limitId) {
+                        events.nextClicked()
+                    }
+                }
+            }
+        }
+    }
+
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .swipeable(
+                state = swipeableState,
+                anchors = mapOf(
+                    0f to PokemonOrder.CURRENT,
+                    -1f to PokemonOrder.PREVIOUS,
+                    1f to PokemonOrder.NEXT
+                ),
+                orientation = Orientation.Horizontal,
+                thresholds = { _, _ -> FractionalThreshold(0.3f) },
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -59,7 +120,7 @@ fun PokemonImage(
             )
 
         }
-        
+
         Spacer(modifier = Modifier.weight(1f))
     }
 }
@@ -67,7 +128,7 @@ fun PokemonImage(
 @Composable
 private fun ChangePokemonButton(
     pokemonOrder: PokemonOrder,
-    pokemonId : Int,
+    pokemonId: Int,
     onButtonClicked: () -> Unit
 ) {
     if (pokemonId != pokemonOrder.limitId) {
@@ -84,7 +145,8 @@ private fun ChangePokemonButton(
     }
 }
 
-enum class PokemonOrder(val limitId: Int){
+enum class PokemonOrder(val limitId: Int) {
+    CURRENT(limitId = 0),
     PREVIOUS(limitId = 1),
     NEXT(limitId = 151);
 }
