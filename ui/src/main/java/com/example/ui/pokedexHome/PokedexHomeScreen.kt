@@ -54,9 +54,7 @@ fun PokedexHomeScreen(
                     events = events
                 )
             } else {
-                OfflineOrNoData(
-                    pullToRefresh = events::getPokemon
-                )
+                OfflineOrNoData(pullToRefresh = events::getPokemon)
             }
         }
 
