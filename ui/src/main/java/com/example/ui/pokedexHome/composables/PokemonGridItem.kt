@@ -56,7 +56,9 @@ fun PokemonGridItem(
             )
 
             PokemonSprite(
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxSize(0.65f),
                 pokemon = pokemon
             )
 
@@ -74,29 +76,6 @@ fun PokemonGridItem(
                 text = pokemon.name.replaceFirstChar { it.uppercase() }
             )
         }
-    }
-}
-
-@Composable
-fun PokemonSprite(
-    modifier: Modifier,
-    pokemon: Pokemon,
-    size: Int = 80,
-    usePlaceholder : Boolean = true
-) {
-    if (pokemon.sprite.isEmpty()) {
-        Image(
-            modifier = modifier.size(size.dp),
-            painter = painterResource(id = R.drawable.ditto),
-            contentDescription = null
-        )
-    } else {
-        AsyncImage(
-            modifier = modifier.size(size.dp),
-            model = pokemon.sprite,
-            contentDescription = null,
-            placeholder = if (usePlaceholder)painterResource(id = R.drawable.ditto) else null
-        )
     }
 }
 

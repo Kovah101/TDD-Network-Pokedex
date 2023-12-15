@@ -42,9 +42,7 @@ class PokedexDetailsViewModel @Inject constructor(
         Log.d(TAG, "init: $pokemonId")
 
         if (pokemonId != null) {
-            viewModelScope.launch {
-                getPokemonById(pokemonId!!.toInt())
-            }
+            getPokemonDetails()
         }
 
 
@@ -62,6 +60,12 @@ class PokedexDetailsViewModel @Inject constructor(
 
     override fun previousClicked() {
         getPokemonById(id = state.value.pokemon!!.id - 1)
+    }
+
+    override fun getPokemonDetails(){
+        viewModelScope.launch {
+            getPokemonById(pokemonId!!.toInt())
+        }
     }
 
     private fun getPokemonById(id: Int) {

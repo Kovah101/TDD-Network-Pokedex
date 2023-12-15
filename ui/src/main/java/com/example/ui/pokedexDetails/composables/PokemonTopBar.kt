@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.database.Pokemon
@@ -30,8 +32,7 @@ fun PokemonTopBar(
     events: PokedexDetailsEvents
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
-           // .background(color = colorResource(id= R.color.red)), // TODO try framing in red to stop glitching of status bar colors
+        modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
@@ -40,14 +41,15 @@ fun PokemonTopBar(
                 .clickable { events.backClicked() },
             painter = painterResource(id = R.drawable.arrow_back),
             contentDescription = null,
-            colorFilter = ColorFilter.tint(color = colorResource(id = R.color.white))
+            colorFilter = ColorFilter.tint(color = colorResource(id = R.color.cream))
         )
 
         Text(
             text = pokemon.name.replaceFirstChar { it.uppercase() },
             style = MaterialTheme.typography.headlineMedium.copy(
-                color = colorResource(id = R.color.white),
-                textAlign = TextAlign.Center
+                color = colorResource(id = R.color.cream),
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold
             ),
             modifier = Modifier.padding(16.dp)
         )
@@ -59,7 +61,7 @@ fun PokemonTopBar(
                 .padding(8.dp),
             text = "#${idString(pokemon.id)}",
             style = MaterialTheme.typography.titleLarge.copy(
-                color = colorResource(id = R.color.white),
+                color = colorResource(id = R.color.cream),
                 textAlign = TextAlign.Center
             )
         )

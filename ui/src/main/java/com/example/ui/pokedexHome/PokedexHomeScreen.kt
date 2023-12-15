@@ -31,6 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ui.R
 import com.example.ui.pokedexDetails.composables.pokemonTypeToColor
 import com.example.ui.pokedexHome.composables.HomeTopBar
+import com.example.ui.pokedexHome.composables.OfflineOrNoData
 import com.example.ui.pokedexHome.composables.PokemonGrid
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
@@ -39,10 +40,6 @@ fun PokedexHomeScreen(
     state: PokedexHomeState,
     events: PokedexHomeEvents,
 ) {
-
-    val activity = LocalView.current.context as Activity
-    activity.window.statusBarColor = colorResource(id = R.color.red).toArgb()
-    activity.window.navigationBarColor = colorResource(id = R.color.red).toArgb()
 
     Scaffold {
         Column {
@@ -57,36 +54,10 @@ fun PokedexHomeScreen(
                     events = events
                 )
             } else {
-                //TODO Change this to loading wheel if connected to the internet else offlineAndNoData
-                OfflineAndNoData()
+                OfflineOrNoData(pullToRefresh = events::getPokemon)
             }
         }
 
-    }
-}
-
-@Composable
-fun OfflineAndNoData(){
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color = colorResource(id = R.color.cream))
-    ) {
-        Column(
-            modifier = Modifier.align(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(
-                modifier = Modifier.size(128.dp),
-                imageVector = Icons.Outlined.CloudOff,
-                contentDescription = "Offline"
-            )
-
-            Text(
-                text = "No data available",
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineMedium
-            )
-        }
     }
 }
 

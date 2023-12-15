@@ -28,15 +28,22 @@ class PokemonRepositoryImpl @Inject constructor(
     override suspend fun getAllPokemon(): Flow<List<Pokemon>> = pokemonDAO.getAllPokemon()
         .also { databasePokemon ->
             Log.d(TAG, "Fetching new pokemon, old pokemon : ${databasePokemon.firstOrNull()?.size}")
-            val pokemonResponse = pokeService.getOriginalPokemon()
+            kotlin.runCatching {
+                val pokemonResponse = pokeService.getOriginalPokemon()
 
-            if (pokemonResponse.isSuccessful) {
-                pokemonResponse.body()
-                    ?.let { replaceIncompletePokemonData(databasePokemon.firstOrNull(), it.result) }
-                Log.d(TAG, "Basic Pokemon data added to database")
-            } else {
-                Log.e(TAG, pokemonResponse.code().toString())
-            }
+                if (pokemonResponse.isSuccessful) {
+                    pokemonResponse.body()
+                        ?.let {
+                            replaceIncompletePokemonData(
+                                databasePokemon.firstOrNull(),
+                                it.result
+                            )
+                        }
+                    Log.d(TAG, "Basic Pokemon data added to database")
+                } else {
+                    Log.e(TAG, pokemonResponse.code().toString())
+                }
+            }.onFailure { Log.e(TAG, it.message.toString()) }
 
         }
 
@@ -52,15 +59,17 @@ class PokemonRepositoryImpl @Inject constructor(
 
     override suspend fun getOriginalPokemonDetails() {
         Log.d(TAG, "getOriginalPokemonDetails:  Start")
-        val currentPokemonList = pokemonDAO.getAllPokemon().firstOrNull()
+        kotlin.runCatching {
+            val currentPokemonList = pokemonDAO.getAllPokemon().firstOrNull()
 
-        for (pokemonIndex in 0..<currentPokemonList?.size!!) {
-            if (currentPokemonList[pokemonIndex].isDetailsIncomplete()) {
-                Log.d(TAG, "getOriginalPokemonDetails: $pokemonIndex")
-                replaceIncompletePokemonDetails(pokemonIndex)
+            for (pokemonIndex in 0..<currentPokemonList?.size!!) {
+                if (currentPokemonList[pokemonIndex].isDetailsIncomplete()) {
+                    Log.d(TAG, "getOriginalPokemonDetails: $pokemonIndex")
+                    replaceIncompletePokemonDetails(pokemonIndex)
+                }
             }
-        }
-        Log.d(TAG, "getOriginalPokemonDetails:  End")
+            Log.d(TAG, "getOriginalPokemonDetails:  End")
+        }.onFailure { Log.e(TAG, it.message.toString()) }
     }
 
     private suspend fun replaceIncompletePokemonData(
@@ -89,28 +98,30 @@ class PokemonRepositoryImpl @Inject constructor(
 
     private suspend fun replaceIncompletePokemonDetails(pokemonIndex: Int) {
         withContext(Dispatchers.IO) {
-            val pokemonDetailsResponse = pokeService.getPokemonById(id = pokemonIndex + 1)
+            kotlin.runCatching {
+                val pokemonDetailsResponse = pokeService.getPokemonById(id = pokemonIndex + 1)
 
-            if (pokemonDetailsResponse.isSuccessful) {
-                pokemonDetailsResponse.body()?.let { pokemonDetailsDto ->
+                if (pokemonDetailsResponse.isSuccessful) {
+                    pokemonDetailsResponse.body()?.let { pokemonDetailsDto ->
 
-                    pokemonDAO.insertPokemon(
-                        pokemon = Pokemon(
-                            id = pokemonDetailsDto.id,
-                            name = pokemonDetailsDto.name,
-                            url = pokemonDetailsDto.sprites.other.officialArtwork.frontDefault,
-                            height = pokemonDetailsDto.height,
-                            weight = pokemonDetailsDto.weight,
-                            types = pokemonDetailsDto.types.map { getPokemonType(it.type.name) }
-                                .toMutableList(),
-                            sprite = pokemonDetailsDto.sprites.other.officialArtwork.frontDefault,
-                            stats = pokemonDetailsDto.stats.map { it.baseStat },
+                        pokemonDAO.insertPokemon(
+                            pokemon = Pokemon(
+                                id = pokemonDetailsDto.id,
+                                name = pokemonDetailsDto.name,
+                                url = pokemonDetailsDto.sprites.other.officialArtwork.frontDefault,
+                                height = pokemonDetailsDto.height,
+                                weight = pokemonDetailsDto.weight,
+                                types = pokemonDetailsDto.types.map { getPokemonType(it.type.name) }
+                                    .toMutableList(),
+                                sprite = pokemonDetailsDto.sprites.other.officialArtwork.frontDefault,
+                                stats = pokemonDetailsDto.stats.map { it.baseStat },
+                            )
                         )
-                    )
+                    }
+                } else {
+                    Log.e(TAG, pokemonDetailsResponse.code().toString())
                 }
-            } else {
-                Log.e(TAG, pokemonDetailsResponse.code().toString())
-            }
+            }.onFailure { Log.e(TAG, it.message.toString()) }
         }
     }
 
