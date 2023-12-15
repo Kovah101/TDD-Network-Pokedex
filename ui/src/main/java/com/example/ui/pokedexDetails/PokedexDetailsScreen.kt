@@ -19,7 +19,7 @@ fun PokedexDetailsScreen(
 
     Scaffold {
         if (state.pokemon == null) {
-            OfflineOrNoData()
+            OfflineOrNoData(pullToRefresh = events::getPokemonDetails)
         } else {
             PokemonDetails(
                 pokemon = state.pokemon,
