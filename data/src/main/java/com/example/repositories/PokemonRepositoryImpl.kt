@@ -9,6 +9,7 @@ import com.example.database.Pokemon
 import com.example.database.PokemonDAO
 import com.example.database.PokemonType
 import com.example.datasource.localdatasource.PokemonLocalDataSource
+import com.example.datasource.remotedatasource.PokemonRemoteDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -19,38 +20,43 @@ import javax.inject.Inject
 
 class PokemonRepositoryImpl @Inject constructor(
     private val pokemonLocalDataSource: PokemonLocalDataSource,
-    private val pokeService: PokeService
+    private val pokemonRemoteDataSource: PokemonRemoteDataSource
 ) : PokemonRepository {
 
     companion object {
         private val TAG = PokemonRepositoryImpl::class.java.simpleName
     }
 
-    override suspend fun getAllPokemon(): Flow<List<Pokemon>> = pokemonLocalDataSource.getAllPokemon()
-        .also { databasePokemon ->
-            Log.d(TAG, "Fetching new pokemon, old pokemon : ${databasePokemon.firstOrNull()?.size}")
-            kotlin.runCatching {
-                val pokemonResponse = pokeService.getOriginalPokemon()
+    override suspend fun getAllPokemon(): Flow<List<Pokemon>> =
+        pokemonLocalDataSource.getAllPokemon()
+            .also { databasePokemon ->
+                Log.d(
+                    TAG,
+                    "Fetching new pokemon, old pokemon : ${databasePokemon.firstOrNull()?.size}"
+                )
+                kotlin.runCatching {
+                    val pokemonResponse = pokemonRemoteDataSource.getOriginalPokemon()
 
-                if (pokemonResponse.isSuccessful) {
-                    pokemonResponse.body()
-                        ?.let {
-                            replaceIncompletePokemonData(
-                                databasePokemon.firstOrNull(),
-                                it.result
-                            )
-                        }
-                    Log.d(TAG, "Basic Pokemon data added to database")
-                } else {
-                    Log.e(TAG, pokemonResponse.code().toString())
-                }
-            }.onFailure { Log.e(TAG, it.message.toString()) }
+                    if (pokemonResponse.isSuccessful) {
+                        pokemonResponse.body()
+                            ?.let {
+                                replaceIncompletePokemonData(
+                                    databasePokemon.firstOrNull(),
+                                    it.result
+                                )
+                            }
+                        Log.d(TAG, "Basic Pokemon data added to database")
+                    } else {
+                        Log.e(TAG, pokemonResponse.code().toString())
+                    }
+                }.onFailure { Log.e(TAG, it.message.toString()) }
 
-        }
+            }
 
     override fun deleteAllPokemon() = pokemonLocalDataSource.deleteAllPokemon()
 
-    override fun getPokemonById(id: Int): Flow<Pokemon> = pokemonLocalDataSource.getPokemonById(id = id)
+    override fun getPokemonById(id: Int): Flow<Pokemon> =
+        pokemonLocalDataSource.getPokemonById(id = id)
 
     override fun getPokemonByName(name: String): Flow<Pokemon> =
         pokemonLocalDataSource.getPokemonByName(name = name)
@@ -100,7 +106,8 @@ class PokemonRepositoryImpl @Inject constructor(
     private suspend fun replaceIncompletePokemonDetails(pokemonIndex: Int) {
         withContext(Dispatchers.IO) {
             kotlin.runCatching {
-                val pokemonDetailsResponse = pokeService.getPokemonById(id = pokemonIndex + 1)
+                val pokemonDetailsResponse =
+                    pokemonRemoteDataSource.getPokemonById(id = pokemonIndex + 1)
 
                 if (pokemonDetailsResponse.isSuccessful) {
                     pokemonDetailsResponse.body()?.let { pokemonDetailsDto ->

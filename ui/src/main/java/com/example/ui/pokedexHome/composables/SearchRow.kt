@@ -17,6 +17,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -31,8 +32,11 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.example.ui.R
 import com.example.ui.pokedexHome.PokedexHomeEvents
@@ -52,7 +56,6 @@ fun SearchRow(
 
     Row(
         modifier = Modifier
-            //  .height(80.dp)
             .fillMaxWidth()
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -96,10 +99,7 @@ private fun SearchRowIcon(
             .size(40.dp)
             .clip(CircleShape)
             .background(color = colorResource(id = R.color.cream)),
-        onClick = {
-            onClick()
-            Log.d("HomeTopBar", "${symbol.name} icon clicked")
-        }
+        onClick = { onClick() }
     ) {
         Image(
             modifier = Modifier.padding(8.dp),
@@ -122,15 +122,15 @@ fun PokedexSearchBar(
     val TAG = "pokedexSearchBar"
 
     Box(modifier = modifier) {
-        TextField(
+        OutlinedTextField(
             value = text,
             onValueChange = { onSearchTextUpdate(it) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp)
                 .clip(RoundedCornerShape(90.dp)),
-            textStyle = MaterialTheme.typography.bodyMedium.copy(
-                color = colorResource(id = R.color.black),
+            textStyle = MaterialTheme.typography.bodyLarge.copy(
+                color = colorResource(id = R.color.red),
                 textAlign = TextAlign.Left
             ),
             colors = TextFieldDefaults.colors(
@@ -141,6 +141,7 @@ fun PokedexSearchBar(
                 focusedIndicatorColor = colorResource(id = R.color.cream),
                 unfocusedIndicatorColor = colorResource(id = R.color.cream),
                 disabledIndicatorColor = colorResource(id = R.color.cream),
+                cursorColor = colorResource(id = R.color.red),
             ),
             leadingIcon = {
                 SearchRowIcon(
