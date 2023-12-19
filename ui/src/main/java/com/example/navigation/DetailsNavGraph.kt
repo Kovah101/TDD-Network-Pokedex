@@ -1,5 +1,8 @@
 package com.example.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.Transition
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -13,7 +16,51 @@ fun NavGraphBuilder.addPokedexDetails(
     navController: NavHostController
 ) {
     composable(
-        route = PokedexScreens.PokedexDetails.route
+        route = PokedexScreens.PokedexDetails.route,
+        enterTransition = {
+            when (initialState.destination.route) {
+                PokedexScreens.PokedexHome.route ->
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Left,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        },
+        exitTransition = {
+            when (targetState.destination.route) {
+                PokedexScreens.PokedexHome.route ->
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Left,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        },
+        popEnterTransition = {
+            when (initialState.destination.route) {
+                PokedexScreens.PokedexHome.route ->
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        },
+        popExitTransition = {
+            when (targetState.destination.route) {
+                PokedexScreens.PokedexHome.route ->
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        }
     ) {
         val viewModel: PokedexDetailsViewModel = hiltViewModel()
         val state = viewModel.state.collectAsState()
