@@ -80,7 +80,7 @@ private fun PokemonHeightAndWeight(
         Divider(
             modifier = Modifier
                 .height(64.dp)
-                .width(2.dp),
+                .width(4.dp),
             color = colorResource(id = R.color.dark_cream)
         )
 
