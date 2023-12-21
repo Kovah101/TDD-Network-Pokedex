@@ -25,7 +25,7 @@ fun PokemonInfo(
             .fillMaxWidth()
             .fillMaxHeight(0.65f)
             .background(
-                color = colorResource(id = R.color.cream_5),
+                color = colorResource(id = R.color.cream_4),
                 shape = RoundedCornerShape(16.dp)
             )
     ) {
