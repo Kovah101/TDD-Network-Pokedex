@@ -1,30 +1,23 @@
 package com.example.ui.pokedexDetails.composables
 
-import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 import com.example.database.Pokemon
 import com.example.database.PokemonType
 import com.example.ui.R
 import com.example.ui.pokedexDetails.PokedexDetailsEvents
+import com.example.ui.pokedexDetails.composables.pokemonInfo.PokemonInfo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,7 +29,7 @@ fun PokemonDetails(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(id = pokemonTypeToColor(pokemon)))
+            .background(color = colorResource(id = pokemonTypeToColor(pokemon.types.firstOrNull())))
     ) {
         PokeballBackground(
             modifier = Modifier
@@ -82,8 +75,8 @@ fun PokeballBackground(
 }
 
 @Composable
-fun pokemonTypeToColor(pokemon: Pokemon): Int {
-    return when (pokemon.types.firstOrNull()) {
+fun pokemonTypeToColor(type: PokemonType?): Int {
+    return when (type) {
         PokemonType.NORMAL -> R.color.normal
         PokemonType.FIGHTING -> R.color.fighting
         PokemonType.FLYING -> R.color.flying

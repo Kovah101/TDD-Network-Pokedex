@@ -1,4 +1,4 @@
-package com.example.ui.pokedexDetails.composables
+package com.example.ui.pokedexDetails.composables.pokemonInfo
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -14,6 +14,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.database.Pokemon
+import com.example.database.PokemonType
 import com.example.ui.R
 
 @Composable
@@ -28,14 +29,21 @@ fun PokemonInfo(
             .background(color = colorResource(id = R.color.cream), shape = RoundedCornerShape(16.dp))
     ) {
 
-            Text(
-                text = pokemon.types.toString(),
-                style = MaterialTheme.typography.headlineSmall.copy(
-                    color = colorResource(id = R.color.black),
-                    textAlign = TextAlign.Center
-                ),
-                modifier = Modifier.padding(16.dp)
-            )
+        PokemonTypes(
+            modifier = Modifier,
+            types = pokemon.types
+        )
+
+        PokemonAbout(
+            modifier = Modifier,
+            height = pokemon.height,
+            weight = pokemon.weight
+        )
+
+        PokemonStats(
+            modifier = Modifier,
+            stats = pokemon.stats
+        )
 
     }
 }
