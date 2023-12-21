@@ -17,7 +17,6 @@ import com.example.database.Pokemon
 import com.example.database.PokemonType
 import com.example.ui.R
 import com.example.ui.pokedexDetails.PokedexDetailsEvents
-import com.example.ui.pokedexDetails.composables.pokemonInfo.PokemonInfo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

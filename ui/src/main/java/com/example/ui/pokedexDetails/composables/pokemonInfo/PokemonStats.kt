@@ -19,6 +19,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.ui.R
+import com.example.ui.pokedexDetails.composables.pokemonInfo.pokemonStats.PokemonStatBars
+import com.example.ui.pokedexDetails.composables.pokemonInfo.pokemonStats.PokemonStatNames
+import com.example.ui.pokedexDetails.composables.pokemonInfo.pokemonStats.PokemonStatNumbers
 
 @Composable
 fun PokemonStats(
@@ -74,91 +77,15 @@ private fun PokemonStatsBars(
             color = colorResource(id = R.color.dark_cream)
         )
 
-        PokemonStatBars(
+        PokemonStatNumbers(
             modifier = Modifier.padding(start = 2.dp),
             stats = stats,
-            color = color
         )
-    }
-}
 
-@Composable
-private fun PokemonStatNames(
-    modifier: Modifier,
-    color: Color
-) {
-    val pokemonStatNames = listOf(
-        "HP",
-        "Attack",
-        "Defense",
-        "Sp. Atk",
-        "Sp. Def",
-        "Speed"
-    )
-
-    Column(modifier = modifier) {
-        for (statName in pokemonStatNames) {
-            PokemonStatName(
-                modifier = Modifier.padding(bottom = 2.dp),
-                statName = statName,
-                color = color
-            )
-        }
-    }
-}
-
-@Composable
-private fun PokemonStatName(
-    modifier: Modifier,
-    statName: String,
-    color: Color
-) {
-    Text(
-        text = statName,
-        style = MaterialTheme.typography.bodyMedium.copy(
-            color = color,
-            textAlign = TextAlign.Start
-        ),
-        modifier = modifier.padding(horizontal = 8.dp)
-    )
-}
-
-@Composable
-private fun PokemonStatBars(
-    modifier: Modifier,
-    stats: List<Int>,
-    color: Color
-) {
-    Column (modifier = modifier) {
-        for (stat in stats) {
-            PokemonStatBar(
-                modifier = modifier.padding(bottom = 2.dp),
-                statName = stat.toString(),
-                statValue = stat,
-                color = color
-            )
-        }
-    }
-}
-
-@Composable
-private fun PokemonStatBar(
-    modifier: Modifier,
-    statName: String,
-    statValue: Int,
-    color: Color
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-    ) {
-        Text(
-            text = statValue.toString(),
-            style = MaterialTheme.typography.bodyMedium.copy(
-                color = colorResource(id = R.color.black),
-                textAlign = TextAlign.End
-            ),
-            modifier = Modifier.padding(horizontal = 8.dp)
+        PokemonStatBars(
+            modifier = Modifier,
+            stats = stats,
+            color = color
         )
     }
 }
