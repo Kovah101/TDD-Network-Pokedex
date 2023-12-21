@@ -26,6 +26,7 @@ fun PokemonStatBars(
         for (stat in stats) {
             PokemonStatBar(
                 modifier = Modifier.padding(vertical = 4.dp),
+                statIndex = stats.indexOf(stat),
                 statValue = stat,
                 color = color
             )
@@ -36,9 +37,11 @@ fun PokemonStatBars(
 @Composable
 private fun PokemonStatBar(
     modifier: Modifier,
+    statIndex: Int,
     statValue: Int,
     color: Color
 ) {
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -49,6 +52,31 @@ private fun PokemonStatBar(
                 shape = RoundedCornerShape(60.dp)
             )
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(
+                    fractionOfMaxValue(statIndex = statIndex, statValue = statValue)
+                )
+                .height(8.dp)
+                .background(
+                    color = color,
+                    shape = RoundedCornerShape(60.dp)
+                )
+        )
 
     }
+}
+
+private fun fractionOfMaxValue(statIndex: Int, statValue: Int): Float {
+
+    val maxStats = listOf(
+        255f, // HP
+        135f, // Attack
+        235f, // Defense
+        155f, // Special Attack
+        235f, // Special Defense
+        145f, // Speed
+    )
+
+    return (statValue / maxStats[statIndex])
 }
