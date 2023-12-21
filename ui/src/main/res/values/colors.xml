@@ -4,6 +4,12 @@
     <color name="red">#FFCC322a</color>
     <color name="light_red">#FFB45C64</color>
     <color name="cream">#FFE6D596</color>
+    <color name="cream_1">#FFEADBA5</color>
+    <color name="cream_2">#FFEDE1B4</color>
+    <color name="cream_3">#FFF1E7C3</color>
+    <color name="cream_4">#FFF4EDD2</color>
+    <color name="cream_5">#FFF8F3E1</color>
+    <color name="cream_6">#FFFBF9F0</color>
     <color name="dark_cream">#FFE0CB7C</color>
     <color name="blue">#FFA7B9D3</color>
     <color name="brown">#FF4C3434</color>
