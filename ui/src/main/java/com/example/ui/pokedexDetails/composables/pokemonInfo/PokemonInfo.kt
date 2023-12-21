@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.example.database.Pokemon
 import com.example.database.PokemonType
 import com.example.ui.R
+import com.example.ui.pokedexDetails.composables.pokemonTypeToColor
 
 @Composable
 fun PokemonInfo(
@@ -37,12 +38,14 @@ fun PokemonInfo(
         PokemonAbout(
             modifier = Modifier,
             height = pokemon.height,
-            weight = pokemon.weight
+            weight = pokemon.weight,
+            color = colorResource(id = pokemonTypeToColor(pokemon.types.firstOrNull()))
         )
 
         PokemonStats(
             modifier = Modifier,
-            stats = pokemon.stats
+            stats = pokemon.stats,
+            color = colorResource(id = pokemonTypeToColor(pokemon.types.firstOrNull()))
         )
 
     }
