@@ -1,5 +1,14 @@
 package com.example.ui.pokedexDetails.composables.pokemonInfo
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
+import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -94,6 +103,7 @@ private fun PokemonHeightAndWeight(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun PokemonAttribute(
     modifier: Modifier,
@@ -115,18 +125,44 @@ private fun PokemonAttribute(
         ) {
             Icon(
                 modifier = Modifier
+                    .padding(end = 8.dp)
                     .size(24.dp),
                 imageVector = ImageVector.vectorResource(id = icon),
                 contentDescription = type
             )
 
+            AnimatedContent(
+                targetState = attribute,
+                label = "",
+                transitionSpec = {
+                    if (targetState > initialState) {
+                         slideInVertically{ height -> height } + fadeIn()togetherWith
+                                 slideOutVertically{ height -> -height }+ fadeOut()
+                    } else {
+                        slideInVertically{ height -> -height } + fadeIn() togetherWith
+                                slideOutVertically{ height -> height } + fadeOut()
+                    }.using(
+                        SizeTransform(clip = false)
+                    )
+                }
+            ) { target ->
+                Text(
+                    modifier = Modifier.width(36.dp),
+                    text = "$target",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = colorResource(id = R.color.black),
+                        textAlign = TextAlign.Center
+                    ),
+                )
+
+            }
             Text(
-                text = "${attribute}${unit}",
+                text = unit,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color = colorResource(id = R.color.black),
                     textAlign = TextAlign.Center
                 ),
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(end = 8.dp)
             )
         }
         Text(

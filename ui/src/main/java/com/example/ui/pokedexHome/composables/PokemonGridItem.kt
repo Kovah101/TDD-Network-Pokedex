@@ -37,7 +37,7 @@ fun PokemonGridItem(
     ) {
         Box(modifier = Modifier
             .size(128.dp)
-            .background(color = colorResource(id = R.color.cream))
+            .background(color = colorResource(id = R.color.cream_4))
             .clickable { onClick() }
             .clip(RoundedCornerShape(8.dp))
             .border(
@@ -52,7 +52,7 @@ fun PokemonGridItem(
                     .clip(RoundedCornerShape(8.dp))
                     .fillMaxWidth()
                     .fillMaxHeight(fraction = 0.4f)
-                    .background(color = colorResource(id = R.color.dark_cream))
+                    .background(color = colorResource(id = R.color.cream))
             )
 
             PokemonSprite(

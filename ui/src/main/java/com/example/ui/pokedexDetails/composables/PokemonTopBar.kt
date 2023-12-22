@@ -1,5 +1,12 @@
 package com.example.ui.pokedexDetails.composables
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -57,14 +64,40 @@ fun PokemonTopBar(
         Spacer(modifier = Modifier.weight(1f))
 
         Text(
-            modifier = Modifier
-                .padding(8.dp),
-            text = "#${idString(pokemon.id)}",
+            modifier = Modifier,
+               // .padding(8.dp),
+            text = "#",
             style = MaterialTheme.typography.titleLarge.copy(
                 color = colorResource(id = R.color.cream),
                 textAlign = TextAlign.Center
             )
         )
+
+        AnimatedContent(
+            targetState = pokemon.id,
+            label = "",
+            transitionSpec = {
+                if (targetState > initialState) {
+                    slideInVertically { height -> height } + fadeIn() togetherWith
+                            slideOutVertically { height -> -height } + fadeOut()
+                } else {
+                    slideInVertically { height -> -height } + fadeIn() togetherWith
+                            slideOutVertically { height -> height } + fadeOut()
+                }.using(
+                    SizeTransform(clip = false)
+                )
+            }
+        ) { id ->
+            Text(
+                modifier = Modifier
+                    .padding(end = 8.dp),
+                text = idString(id),
+                style = MaterialTheme.typography.titleLarge.copy(
+                    color = colorResource(id = R.color.cream),
+                    textAlign = TextAlign.Center
+                )
+            )
+        }
     }
 
 }
