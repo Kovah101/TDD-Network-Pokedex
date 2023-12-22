@@ -44,9 +44,6 @@ fun PokemonDetails(
         )
 
         PokemonImage(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(8.dp),
             events= events,
             pokemon = pokemon
         )

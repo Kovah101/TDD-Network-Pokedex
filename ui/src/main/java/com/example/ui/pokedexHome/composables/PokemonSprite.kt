@@ -32,13 +32,6 @@ fun PokemonSprite(
     pokemon: Pokemon,
     usePlaceholder: Boolean = true
 ) {
-    var visible by remember {
-        mutableStateOf(false)
-    }
-
-    LaunchedEffect(key1 = pokemon){
-        visible = true
-    }
 
     if (pokemon.sprite.isEmpty()) {
         Image(
@@ -63,8 +56,6 @@ fun PokemonSprite(
                 )
                 }
             ) { targetState ->
-
-
                 AsyncImage(
                     modifier = modifier,
                     model = targetState.sprite,

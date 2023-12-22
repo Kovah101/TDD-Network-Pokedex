@@ -20,10 +20,10 @@ data class Pokemon(
     val url: String = "",
 
     @ColumnInfo(name = "height")
-    val height: Int = 0,
+    val height: Double = 0.0,
 
     @ColumnInfo(name = "weight")
-    val weight: Int = 0,
+    val weight: Double = 0.0,
 
     @ColumnInfo(name = "types")
     val types: MutableList<PokemonType> = mutableListOf(),

@@ -37,8 +37,8 @@ import com.example.ui.R
 @Composable
 fun PokemonAbout(
     modifier: Modifier,
-    height: Int,
-    weight: Int,
+    height: Double,
+    weight: Double,
     color : Color
 ) {
     Column(
@@ -68,8 +68,8 @@ fun PokemonAbout(
 @Composable
 private fun PokemonHeightAndWeight(
     modifier: Modifier,
-    height: Int,
-    weight: Int
+    height: Double,
+    weight: Double
 ) {
     Row (
         modifier = modifier
@@ -106,7 +106,7 @@ private fun PokemonHeightAndWeight(
 @Composable
 private fun PokemonAttribute(
     modifier: Modifier,
-    attribute: Int,
+    attribute: Double,
     type: String,
     unit: String,
     icon: Int
@@ -146,7 +146,7 @@ private fun PokemonAttribute(
                 }
             ) { target ->
                 Text(
-                    modifier = Modifier.width(36.dp),
+                    modifier = Modifier.width(40.dp),
                     text = "$target",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = colorResource(id = R.color.black),

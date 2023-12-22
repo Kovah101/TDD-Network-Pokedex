@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import com.example.data.network.PokeService
 import com.example.data.network.PokemonDto
+import com.example.data.network.pokemonAttributeToDataModel
 import com.example.data.network.toDataModel
 import com.example.database.Pokemon
 import com.example.database.PokemonDAO
@@ -117,8 +118,8 @@ class PokemonRepositoryImpl @Inject constructor(
                                 id = pokemonDetailsDto.id,
                                 name = pokemonDetailsDto.name,
                                 url = pokemonDetailsDto.sprites.other.officialArtwork.frontDefault,
-                                height = pokemonDetailsDto.height,
-                                weight = pokemonDetailsDto.weight,
+                                height = pokemonAttributeToDataModel(pokemonDetailsDto.height),
+                                weight = pokemonAttributeToDataModel(pokemonDetailsDto.weight),
                                 types = pokemonDetailsDto.types.map { getPokemonType(it.type.name) }
                                     .toMutableList(),
                                 sprite = pokemonDetailsDto.sprites.other.officialArtwork.frontDefault,
@@ -162,6 +163,6 @@ class PokemonRepositoryImpl @Inject constructor(
     }
 
     private fun Pokemon.isDetailsIncomplete(): Boolean {
-        return height == 0 || weight == 0 || types.contains(PokemonType.UNKNOWN) || sprite == ""
+        return height == 0.0 || weight == 0.0 || types.contains(PokemonType.UNKNOWN) || sprite == ""
     }
 }
