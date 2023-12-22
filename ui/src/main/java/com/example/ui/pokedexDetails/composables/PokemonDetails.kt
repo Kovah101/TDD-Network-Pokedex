@@ -1,5 +1,6 @@
 package com.example.ui.pokedexDetails.composables
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,6 +11,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -25,10 +29,17 @@ fun PokemonDetails(
     events: PokedexDetailsEvents
 ) {
 
+    val backgroundColors = pokemonTypeColors(pokemon.types)
+    val backgroundBrush = if (backgroundColors.size == 1) {
+        SolidColor(backgroundColors.first())
+    } else {
+        Brush.horizontalGradient(backgroundColors)
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(id = pokemonTypeToColor(pokemon.types.firstOrNull())))
+            .background(brush = backgroundBrush)
     ) {
         PokeballBackground(
             modifier = Modifier
@@ -44,7 +55,7 @@ fun PokemonDetails(
         )
 
         PokemonImage(
-            events= events,
+            events = events,
             pokemon = pokemon
         )
 
@@ -68,6 +79,12 @@ fun PokeballBackground(
         painter = painterResource(id = R.drawable.pokeball),
         contentDescription = null
     )
+}
+
+
+@Composable
+private fun pokemonTypeColors(types: List<PokemonType>): List<Color> {
+    return types.map { colorResource(id = pokemonTypeToColor(it)) }
 }
 
 @Composable
