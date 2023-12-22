@@ -73,8 +73,8 @@ private fun PokemonStatsBars(
         Divider(
             modifier = Modifier
                 .height(124.dp)
-                .width(4.dp),
-            color = colorResource(id = R.color.dark_cream)
+                .width(2.dp),
+            color = colorResource(id = R.color.cream_1)
         )
 
         PokemonStatNumbers(

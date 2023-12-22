@@ -89,8 +89,8 @@ private fun PokemonHeightAndWeight(
         Divider(
             modifier = Modifier
                 .height(64.dp)
-                .width(4.dp),
-            color = colorResource(id = R.color.dark_cream)
+                .width(2.dp),
+            color = colorResource(id = R.color.cream_1)
         )
 
         PokemonAttribute(
@@ -103,7 +103,6 @@ private fun PokemonHeightAndWeight(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun PokemonAttribute(
     modifier: Modifier,

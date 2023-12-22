@@ -48,13 +48,13 @@ fun PokemonTopBar(
                 .clickable { events.backClicked() },
             painter = painterResource(id = R.drawable.arrow_back),
             contentDescription = null,
-            colorFilter = ColorFilter.tint(color = colorResource(id = R.color.cream))
+            colorFilter = ColorFilter.tint(color = colorResource(id = R.color.cream_4))
         )
 
         Text(
             text = pokemon.name.replaceFirstChar { it.uppercase() },
             style = MaterialTheme.typography.headlineMedium.copy(
-                color = colorResource(id = R.color.cream),
+                color = colorResource(id = R.color.cream_4),
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
             ),
@@ -65,10 +65,9 @@ fun PokemonTopBar(
 
         Text(
             modifier = Modifier,
-               // .padding(8.dp),
             text = "#",
             style = MaterialTheme.typography.titleLarge.copy(
-                color = colorResource(id = R.color.cream),
+                color = colorResource(id = R.color.cream_4),
                 textAlign = TextAlign.Center
             )
         )
@@ -93,7 +92,7 @@ fun PokemonTopBar(
                     .padding(end = 8.dp),
                 text = idString(id),
                 style = MaterialTheme.typography.titleLarge.copy(
-                    color = colorResource(id = R.color.cream),
+                    color = colorResource(id = R.color.cream_4),
                     textAlign = TextAlign.Center
                 )
             )

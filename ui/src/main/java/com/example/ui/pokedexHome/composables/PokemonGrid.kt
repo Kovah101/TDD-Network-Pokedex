@@ -39,7 +39,7 @@ fun PokemonGrid(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(id = R.color.cream))
+            .background(color = colorResource(id = R.color.cream_4))
     ) {
 
         LazyVerticalGrid(

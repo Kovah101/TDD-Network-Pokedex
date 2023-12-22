@@ -98,7 +98,7 @@ private fun SearchRowIcon(
         modifier = Modifier
             .size(40.dp)
             .clip(CircleShape)
-            .background(color = colorResource(id = R.color.cream)),
+            .background(color = colorResource(id = R.color.cream_4)),
         onClick = { onClick() }
     ) {
         Image(
@@ -134,13 +134,13 @@ fun PokedexSearchBar(
                 textAlign = TextAlign.Left
             ),
             colors = TextFieldDefaults.colors(
-                focusedTextColor = colorResource(id = R.color.cream),
-                focusedContainerColor = colorResource(id = R.color.cream),
-                unfocusedContainerColor = colorResource(id = R.color.cream),
-                disabledContainerColor = colorResource(id = R.color.cream),
-                focusedIndicatorColor = colorResource(id = R.color.cream),
-                unfocusedIndicatorColor = colorResource(id = R.color.cream),
-                disabledIndicatorColor = colorResource(id = R.color.cream),
+                focusedTextColor = colorResource(id = R.color.cream_4),
+                focusedContainerColor = colorResource(id = R.color.cream_4),
+                unfocusedContainerColor = colorResource(id = R.color.cream_4),
+                disabledContainerColor = colorResource(id = R.color.cream_4),
+                focusedIndicatorColor = colorResource(id = R.color.cream_4),
+                unfocusedIndicatorColor = colorResource(id = R.color.cream_4),
+                disabledIndicatorColor = colorResource(id = R.color.cream_4),
                 cursorColor = colorResource(id = R.color.red),
             ),
             leadingIcon = {
