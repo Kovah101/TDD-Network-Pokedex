@@ -34,6 +34,9 @@ data class Pokemon(
     @ColumnInfo(name = "stats")
     val stats: List<Int> = emptyList(),
 
+    @ColumnInfo(name = "description")
+    val description: String = "",
+
 ) {
     class PokemonTypeConverter {
         companion object {
@@ -46,7 +49,7 @@ data class Pokemon(
             @JvmStatic
             @TypeConverter
             fun toListPokemonType(data: String): MutableList<PokemonType> {
-                return data.split(",").mapNotNull {
+                return data.split(",").map {
                     try {
                         PokemonType.valueOf(it)
                     } catch (e: IllegalArgumentException) {

@@ -10,4 +10,7 @@ class PokemonRemoteDataSourceImpl @Inject constructor(
         pokeService.getOriginalPokemon()
     override suspend fun getPokemonById(id: Int) =
         pokeService.getPokemonById(id = id)
+
+    override suspend fun getPokemonDescription(id: Int) =
+        pokeService.getPokemonDescription(id = id)
 }

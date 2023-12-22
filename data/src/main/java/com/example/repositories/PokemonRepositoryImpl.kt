@@ -110,10 +110,23 @@ class PokemonRepositoryImpl @Inject constructor(
                 val pokemonDetailsResponse =
                     pokemonRemoteDataSource.getPokemonById(id = pokemonIndex + 1)
 
+                val pokemonDescriptionResponse =
+                    pokemonRemoteDataSource.getPokemonDescription(id = pokemonIndex + 1)
+
+                var pokemonDescription = ""
+
+                if (pokemonDescriptionResponse.isSuccessful) {
+                    pokemonDescription = pokemonDescriptionResponse.body()?.
+                    flavorTextEntries?.firstOrNull { it.version.name == "crystal" }?.
+                    flavorText?.replace("\n", " ") ?: ""
+                   // Log.d(TAG, "replaceIncompletePokemonDetails: $pokemonDescription")
+                }
+
                 if (pokemonDetailsResponse.isSuccessful) {
                     pokemonDetailsResponse.body()?.let { pokemonDetailsDto ->
 
                         pokemonLocalDataSource.insertPokemon(
+//                            pokemon = pokemonDetailsDto.toDataModel()
                             pokemon = Pokemon(
                                 id = pokemonDetailsDto.id,
                                 name = pokemonDetailsDto.name,
@@ -124,6 +137,7 @@ class PokemonRepositoryImpl @Inject constructor(
                                     .toMutableList(),
                                 sprite = pokemonDetailsDto.sprites.other.officialArtwork.frontDefault,
                                 stats = pokemonDetailsDto.stats.map { it.baseStat },
+                                description = pokemonDescription
                             )
                         )
                     }
@@ -163,6 +177,6 @@ class PokemonRepositoryImpl @Inject constructor(
     }
 
     private fun Pokemon.isDetailsIncomplete(): Boolean {
-        return height == 0.0 || weight == 0.0 || types.contains(PokemonType.UNKNOWN) || sprite == ""
+        return height == 0.0 || weight == 0.0 || types.contains(PokemonType.UNKNOWN) || sprite == "" || stats.isEmpty() || description == ""
     }
 }

@@ -75,6 +75,22 @@ data class PokemonAbilityDetailsDto(
     @SerialName("name") val name: String
 )
 
+@Serializable
+data class PokemonDescriptionResponse(
+    @SerialName("flavor_text_entries") val flavorTextEntries: List<PokemonFlavorTextDto>
+)
+
+@Serializable
+data class PokemonFlavorTextDto(
+    @SerialName("flavor_text") val flavorText: String,
+    @SerialName("version") val version: PokemonVersionDto
+)
+
+@Serializable
+data class PokemonVersionDto(
+    @SerialName("name") val name: String
+)
+
 fun PokemonDto.toDataModel(index: Int): Pokemon {
     return Pokemon(
         id = index,

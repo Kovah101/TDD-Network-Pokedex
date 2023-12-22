@@ -57,4 +57,9 @@ interface PokeService {
     suspend fun getPokemonById(
        @Path("id") id: Int
     ): Response<PokemonDetailsResponse>
+
+    @GET("pokemon-species/{id}")
+    suspend fun getPokemonDescription(
+        @Path("id") id: Int
+    ): Response<PokemonDescriptionResponse>
 }
