@@ -2,6 +2,7 @@ package com.example.ui.pokedexDetails.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,11 +30,14 @@ fun PokemonInfo(
                 shape = RoundedCornerShape(16.dp)
             )
     ) {
+        Spacer(modifier = Modifier.weight(0.1f))
 
         PokemonTypes(
             modifier = Modifier,
             types = pokemon.types
         )
+
+        //Spacer(modifier = Modifier.weight(0.1f))
 
         PokemonAbout(
             modifier = Modifier,
@@ -42,11 +46,15 @@ fun PokemonInfo(
             color = colorResource(id = pokemonTypeToColor(pokemon.types.firstOrNull()))
         )
 
+        //Spacer(modifier = Modifier.weight(0.1f))
+
         PokemonStats(
             modifier = Modifier,
             stats = pokemon.stats,
             color = colorResource(id = pokemonTypeToColor(pokemon.types.firstOrNull()))
         )
+
+        Spacer(modifier = Modifier.weight(0.1f))
 
     }
 }
