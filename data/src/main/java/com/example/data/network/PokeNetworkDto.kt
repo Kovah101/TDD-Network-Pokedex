@@ -75,13 +75,29 @@ data class PokemonAbilityDetailsDto(
     @SerialName("name") val name: String
 )
 
+@Serializable
+data class PokemonDescriptionResponse(
+    @SerialName("flavor_text_entries") val flavorTextEntries: List<PokemonFlavorTextDto>
+)
+
+@Serializable
+data class PokemonFlavorTextDto(
+    @SerialName("flavor_text") val flavorText: String,
+    @SerialName("version") val version: PokemonVersionDto
+)
+
+@Serializable
+data class PokemonVersionDto(
+    @SerialName("name") val name: String
+)
+
 fun PokemonDto.toDataModel(index: Int): Pokemon {
     return Pokemon(
         id = index,
         name = name,
         url = url,
-        height = 0,
-        weight = 0,
+        height = 0.0,
+        weight = 0.0,
         types = mutableListOf(PokemonType.UNKNOWN),
         sprite = "",
         stats = emptyList(),
@@ -93,13 +109,15 @@ fun PokemonDetailsResponse.toDataModel(): Pokemon {
         id = id,
         name = name,
         url = "", //TODO sort on details data section
-        height = height,
-        weight = weight,
+        height = pokemonAttributeToDataModel(height),
+        weight = pokemonAttributeToDataModel(weight),
         types = types.map { it.type.name }.map { PokemonType.valueOf(it.uppercase()) }.toMutableList(),
         sprite = sprites.other.officialArtwork.frontDefault,
         stats = stats.map { it.baseStat },
     )
 }
 
+
+fun pokemonAttributeToDataModel(attribute: Int): Double = attribute.toDouble() / 10
 
 

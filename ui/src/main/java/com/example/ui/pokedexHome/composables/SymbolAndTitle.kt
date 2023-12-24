@@ -33,7 +33,7 @@ fun SymbolAndTitle() {
         ){
         Image(
             modifier = Modifier.size(36.dp),
-            colorFilter = ColorFilter.tint(colorResource(id = R.color.cream)),
+            colorFilter = ColorFilter.tint(colorResource(id = R.color.cream_4)),
             painter = painterResource(R.drawable.pokeball_filled),
             contentDescription = "Pokeball Symbol"
         )
@@ -44,7 +44,7 @@ fun SymbolAndTitle() {
                 .wrapContentSize(align = Alignment.CenterStart),
             text = "Pokédex",
             style = MaterialTheme.typography.headlineMedium.copy(
-                color = colorResource(id = R.color.cream),
+                color = colorResource(id = R.color.cream_4),
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
             )

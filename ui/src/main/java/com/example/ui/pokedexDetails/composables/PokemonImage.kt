@@ -40,7 +40,6 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterial3Api
 @Composable
 fun PokemonImage(
-    modifier: Modifier,
     events: PokedexDetailsEvents,
     pokemon: Pokemon
 ) {
@@ -76,7 +75,7 @@ fun PokemonImage(
         }
     }
 
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxSize()
             .swipeable(
@@ -89,40 +88,50 @@ fun PokemonImage(
                 orientation = Orientation.Horizontal,
                 thresholds = { _, _ -> FractionalThreshold(0.3f) },
             ),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
     ) {
-        Spacer(modifier = Modifier.weight(0.2f))
+        ChangePokemonButtonColumn(
+            pokemonOrder = PokemonOrder.PREVIOUS,
+            pokemonId = pokemon.id,
+            onButtonClicked = { events.previousClicked() }
+        )
 
-        Row(
-            modifier = modifier,
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
+        PokemonSpriteColumn(
+            pokemon = pokemon,
+        )
 
-            ChangePokemonButton(
-                pokemonOrder = PokemonOrder.PREVIOUS,
-                pokemonId = pokemon.id,
-                onButtonClicked = { events.previousClicked() }
-            )
+        ChangePokemonButtonColumn(
+            pokemonOrder = PokemonOrder.NEXT,
+            pokemonId = pokemon.id,
+            onButtonClicked = { events.nextClicked() }
+        )
+    }
+}
 
-            PokemonSprite(
-                modifier = Modifier.fillMaxWidth(0.7f),
-                pokemon = pokemon,
-                usePlaceholder = false
-            )
+@Composable
+private fun ChangePokemonButtonColumn(
+    pokemonOrder: PokemonOrder,
+    pokemonId: Int,
+    onButtonClicked: () -> Unit
+) {
+    Column(
+        modifier = Modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.weight(0.4f))
 
-            ChangePokemonButton(
-                pokemonOrder = PokemonOrder.NEXT,
-                pokemonId = pokemon.id,
-                onButtonClicked = { events.nextClicked() }
-            )
-
-        }
+        ChangePokemonButton(
+            pokemonOrder = pokemonOrder,
+            pokemonId = pokemonId,
+            onButtonClicked = { onButtonClicked() }
+        )
 
         Spacer(modifier = Modifier.weight(1f))
     }
 }
+
 
 @Composable
 private fun ChangePokemonButton(
@@ -141,6 +150,27 @@ private fun ChangePokemonButton(
         )
     } else {
         Spacer(modifier = Modifier.size(36.dp))
+    }
+}
+
+@Composable
+private fun PokemonSpriteColumn(
+    pokemon: Pokemon,
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.weight(0.15f))
+
+        PokemonSprite(
+            modifier = Modifier.fillMaxWidth(0.7f),
+            pokemon = pokemon,
+            usePlaceholder = false
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
     }
 }
 

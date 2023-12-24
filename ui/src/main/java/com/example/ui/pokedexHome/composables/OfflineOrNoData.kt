@@ -63,7 +63,7 @@ fun OfflineOrNoData(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(id = R.color.cream))
+            .background(color = colorResource(id = R.color.cream_4))
             .pullRefresh(state = refreshState)
             .verticalScroll(rememberScrollState())
     ) {

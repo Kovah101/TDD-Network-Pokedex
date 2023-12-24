@@ -20,10 +20,10 @@ data class Pokemon(
     val url: String = "",
 
     @ColumnInfo(name = "height")
-    val height: Int = 0,
+    val height: Double = 0.0,
 
     @ColumnInfo(name = "weight")
-    val weight: Int = 0,
+    val weight: Double = 0.0,
 
     @ColumnInfo(name = "types")
     val types: MutableList<PokemonType> = mutableListOf(),
@@ -33,6 +33,9 @@ data class Pokemon(
 
     @ColumnInfo(name = "stats")
     val stats: List<Int> = emptyList(),
+
+    @ColumnInfo(name = "description")
+    val description: String = "",
 
 ) {
     class PokemonTypeConverter {
@@ -46,7 +49,7 @@ data class Pokemon(
             @JvmStatic
             @TypeConverter
             fun toListPokemonType(data: String): MutableList<PokemonType> {
-                return data.split(",").mapNotNull {
+                return data.split(",").map {
                     try {
                         PokemonType.valueOf(it)
                     } catch (e: IllegalArgumentException) {

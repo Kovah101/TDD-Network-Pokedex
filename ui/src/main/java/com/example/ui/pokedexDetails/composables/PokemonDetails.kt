@@ -1,26 +1,22 @@
 package com.example.ui.pokedexDetails.composables
 
-import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 import com.example.database.Pokemon
 import com.example.database.PokemonType
 import com.example.ui.R
@@ -33,10 +29,17 @@ fun PokemonDetails(
     events: PokedexDetailsEvents
 ) {
 
+    val backgroundColors = pokemonTypeColors(pokemon.types)
+    val backgroundBrush = if (backgroundColors.size == 1) {
+        SolidColor(backgroundColors.first())
+    } else {
+        Brush.horizontalGradient(backgroundColors)
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(id = pokemonTypeToColor(pokemon)))
+            .background(brush = backgroundBrush)
     ) {
         PokeballBackground(
             modifier = Modifier
@@ -52,10 +55,7 @@ fun PokemonDetails(
         )
 
         PokemonImage(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(8.dp),
-            events= events,
+            events = events,
             pokemon = pokemon
         )
 
@@ -81,9 +81,15 @@ fun PokeballBackground(
     )
 }
 
+
 @Composable
-fun pokemonTypeToColor(pokemon: Pokemon): Int {
-    return when (pokemon.types.firstOrNull()) {
+private fun pokemonTypeColors(types: List<PokemonType>): List<Color> {
+    return types.map { colorResource(id = pokemonTypeToColor(it)) }
+}
+
+@Composable
+fun pokemonTypeToColor(type: PokemonType?): Int {
+    return when (type) {
         PokemonType.NORMAL -> R.color.normal
         PokemonType.FIGHTING -> R.color.fighting
         PokemonType.FLYING -> R.color.flying
