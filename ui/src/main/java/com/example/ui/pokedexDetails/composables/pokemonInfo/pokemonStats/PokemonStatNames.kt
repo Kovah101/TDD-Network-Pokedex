@@ -44,7 +44,7 @@ private fun PokemonStatName(
 ) {
     Text(
         text = statName,
-        style = MaterialTheme.typography.bodyMedium.copy(
+        style = MaterialTheme.typography.bodyLarge.copy(
             color = color,
             textAlign = TextAlign.Start,
             fontWeight = FontWeight.Bold

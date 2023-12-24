@@ -161,7 +161,7 @@ private fun PokemonSpriteColumn(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(0.2f))
+        Spacer(modifier = Modifier.weight(0.15f))
 
         PokemonSprite(
             modifier = Modifier.fillMaxWidth(0.7f),

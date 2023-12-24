@@ -33,7 +33,7 @@ private fun PokemonStatNumber(
 ) {
     Text(
         text = statValue.toString(),
-        style = MaterialTheme.typography.bodyMedium.copy(
+        style = MaterialTheme.typography.bodyLarge.copy(
             color = colorResource(id = R.color.black),
             textAlign = TextAlign.End
         ),

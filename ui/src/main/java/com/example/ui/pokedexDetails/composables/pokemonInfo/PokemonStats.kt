@@ -37,12 +37,12 @@ fun PokemonStats(
     ) {
         Text(
             text = "Stats",
-            style = MaterialTheme.typography.headlineSmall.copy(
+            style = MaterialTheme.typography.headlineMedium.copy(
                 color = color,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
             ),
-            modifier = Modifier.padding(top = 32.dp, bottom = 8.dp)
+            modifier = Modifier.padding(top = 8.dp)
         )
 
         PokemonStatsBars(
@@ -62,7 +62,7 @@ private fun PokemonStatsBars(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         PokemonStatNames(

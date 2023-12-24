@@ -118,15 +118,16 @@ class PokemonRepositoryImpl @Inject constructor(
                 if (pokemonDescriptionResponse.isSuccessful) {
                     pokemonDescription = pokemonDescriptionResponse.body()?.
                     flavorTextEntries?.firstOrNull { it.version.name == "crystal" }?.
-                    flavorText?.replace("\n", " ") ?: ""
-                   // Log.d(TAG, "replaceIncompletePokemonDetails: $pokemonDescription")
+                    flavorText?.replace("\u000c", " ")
+                        ?.replace("\n", " ")
+                        ?.replace("\u00ad ", "")
+                        ?: ""
                 }
 
                 if (pokemonDetailsResponse.isSuccessful) {
                     pokemonDetailsResponse.body()?.let { pokemonDetailsDto ->
 
                         pokemonLocalDataSource.insertPokemon(
-//                            pokemon = pokemonDetailsDto.toDataModel()
                             pokemon = Pokemon(
                                 id = pokemonDetailsDto.id,
                                 name = pokemonDetailsDto.name,

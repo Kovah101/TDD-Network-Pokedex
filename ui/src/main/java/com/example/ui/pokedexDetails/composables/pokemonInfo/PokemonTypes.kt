@@ -31,8 +31,7 @@ fun PokemonTypes(
     LazyRow(
         modifier = modifier
             .fillMaxWidth()
-           // .padding(top = 48.dp) //TODO check with other devices as might be a spacer instead
-            .padding(16.dp),
+            .padding(bottom = 8.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         items(types.size) { index ->
