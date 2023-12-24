@@ -33,6 +33,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.ui.R
 
 @Composable
@@ -54,7 +55,8 @@ fun PokemonAbout(
             style = MaterialTheme.typography.headlineMedium.copy(
                 color = color,
                 textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontSize = 28.sp
             ),
             modifier = Modifier.padding(top = 8.dp)
         )
@@ -126,7 +128,7 @@ private fun PokemonAttribute(
         ) {
             Icon(
                 modifier = Modifier
-                    .padding(end = 8.dp)
+                    .padding(end = 4.dp)
                     .size(24.dp),
                 imageVector = ImageVector.vectorResource(id = icon),
                 contentDescription = type
@@ -148,11 +150,12 @@ private fun PokemonAttribute(
                 }
             ) { target ->
                 Text(
-                    modifier = Modifier.width(44.dp),
+                    modifier = Modifier.width(48.dp),
                     text = "$target",
                     style = MaterialTheme.typography.bodyLarge.copy(
                         color = colorResource(id = R.color.black),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        fontSize = 18.sp
                     ),
                 )
 
@@ -161,7 +164,8 @@ private fun PokemonAttribute(
                 text = unit,
                 style = MaterialTheme.typography.bodyLarge.copy(
                     color = colorResource(id = R.color.black),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    fontSize = 18.sp
                 ),
             modifier = Modifier.padding(end = 8.dp)
             )
@@ -170,9 +174,10 @@ private fun PokemonAttribute(
             text = type,
             style = MaterialTheme.typography.bodyLarge.copy(
                 color = colorResource(id = R.color.black),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                fontSize = 18.sp
             ),
-            modifier = Modifier.padding(top = 8.dp, start = 16.dp)
+            modifier = Modifier.padding(top = 4.dp, start = 16.dp)
         )
     }
 }

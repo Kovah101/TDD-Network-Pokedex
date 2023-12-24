@@ -19,6 +19,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.database.PokemonType
 import com.example.ui.R
 import com.example.ui.pokedexDetails.composables.pokemonTypeToColor
@@ -63,7 +64,8 @@ fun PokemonTypeItem(
             style = MaterialTheme.typography.bodyLarge.copy(
                 color = colorResource(id = R.color.white),
                 textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
             ),
             modifier = Modifier
                 .align(Alignment.Center)

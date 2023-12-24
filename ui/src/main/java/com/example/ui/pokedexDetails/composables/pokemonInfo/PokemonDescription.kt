@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun PokemonDescription(
@@ -35,7 +36,8 @@ fun PokemonDescription(
             style = MaterialTheme.typography.headlineMedium.copy(
                 color = color,
                 textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontSize = 28.sp
             ),
             modifier = Modifier.padding(top = 8.dp)
         )
@@ -44,6 +46,7 @@ fun PokemonDescription(
             text = description,
             style = MaterialTheme.typography.bodyLarge.copy(
                 textAlign = TextAlign.Center,
+                fontSize = 18.sp
             ),
             modifier = Modifier
                 .padding(bottom = 8.dp)

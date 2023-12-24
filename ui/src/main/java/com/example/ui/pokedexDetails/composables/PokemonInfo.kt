@@ -36,7 +36,7 @@ fun PokemonInfo(
     ) {
 
         PokemonTypes(
-            modifier = Modifier.padding(top = 52.dp),
+            modifier = Modifier.padding(top = 48.dp),
             types = pokemon.types
         )
 
