@@ -16,6 +16,7 @@ androidx-core = "1.12.0"
 androidx-appcompat = "1.6.1"
 androidx-constraintlayout = "2.1.4"
 androidx-lifecycle = "2.6.2"
+apollo = "3.8.2"
 compose = "1.5.4"
 compose-compiler = "1.5.4"
 compose-material-foundation = "1.5.4"
@@ -48,6 +49,8 @@ android-material = { module = "com.google.android.material:material", version.re
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintlayout"}
 androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "test-junit-ktx"}
 androidx-test-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "test-android-espresso"}
+
+apollo3 = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo"}
 
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose"}
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose"}
@@ -178,3 +181,4 @@ application = { id = "com.android.application", version.ref = "androidBuildTools
 library = { id = "com.android.library", version.ref = "androidBuildTools" }
 devtools = { id = "com.google.devtools.ksp", version.ref = "devtools-ksp"}
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
+apollo = { id = "com.apollographql.apollo3", version.ref = "apollo" }
