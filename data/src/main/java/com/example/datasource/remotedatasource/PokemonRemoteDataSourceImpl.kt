@@ -1,6 +1,6 @@
 package com.example.datasource.remotedatasource
 
-import com.example.data.network.PokeService
+import com.example.data.network.retrofit.PokeService
 import javax.inject.Inject
 
 class PokemonRemoteDataSourceImpl @Inject constructor(

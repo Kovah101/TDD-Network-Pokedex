@@ -8,7 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-import com.example.data.network.PokeService.Companion.pokeService
+import com.example.data.network.retrofit.PokeService.Companion.pokeService
 
 @InstallIn(SingletonComponent::class)
 @Module

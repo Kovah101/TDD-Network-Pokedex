@@ -1,8 +1,7 @@
 package com.example.tddnetworkpokedex.repositories
 
-import com.example.data.network.PokeService
+import com.example.data.network.retrofit.PokeService
 import com.example.repositories.PokemonRepository
-import org.junit.Assert.*
 import org.junit.After
 import org.junit.Before
 

@@ -1,8 +1,8 @@
 package com.example.data
 
 
-import com.example.data.network.PokeService
-import com.example.data.network.PokemonResponse
+import com.example.data.network.retrofit.PokeService
+import com.example.data.network.retrofit.PokemonResponse
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import retrofit2.Response

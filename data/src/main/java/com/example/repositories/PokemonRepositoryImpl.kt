@@ -1,21 +1,16 @@
 package com.example.repositories
 
-import android.annotation.SuppressLint
 import android.util.Log
-import com.example.data.network.PokeService
-import com.example.data.network.PokemonDto
-import com.example.data.network.pokemonAttributeToDataModel
-import com.example.data.network.toDataModel
+import com.example.data.network.retrofit.PokemonDto
+import com.example.data.network.retrofit.pokemonAttributeToDataModel
+import com.example.data.network.retrofit.toDataModel
 import com.example.database.Pokemon
-import com.example.database.PokemonDAO
 import com.example.database.PokemonType
 import com.example.datasource.localdatasource.PokemonLocalDataSource
 import com.example.datasource.remotedatasource.PokemonRemoteDataSource
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
