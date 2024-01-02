@@ -1,20 +1,17 @@
 package com.example.ui.pokedexHome.composables
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CloudOff
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.PullRefreshState
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
@@ -90,9 +87,10 @@ fun OfflineOrNoData(
                 )
 
                 Text(
-                    text = "Loading Pokemon Data - pull to refresh",
+                    text = "Loading Pokemon Data \n pull to refresh",
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.headlineMedium
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier.padding(16.dp)
                 )
             } else {
                 Icon(
@@ -102,9 +100,10 @@ fun OfflineOrNoData(
                 )
 
                 Text(
-                    text = "No data available - pull to refresh",
+                    text = "No data available \n pull to refresh",
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.headlineMedium
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier.padding(16.dp)
                 )
             }
         }
