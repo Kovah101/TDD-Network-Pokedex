@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'org.jetbrains.kotlin.plugin.serialization'
+    alias libs.plugins.apollo
 }
 
 android {
@@ -32,6 +33,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = '17'
+    }
+}
+
+apollo {
+    service("service") {
+        packageName.set("com.example.tddnetworkpokedex")
     }
 }
 
@@ -67,4 +74,7 @@ dependencies {
 
     // Android Tests
     androidTestImplementation libs.bundles.androidTest
+
+    // Apollo
+    implementation libs.apollo3
 }

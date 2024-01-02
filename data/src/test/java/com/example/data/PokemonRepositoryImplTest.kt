@@ -1,12 +1,11 @@
 package com.example.data
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import com.example.data.network.PokeService
-import com.example.data.network.PokemonDto
-import com.example.data.network.PokemonResponse
+import com.example.data.network.retrofit.PokeService
+import com.example.data.network.retrofit.PokemonDto
+import com.example.data.network.retrofit.PokemonResponse
 import com.example.database.Pokemon
 import com.example.database.PokemonDAO
 import com.example.database.PokemonDatabase
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody.Companion.toResponseBody
-import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.*
 import org.junit.After
 import org.junit.Before
@@ -26,11 +24,11 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import retrofit2.Response
-import java.net.HttpURLConnection
 
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE)
 class PokemonRepositoryImplTest {
+    //TODO fix tests
 
     private lateinit var repository: PokemonRepository
     private lateinit var testService: PokeService

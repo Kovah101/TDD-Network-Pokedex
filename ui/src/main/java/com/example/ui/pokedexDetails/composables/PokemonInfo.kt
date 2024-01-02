@@ -54,7 +54,7 @@ fun PokemonInfo(
         )
 
         PokemonStats(
-            modifier = Modifier.padding(bottom = 16.dp),
+            modifier = Modifier.padding(bottom = 8.dp),
             stats = pokemon.stats,
             color = colorResource(id = pokemonTypeToColor(pokemon.types.firstOrNull()))
         )

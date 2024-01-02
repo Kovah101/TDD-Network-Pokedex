@@ -1,4 +1,4 @@
-package com.example.data.network
+package com.example.data.network.retrofit
 
 import com.example.database.Pokemon
 import com.example.database.PokemonType

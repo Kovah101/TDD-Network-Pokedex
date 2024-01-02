@@ -41,6 +41,7 @@ fun PokemonStats(
 ) {
     Column(
         modifier = modifier
+            .wrapContentHeight()
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -51,9 +52,9 @@ fun PokemonStats(
                 color = color,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
-                fontSize = 28.sp
+                fontSize = 24.sp
             ),
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier.padding(top = 4.dp)
         )
 
         PokemonStatsAndBars(

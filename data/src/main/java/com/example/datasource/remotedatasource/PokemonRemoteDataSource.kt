@@ -1,8 +1,8 @@
 package com.example.datasource.remotedatasource
 
-import com.example.data.network.PokemonDescriptionResponse
-import com.example.data.network.PokemonDetailsResponse
-import com.example.data.network.PokemonResponse
+import com.example.data.network.retrofit.PokemonDescriptionResponse
+import com.example.data.network.retrofit.PokemonDetailsResponse
+import com.example.data.network.retrofit.PokemonResponse
 import retrofit2.Response
 
 interface PokemonRemoteDataSource {
