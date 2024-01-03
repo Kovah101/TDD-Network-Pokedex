@@ -56,7 +56,7 @@ fun PokemonAbout(
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp
             ),
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier.padding(top = 4.dp)
         )
 
         PokemonHeightAndWeight(
@@ -75,6 +75,7 @@ private fun PokemonHeightAndWeight(
 ) {
     Row (
         modifier = modifier
+            .padding(top = 4.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
