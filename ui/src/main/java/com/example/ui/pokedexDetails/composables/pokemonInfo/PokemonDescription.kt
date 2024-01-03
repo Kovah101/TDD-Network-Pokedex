@@ -45,7 +45,7 @@ fun PokemonDescription(
             text = description,
             style = MaterialTheme.typography.bodyLarge.copy(
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp
+                fontSize = 16.sp
             ),
             minLines = 3,
             maxLines = 3,
