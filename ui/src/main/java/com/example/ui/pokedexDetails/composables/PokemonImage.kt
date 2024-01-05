@@ -46,12 +46,9 @@ fun PokemonImage(
     val swipeableState = rememberSwipeableState(initialValue = PokemonOrder.CURRENT)
 
     when (swipeableState.currentValue) {
-        PokemonOrder.CURRENT -> {
-            Log.d("PokemonImage", "PokemonOrder.CURRENT")
-        }
+        PokemonOrder.CURRENT -> {}
 
         PokemonOrder.PREVIOUS -> {
-            Log.d("PokemonImage", "PokemonOrder.PREVIOUS")
             LaunchedEffect(key1 = Unit) {
                 CoroutineScope(Dispatchers.Default).launch {
                     swipeableState.snapTo(PokemonOrder.CURRENT)
@@ -63,7 +60,6 @@ fun PokemonImage(
         }
 
         PokemonOrder.NEXT -> {
-            Log.d("PokemonImage", "PokemonOrder.NEXT")
             LaunchedEffect(key1 = Unit) {
                 CoroutineScope(Dispatchers.Default).launch {
                     swipeableState.snapTo(PokemonOrder.CURRENT)
