@@ -3,7 +3,6 @@ package com.example.ui.pokedexDetails.composables.pokemonInfo
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
@@ -39,17 +38,19 @@ fun PokemonDescription(
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp
             ),
-            modifier = Modifier.padding(top = 4.dp)
+            modifier = Modifier.padding(vertical = 4.dp)
         )
 
         Text(
             text = description,
             style = MaterialTheme.typography.bodyLarge.copy(
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp
+                fontSize = 16.sp
             ),
+            minLines = 3,
+            maxLines = 3,
             modifier = Modifier
-                .padding(bottom = 8.dp)
+                .padding(horizontal = 8.dp)
                 .wrapContentHeight()
         )
     }

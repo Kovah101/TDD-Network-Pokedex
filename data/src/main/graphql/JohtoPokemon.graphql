@@ -1,0 +1,26 @@
+query JohtoPokemon{
+    gen3Species: pokemon_v2_pokemonspecies(where: {pokemon_v2_generation: {name: {_eq: "generation-ii"}}}, order_by: {id: asc}) {
+        name
+        id
+        attributes: pokemon_v2_pokemons {
+            height
+            weight
+            stats: pokemon_v2_pokemonstats {
+                base_stat
+            }
+            types: pokemon_v2_pokemontypes {
+                pokemon_v2_type {
+                    name
+                }
+            }
+        }
+        flavorTexts: pokemon_v2_pokemonspeciesflavortexts {
+            flavor_text
+            version: pokemon_v2_version {
+                versionNames: pokemon_v2_versionnames {
+                    name
+                }
+            }
+        }
+    }
+}

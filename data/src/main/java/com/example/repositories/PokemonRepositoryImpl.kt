@@ -1,6 +1,7 @@
 package com.example.repositories
 
 import android.util.Log
+import com.apollographql.apollo3.ApolloClient
 import com.example.data.network.retrofit.PokemonDto
 import com.example.data.network.retrofit.pokemonAttributeToDataModel
 import com.example.data.network.retrofit.toDataModel
@@ -8,6 +9,7 @@ import com.example.database.Pokemon
 import com.example.database.PokemonType
 import com.example.datasource.localdatasource.PokemonLocalDataSource
 import com.example.datasource.remotedatasource.PokemonRemoteDataSource
+import com.example.tddnetworkpokedex.JohtoPokemonQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
@@ -26,10 +28,8 @@ class PokemonRepositoryImpl @Inject constructor(
     override suspend fun getAllPokemon(): Flow<List<Pokemon>> =
         pokemonLocalDataSource.getAllPokemon()
             .also { databasePokemon ->
-                Log.d(
-                    TAG,
-                    "Fetching new pokemon, old pokemon : ${databasePokemon.firstOrNull()?.size}"
-                )
+                Log.d(TAG,"Fetching new pokemon, old pokemon : ${databasePokemon.firstOrNull()?.size}")
+
                 kotlin.runCatching {
                     val pokemonResponse = pokemonRemoteDataSource.getOriginalPokemon()
 
@@ -44,6 +44,18 @@ class PokemonRepositoryImpl @Inject constructor(
                         Log.d(TAG, "Basic Pokemon data added to database")
                     } else {
                         Log.e(TAG, pokemonResponse.code().toString())
+                    }
+
+                    val apolloClient = ApolloClient.Builder()
+                        .serverUrl("https://beta.pokeapi.co/graphql/v1beta")
+                        .build()
+
+                    val johtoPokemonResponse = apolloClient.query(JohtoPokemonQuery()).execute()
+
+                    if (johtoPokemonResponse.hasErrors()) {
+                        Log.e(TAG, johtoPokemonResponse.errors.toString())
+                    } else {
+                        Log.d(TAG, "Johto has ${johtoPokemonResponse.data?.gen3Species?.size} new pokemon in it")
                     }
                 }.onFailure { Log.e(TAG, it.message.toString()) }
 
@@ -111,12 +123,14 @@ class PokemonRepositoryImpl @Inject constructor(
                 var pokemonDescription = ""
 
                 if (pokemonDescriptionResponse.isSuccessful) {
-                    pokemonDescription = pokemonDescriptionResponse.body()?.
-                    flavorTextEntries?.firstOrNull { it.version.name == "crystal" }?.
-                    flavorText?.replace("\u000c", " ")
-                        ?.replace("\n", " ")
-                        ?.replace("\u00ad ", "")
-                        ?: ""
+                    pokemonDescription =
+                        pokemonDescriptionResponse.body()?.flavorTextEntries?.firstOrNull { it.version.name == "crystal" }?.flavorText?.replace(
+                            "\u000c",
+                            " "
+                        )
+                            ?.replace("\n", " ")
+                            ?.replace("\u00ad ", "")
+                            ?: ""
                 }
 
                 if (pokemonDetailsResponse.isSuccessful) {
