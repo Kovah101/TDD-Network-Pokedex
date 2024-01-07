@@ -68,9 +68,18 @@ class PokedexHomeViewModel @Inject constructor(
 
     override fun getPokemon() {
         viewModelScope.launch {
-            pokemonRepository.getAllPokemon().collect { allPokemon ->
-                _state.update { it.copy(pokemon = allPokemon) }
-                pokemonRepository.getOriginalPokemonDetails()
+            pokemonRepository.getKantoPokemon().collect { kantoPokemon ->
+                Log.d(ALT_TAG, "Kanto has ${kantoPokemon.size} new pokemon in it")
+                _state.update { it.copy(pokemon = kantoPokemon) }
+                pokemonRepository.getKantoPokemonDetails()
+            }
+        }
+        viewModelScope.launch {
+            pokemonRepository.getJohtoPokemon().collect { johtoPokemon ->
+                Log.d(ALT_TAG, "Johto has ${johtoPokemon.size} new pokemon in it")
+                val pokemon = _state.value.pokemon.toMutableList()
+                pokemon.addAll(johtoPokemon)
+                _state.update { it.copy(pokemon = pokemon) }
             }
         }
     }

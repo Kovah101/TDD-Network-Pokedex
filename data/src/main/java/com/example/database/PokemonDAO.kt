@@ -9,6 +9,12 @@ interface PokemonDAO {
     @Query("SELECT * FROM pokemon_table")
     fun getAllPokemon(): Flow<List<Pokemon>>
 
+    @Query("SELECT * FROM pokemon_table WHERE id BETWEEN 1 AND 151")
+    fun getKantoPokemon(): Flow<List<Pokemon>>
+
+    @Query("SELECT * FROM pokemon_table WHERE id BETWEEN 152 AND 251")
+    fun getJohtoPokemon(): Flow<List<Pokemon>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPokemon(pokemon: Pokemon)
 

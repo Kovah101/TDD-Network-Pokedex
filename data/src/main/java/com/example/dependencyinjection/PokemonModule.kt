@@ -2,6 +2,8 @@ package com.example.dependencyinjection
 
 import android.content.Context
 import androidx.room.Room
+import com.apollographql.apollo3.ApolloClient
+import com.example.data.network.apollo.ApolloService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,11 +28,15 @@ class PokemonModule {
             com.example.database.PokemonDatabase::class.java,
             "pokemon_database"
         ).fallbackToDestructiveMigration()
-           // .addTypeConverter(PokemonTypeConverter())
             .build()
     }
 
     @Singleton
     @Provides
     fun providePokeService() = pokeService
+
+    @Singleton
+    @Provides
+    fun provideApolloService() = ApolloService()
+
 }
