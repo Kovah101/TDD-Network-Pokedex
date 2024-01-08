@@ -1,7 +1,7 @@
 package com.example.repositories
 
 import android.util.Log
-import com.apollographql.apollo3.ApolloClient
+import com.example.data.network.apollo.toPokemonDataModel
 import com.example.data.network.retrofit.PokemonDto
 import com.example.data.network.retrofit.pokemonAttributeToDataModel
 import com.example.data.network.retrofit.toDataModel
@@ -29,7 +29,10 @@ class PokemonRepositoryImpl @Inject constructor(
     override suspend fun getKantoPokemon(): Flow<List<Pokemon>> =
         pokemonLocalDataSource.getKantoPokemon()
             .also { databasePokemon ->
-                Log.d(TAG,"Fetching new Kanto pokemon, old pokemon : ${databasePokemon.firstOrNull()?.size}")
+                Log.d(
+                    TAG,
+                    "Fetching new Kanto pokemon, old pokemon : ${databasePokemon.firstOrNull()?.size}"
+                )
 
                 kotlin.runCatching {
                     val pokemonResponse = pokemonRemoteDataSource.getOriginalPokemon()
@@ -37,7 +40,7 @@ class PokemonRepositoryImpl @Inject constructor(
                     if (pokemonResponse.isSuccessful) {
                         pokemonResponse.body()
                             ?.let {
-                                replaceIncompletePokemonData(
+                                replaceIncompleteKantoPokemonData(
                                     databasePokemon.firstOrNull(),
                                     it.result
                                 )
@@ -65,22 +68,25 @@ class PokemonRepositoryImpl @Inject constructor(
     override suspend fun getJohtoPokemon(): Flow<List<Pokemon>> =
         pokemonLocalDataSource.getJohtoPokemon()
             .also { databasePokemon ->
-                Log.d(TAG,"Fetching new Johto pokemon, old pokemon : ${databasePokemon.firstOrNull()?.size}"
-                )
+                Log.d(TAG,"Fetching new Johto pokemon, old pokemon : ${databasePokemon.firstOrNull()?.size}")
 
                 kotlin.runCatching {
                     val pokemonResponse = pokemonRemoteDataSource.getJohtoPokemon()
 
                     if (pokemonResponse.exception == null) {
-                        Log.d(TAG, "Johto has ${pokemonResponse.data?.gen3Species?.size} new pokemon in it")
-//                        pokemonResponse.data
-//                            ?.let {
-//                                replaceIncompletePokemonData(
-//                                    databasePokemon.firstOrNull(),
-//                                    it.data?.gen3Species!!
-//                                )
-//                            }
-//                        Log.d(TAG, "Basic Pokemon data added to database")
+                        if (pokemonResponse.hasErrors()) {
+                            Log.e(TAG, pokemonResponse.errors.toString())
+                        } else {
+                            Log.d(TAG,"Johto has ${pokemonResponse.data?.gen3Species?.size} new pokemon in it")
+
+                            pokemonResponse.data?.gen3Species?.let {
+                                replaceIncompleteJohtoPokemonData(
+                                    databasePokemon.firstOrNull(),
+                                    it
+                                )
+                            }
+                        }
+
                     } else {
                         Log.e(TAG, pokemonResponse.exception.toString())
                     }
@@ -102,18 +108,18 @@ class PokemonRepositoryImpl @Inject constructor(
     override suspend fun getKantoPokemonDetails() {
         Log.d(TAG, "getOriginalPokemonDetails:  Start")
         kotlin.runCatching {
-            val currentPokemonList = pokemonLocalDataSource.getAllPokemon().firstOrNull()
+            val currentPokemonList = pokemonLocalDataSource.getKantoPokemon().firstOrNull()
 
             for (pokemonIndex in 0..<currentPokemonList?.size!!) {
                 if (currentPokemonList[pokemonIndex].isDetailsIncomplete()) {
-                    replaceIncompletePokemonDetails(pokemonIndex)
+                    replaceIncompleteKantoPokemonDetails(pokemonIndex)
                 }
             }
             Log.d(TAG, "getOriginalPokemonDetails:  End")
         }.onFailure { Log.e(TAG, it.message.toString()) }
     }
 
-    private suspend fun replaceIncompletePokemonData(
+    private suspend fun replaceIncompleteKantoPokemonData(
         databasePokemon: List<Pokemon>?,
         networkPokemon: List<PokemonDto>
     ) {
@@ -138,7 +144,14 @@ class PokemonRepositoryImpl @Inject constructor(
         pokemonLocalDataSource.insertAllPokemon(pokemonList)
     }
 
-    private suspend fun replaceIncompletePokemonDetails(pokemonIndex: Int) {
+    private suspend fun inputJohtoPokemonData(networkPokemon: List<JohtoPokemonQuery.Gen3Specy>) {
+        val pokemonList = networkPokemon.mapIndexed { index, pokemonDto ->
+            pokemonDto.toPokemonDataModel()
+        }
+        pokemonLocalDataSource.insertAllPokemon(pokemonList)
+    }
+
+    private suspend fun replaceIncompleteKantoPokemonDetails(pokemonIndex: Int) {
         withContext(Dispatchers.IO) {
             kotlin.runCatching {
                 val pokemonDetailsResponse =
@@ -207,6 +220,25 @@ class PokemonRepositoryImpl @Inject constructor(
             "dark" -> PokemonType.DARK
             "fairy" -> PokemonType.FAIRY
             else -> PokemonType.UNKNOWN
+        }
+    }
+
+    private suspend fun replaceIncompleteJohtoPokemonData(
+        databasePokemon: List<Pokemon>?,
+        networkPokemon: List<JohtoPokemonQuery.Gen3Specy>
+    ) {
+        if (databasePokemon.isNullOrEmpty() || databasePokemon.size < 251) {
+            Log.d(TAG, "replaceIncompleteJohtoPokemonData: Add all Johto Pokemon")
+            inputJohtoPokemonData(networkPokemon)
+        } else {
+            for (pokemon in databasePokemon) {
+                if (pokemon.isIncomplete()) {
+                    val index = databasePokemon.indexOf(pokemon)
+                    Log.d(TAG, "replaceIncompleteJohtoPokemonData: ${pokemon.id}")
+
+                    insertPokemon(pokemon = networkPokemon[index].toPokemonDataModel())
+                }
+            }
         }
     }
 
