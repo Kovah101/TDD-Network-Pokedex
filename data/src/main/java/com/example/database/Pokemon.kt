@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 
-@TypeConverters(Pokemon.PokemonTypeConverter::class)
+@TypeConverters(Pokemon.PokemonTypeConverter::class, Pokemon.PokemonRegionConverter::class)
 @Entity(tableName = "pokemon_table")
 data class Pokemon(
     @PrimaryKey(autoGenerate = false)
@@ -37,6 +37,9 @@ data class Pokemon(
     @ColumnInfo(name = "description")
     val description: String = "",
 
+    @ColumnInfo(name = "region")
+    val region: PokemonRegion = PokemonRegion.UNKNOWN
+
 ) {
     class PokemonTypeConverter {
         companion object {
@@ -57,6 +60,27 @@ data class Pokemon(
                         PokemonType.UNKNOWN
                     }
                 }.toMutableList()
+            }
+        }
+    }
+
+    class PokemonRegionConverter {
+        companion object {
+            @JvmStatic
+            @TypeConverter
+            fun fromPokemonRegion(region: PokemonRegion): String {
+                return region.name
+            }
+
+            @JvmStatic
+            @TypeConverter
+            fun toPokemonRegion(data: String): PokemonRegion {
+                return try {
+                    PokemonRegion.valueOf(data)
+                } catch (e: IllegalArgumentException) {
+                    Log.e("PokemonRegionConverter", "Error converting $data to PokemonRegion", e)
+                    PokemonRegion.UNKNOWN
+                }
             }
         }
     }

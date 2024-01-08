@@ -1,5 +1,6 @@
 package com.example.datasource.remotedatasource
 
+import com.apollographql.apollo3.api.ApolloResponse
 import com.example.data.network.retrofit.PokemonDescriptionResponse
 import com.example.data.network.retrofit.PokemonDetailsResponse
 import com.example.data.network.retrofit.PokemonResponse
@@ -10,6 +11,5 @@ interface PokemonRemoteDataSource {
     suspend fun getOriginalPokemon() : Response<PokemonResponse>
     suspend fun getPokemonById(id: Int) : Response<PokemonDetailsResponse>
     suspend fun getPokemonDescription(id: Int): Response<PokemonDescriptionResponse>
-
-    suspend fun getJohtoPokemon() : Response<JohtoPokemonQuery>?
+    suspend fun getJohtoPokemon() : ApolloResponse<JohtoPokemonQuery.Data>
 }

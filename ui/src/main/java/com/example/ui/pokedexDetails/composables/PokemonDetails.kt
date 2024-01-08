@@ -28,6 +28,7 @@ fun PokemonDetails(
     pokemon: Pokemon,
     events: PokedexDetailsEvents
 ) {
+    Log.d("PokemonDetails", "${pokemon.name} is from the ${pokemon.region} region")
 
     val backgroundColors = pokemonTypeColors(pokemon.types)
     val backgroundBrush = if (backgroundColors.size == 1) {

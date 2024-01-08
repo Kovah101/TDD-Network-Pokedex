@@ -2,11 +2,12 @@ package com.example.datasource.remotedatasource
 
 import com.example.data.network.apollo.ApolloService
 import com.example.data.network.retrofit.PokeService
+import com.example.tddnetworkpokedex.JohtoPokemonQuery
 import javax.inject.Inject
 
 class PokemonRemoteDataSourceImpl @Inject constructor(
     private val pokeService: PokeService,
-   // private val apolloService: ApolloService
+    private val apolloService: ApolloService
 ) : PokemonRemoteDataSource {
     override suspend fun getOriginalPokemon() =
         pokeService.getOriginalPokemon()
@@ -16,6 +17,7 @@ class PokemonRemoteDataSourceImpl @Inject constructor(
     override suspend fun getPokemonDescription(id: Int) =
         pokeService.getPokemonDescription(id = id)
 
-    override suspend fun getJohtoPokemon() = null
-        //apolloService.apolloClient.query(JohtoPokemonQuery()).execute()
+    override suspend fun getJohtoPokemon() =
+        apolloService.getApolloClient().query(JohtoPokemonQuery()).execute()
+
 }

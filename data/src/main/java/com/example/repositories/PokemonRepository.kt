@@ -5,7 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface PokemonRepository {
 
-    suspend fun getAllPokemon(): Flow<List<Pokemon>>
+    suspend fun getKantoPokemon(): Flow<List<Pokemon>>
+
+    suspend fun getJohtoPokemon(): Flow<List<Pokemon>>
 
     fun getPokemonById(id: Int): Flow<Pokemon>
 
@@ -15,5 +17,6 @@ interface PokemonRepository {
 
     suspend fun insertPokemon(pokemon: Pokemon)
 
-    suspend fun getOriginalPokemonDetails()
+    suspend fun getKantoPokemonDetails()
+
 }

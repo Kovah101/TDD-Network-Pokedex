@@ -7,6 +7,10 @@ interface PokemonLocalDataSource {
 
     fun getAllPokemon(): Flow<List<Pokemon>>
 
+    fun getKantoPokemon(): Flow<List<Pokemon>>
+
+    fun getJohtoPokemon(): Flow<List<Pokemon>>
+
     suspend fun insertPokemon(pokemon: Pokemon)
 
     suspend fun insertAllPokemon(pokemon: List<Pokemon>)

@@ -1,6 +1,7 @@
 package com.example.data.network.retrofit
 
 import com.example.database.Pokemon
+import com.example.database.PokemonRegion
 import com.example.database.PokemonType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -101,6 +102,7 @@ fun PokemonDto.toDataModel(index: Int): Pokemon {
         types = mutableListOf(PokemonType.UNKNOWN),
         sprite = "",
         stats = emptyList(),
+        region = PokemonRegion.KANTO
     )
 }
 
