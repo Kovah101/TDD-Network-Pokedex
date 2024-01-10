@@ -74,12 +74,17 @@ fun PokemonGrid(
                 .height(48.dp),
             selectedTabIndex = pagerState.currentPage,
             backgroundColor = colorResource(id = R.color.red),
-            divider = {},
+            divider = {
+                TabRowDefaults.Divider(
+                    thickness = 2.dp,
+                    color = colorResource(id = R.color.red)
+                )
+            },
             indicator = { tabPositions ->
                 TabRowDefaults.Indicator(
                     modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
-                    height = 2.dp,
-                    color = colorResource(id = R.color.red_1)
+                    height = 4.dp,
+                    color = colorResource(id = R.color.dark_red)
                 )
             }
         ) {
@@ -93,7 +98,7 @@ fun PokemonGrid(
                         Text(
                             text = tab,
                             style = MaterialTheme.typography.headlineSmall.copy(
-                                color = colorResource(id = R.color.cream_4),
+                                color =  if (selected) colorResource(id = R.color.cream_4) else colorResource(id = R.color.cream_4),
                                 textAlign = TextAlign.Center,
                                 fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal
                             )

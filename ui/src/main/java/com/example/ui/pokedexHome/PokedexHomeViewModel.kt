@@ -1,6 +1,5 @@
 package com.example.ui.pokedexHome
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.database.Pokemon
@@ -69,17 +68,26 @@ class PokedexHomeViewModel @Inject constructor(
     override fun getPokemon() {
         viewModelScope.launch {
             pokemonRepository.getKantoPokemon().collect { kantoPokemon ->
-                _state.update { it.copy(pokemon = kantoPokemon) }
+                updatePokemonList(newPokemonList = kantoPokemon)
                 pokemonRepository.getKantoPokemonDetails()
             }
         }
         viewModelScope.launch {
             pokemonRepository.getJohtoPokemon().collect { johtoPokemon ->
-                val pokemon = _state.value.pokemon.toMutableList()
-                pokemon.addAll(johtoPokemon)
-                _state.update { it.copy(pokemon = pokemon) }
-                Log.d(ALT_TAG, "Pokemon has ${_state.value.pokemon.size} pokemon in it after Johto")
+                updatePokemonList(newPokemonList = johtoPokemon)
             }
         }
+    }
+
+    private fun updatePokemonList(newPokemonList: List<Pokemon>) {
+        val pokemonList = state.value.pokemon.toMutableList()
+
+        newPokemonList.forEach { newPokemon ->
+            if (!pokemonList.contains(newPokemon)) {
+                pokemonList.add(newPokemon)
+            }
+        }
+
+        _state.update { it.copy(pokemon = pokemonList) }
     }
 }
