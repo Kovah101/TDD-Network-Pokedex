@@ -84,7 +84,7 @@ fun PokemonGrid(
                 TabRowDefaults.Indicator(
                     modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
                     height = 4.dp,
-                    color = colorResource(id = R.color.dark_red)
+                    color = colorResource(id = R.color.red_2)
                 )
             }
         ) {
@@ -98,7 +98,7 @@ fun PokemonGrid(
                         Text(
                             text = tab,
                             style = MaterialTheme.typography.headlineSmall.copy(
-                                color =  if (selected) colorResource(id = R.color.cream_4) else colorResource(id = R.color.cream_4),
+                                color = colorResource(id = R.color.cream_4),
                                 textAlign = TextAlign.Center,
                                 fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal
                             )
@@ -131,8 +131,9 @@ fun PokemonGrid(
                     PokemonGridList(
                         pokemonList = regionPokemon,
                         onPokemonClicked = { events.pokemonClicked(it) }
-                        )
+                    )
                 }
+
                 1 -> {
                     regionPokemon = pokemonList.filter { it.region == PokemonRegion.JOHTO }
                     Log.d("PokemonGrid", "Johto regionPokemon: ${regionPokemon.size}")
@@ -140,7 +141,7 @@ fun PokemonGrid(
                     PokemonGridList(
                         pokemonList = regionPokemon,
                         onPokemonClicked = { events.pokemonClicked(it) }
-                        )
+                    )
                 }
             }
         }
