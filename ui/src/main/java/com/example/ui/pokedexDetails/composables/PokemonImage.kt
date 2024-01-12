@@ -173,6 +173,6 @@ private fun PokemonSpriteColumn(
 enum class PokemonOrder(val limitId: Int) {
     CURRENT(limitId = 0),
     PREVIOUS(limitId = 1),
-    NEXT(limitId = 151);
+    NEXT(limitId = 251);
 }
 
