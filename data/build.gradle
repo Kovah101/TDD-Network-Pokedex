@@ -52,6 +52,7 @@ dependencies {
     implementation libs.bundles.coroutines
     implementation libs.bundles.hilt
     implementation libs.bundles.networking
+    implementation libs.androidx.core.ktx
 
     ksp libs.room.compiler
     ksp libs.hilt.compiler

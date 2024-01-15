@@ -29,11 +29,6 @@ class PokemonRepositoryImpl @Inject constructor(
     override suspend fun getKantoPokemon(): Flow<List<Pokemon>> =
         pokemonLocalDataSource.getKantoPokemon()
             .also { databasePokemon ->
-                Log.d(
-                    TAG,
-                    "Fetching new Kanto pokemon, old pokemon : ${databasePokemon.firstOrNull()?.size}"
-                )
-
                 kotlin.runCatching {
                     val pokemonResponse = pokemonRemoteDataSource.getOriginalPokemon()
 
@@ -45,22 +40,9 @@ class PokemonRepositoryImpl @Inject constructor(
                                     it.result
                                 )
                             }
-                        Log.d(TAG, "Basic Pokemon data added to database")
                     } else {
                         Log.e(TAG, pokemonResponse.code().toString())
                     }
-
-//                    val apolloClient = ApolloClient.Builder()
-//                        .serverUrl("https://beta.pokeapi.co/graphql/v1beta")
-//                        .build()
-//
-//                    val johtoPokemonResponse = apolloClient.query(JohtoPokemonQuery()).execute()
-//
-//                    if (johtoPokemonResponse.hasErrors()) {
-//                        Log.e(TAG, johtoPokemonResponse.errors.toString())
-//                    } else {
-//                        Log.d(TAG, "Johto has ${johtoPokemonResponse.data?.gen3Species?.size} new pokemon in it")
-//                    }
                 }.onFailure { Log.e(TAG, it.message.toString()) }
 
             }
@@ -68,8 +50,6 @@ class PokemonRepositoryImpl @Inject constructor(
     override suspend fun getJohtoPokemon(): Flow<List<Pokemon>> =
         pokemonLocalDataSource.getJohtoPokemon()
             .also { databasePokemon ->
-                Log.d(TAG,"Fetching new Johto pokemon, old pokemon : ${databasePokemon.firstOrNull()?.size}")
-
                 kotlin.runCatching {
                     val pokemonResponse = pokemonRemoteDataSource.getJohtoPokemon()
 
@@ -77,8 +57,6 @@ class PokemonRepositoryImpl @Inject constructor(
                         if (pokemonResponse.hasErrors()) {
                             Log.e(TAG, pokemonResponse.errors.toString())
                         } else {
-                            Log.d(TAG,"Johto has ${pokemonResponse.data?.gen3Species?.size} new pokemon in it")
-
                             pokemonResponse.data?.gen3Species?.let {
                                 replaceIncompleteJohtoPokemonData(
                                     databasePokemon.firstOrNull(),
@@ -106,7 +84,6 @@ class PokemonRepositoryImpl @Inject constructor(
         pokemonLocalDataSource.insertPokemon(pokemon = pokemon)
 
     override suspend fun getKantoPokemonDetails() {
-        Log.d(TAG, "getOriginalPokemonDetails:  Start")
         kotlin.runCatching {
             val currentPokemonList = pokemonLocalDataSource.getKantoPokemon().firstOrNull()
 
@@ -115,7 +92,6 @@ class PokemonRepositoryImpl @Inject constructor(
                     replaceIncompleteKantoPokemonDetails(pokemonIndex)
                 }
             }
-            Log.d(TAG, "getOriginalPokemonDetails:  End")
         }.onFailure { Log.e(TAG, it.message.toString()) }
     }
 
@@ -127,8 +103,6 @@ class PokemonRepositoryImpl @Inject constructor(
             for (pokemon in databasePokemon) {
                 if (pokemon.isIncomplete()) {
                     val index = databasePokemon.indexOf(pokemon)
-                    Log.d(TAG, "replaceIncompletePokemonData: $index")
-
                     insertPokemon(pokemon = networkPokemon[index].toDataModel(index = index + 1))
                 }
             }
@@ -228,14 +202,11 @@ class PokemonRepositoryImpl @Inject constructor(
         networkPokemon: List<JohtoPokemonQuery.Gen3Specy>
     ) {
         if (databasePokemon.isNullOrEmpty() || databasePokemon.size < 251) {
-            Log.d(TAG, "replaceIncompleteJohtoPokemonData: Add all Johto Pokemon")
             inputJohtoPokemonData(networkPokemon)
         } else {
             for (pokemon in databasePokemon) {
                 if (pokemon.isIncomplete()) {
                     val index = databasePokemon.indexOf(pokemon)
-                    Log.d(TAG, "replaceIncompleteJohtoPokemonData: ${pokemon.id}")
-
                     insertPokemon(pokemon = networkPokemon[index].toPokemonDataModel())
                 }
             }

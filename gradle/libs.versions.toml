@@ -39,6 +39,7 @@ test-junit = "4.13.2"
 test-junit-ktx = "1.1.5"
 test-robolectric = "4.9"
 test-ui-junit4 = "1.5.4"
+coreKtx = "1.5.0"
 
 
 [libraries]
@@ -102,6 +103,7 @@ robolectric = { module = "org.robolectric:robolectric", version.ref = "test-robo
 
 uiTest-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "test-ui-junit4"}
 uiTest-debug = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "test-ui-junit4"}
+androidx-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtx" }
 
 
 [bundles]
