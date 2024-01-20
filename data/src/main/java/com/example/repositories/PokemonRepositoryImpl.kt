@@ -12,8 +12,10 @@ import com.example.datasource.localdatasource.PokemonLocalDataSource
 import com.example.datasource.remotedatasource.PokemonRemoteDataSource
 import com.example.tddnetworkpokedex.JohtoPokemonQuery
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -86,10 +88,13 @@ class PokemonRepositoryImpl @Inject constructor(
     override suspend fun getKantoPokemonDetails() {
         kotlin.runCatching {
             val currentPokemonList = pokemonLocalDataSource.getKantoPokemon().firstOrNull()
-
-            for (pokemonIndex in 0..<currentPokemonList?.size!!) {
-                if (currentPokemonList[pokemonIndex].isDetailsIncomplete()) {
-                    replaceIncompleteKantoPokemonDetails(pokemonIndex)
+            coroutineScope {
+                for (pokemonIndex in 0..<currentPokemonList?.size!!) {
+                    launch {
+                        if (currentPokemonList[pokemonIndex].isDetailsIncomplete()) {
+                            replaceIncompleteKantoPokemonDetails(pokemonIndex)
+                        }
+                    }
                 }
             }
         }.onFailure { Log.e(TAG, it.message.toString()) }
@@ -100,16 +105,21 @@ class PokemonRepositoryImpl @Inject constructor(
         networkPokemon: List<PokemonDto>
     ) {
         if (!databasePokemon.isNullOrEmpty()) {
-            for (pokemon in databasePokemon) {
-                if (pokemon.isIncomplete()) {
-                    val index = databasePokemon.indexOf(pokemon)
-                    insertPokemon(pokemon = networkPokemon[index].toDataModel(index = index + 1))
+            coroutineScope {
+                for (pokemon in databasePokemon) {
+                    launch {
+                        if (pokemon.isIncomplete()) {
+                            val index = databasePokemon.indexOf(pokemon)
+                            insertPokemon(pokemon = networkPokemon[index].toDataModel(index = index + 1))
+                        }
+                    }
                 }
             }
         } else {
             inputPokemonData(networkPokemon)
         }
     }
+
 
     private suspend fun inputPokemonData(networkPokemon: List<PokemonDto>) {
         val pokemonList = networkPokemon.mapIndexed { index, pokemonDto ->
