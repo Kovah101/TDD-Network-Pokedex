@@ -39,6 +39,7 @@ test-junit = "4.13.2"
 test-junit-ktx = "1.1.5"
 test-robolectric = "4.9"
 test-ui-junit4 = "1.5.4"
+test-mockito = "3.2.0"
 coreKtx = "1.5.0"
 
 
@@ -88,6 +89,8 @@ lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", versi
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle"}
 lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle"}
 lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "androidx-lifecycle"}
+
+mockito = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "test-mockito"}
 
 squareup-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit"}
 squareup-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp"}
@@ -173,7 +176,9 @@ stdlib = [
 unitTests = [
     "junit",
     "junit-ktx",
-    "robolectric"
+    "robolectric",
+    "coroutines-test",
+    "mockito"
 ]
 
 

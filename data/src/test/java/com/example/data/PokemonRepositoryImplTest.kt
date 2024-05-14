@@ -29,6 +29,7 @@ import com.example.datasource.localdatasource.PokemonLocalDataSource
 import com.example.datasource.localdatasource.PokemonLocalDataSourceImpl
 import com.example.datasource.remotedatasource.PokemonRemoteDataSource
 import com.example.datasource.remotedatasource.PokemonRemoteDataSourceImpl
+import com.example.helpers.DefaultLogger
 import com.example.repositories.PokemonRepository
 import com.example.repositories.PokemonRepositoryImpl
 import kotlinx.coroutines.Dispatchers
@@ -348,7 +349,8 @@ class PokemonRepositoryImplTest {
     @Before
     fun setUp() {
         testRetrofitService = mockService(response = DummyPokeResponse.HTTP_OK)
-       // testApolloService
+        //testApolloService = mock(ApolloService::class.java)
+       // TODO testApolloService
 
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(context, PokemonDatabase::class.java)
@@ -356,7 +358,7 @@ class PokemonRepositoryImplTest {
         pokemonDAO = db.pokemonDao()
         localDataSource = PokemonLocalDataSourceImpl(pokemonDAO)
         remoteDataSource = PokemonRemoteDataSourceImpl(testRetrofitService, testApolloService)
-        repository = PokemonRepositoryImpl(localDataSource, remoteDataSource)
+        repository = PokemonRepositoryImpl(localDataSource, remoteDataSource, DefaultLogger())
     }
 
     @After
@@ -366,9 +368,8 @@ class PokemonRepositoryImplTest {
 
     @Test
     @Throws(Exception::class)
-    fun `getOriginalPokemonFromNetwork gets pokemon from network and saves them in dao`() {
+    fun `getKantoPokemonFromNetwork gets pokemon from network and saves them in db`() {
         testRetrofitService = mockService(response = DummyPokeResponse.HTTP_OK)
-        repository = PokemonRepositoryImpl(pokemonDAO, testRetrofitService)
         var pokemonNumber: Int
 
         runBlocking {
@@ -391,42 +392,41 @@ class PokemonRepositoryImplTest {
                 pokemonList = repository.getKantoPokemon().first()
             }
         }
-        assert(pokemonList == dummyPokemonList)
+        assert(pokemonList == dummyKantoPokemonList)
     }
 
     @Test
     @Throws(Exception::class)
-    fun `getPokemonById returns specific pokemon by id from dao`() {
+    fun `getPokemonById returns specific Kanto pokemon by id from db`() {
         var pokemon: Pokemon
 
         runBlocking {
             withContext(Dispatchers.IO) {
-                pokemonDAO.insertAllPokemon(dummyPokemonList)
+                pokemonDAO.insertAllPokemon(dummyKantoPokemonList)
                 pokemon = repository.getPokemonById(id = 1).first()
             }
         }
 
-        assert(pokemon.name == dummyPokemonList[0].name)
+        assert(pokemon.name == dummyKantoPokemonList[0].name)
     }
 
     @Test
     @Throws(Exception::class)
-    fun `getPokemonByName returns specific pokemon by name from dao`() {
+    fun `getPokemonByName returns specific Kanto pokemon by name from db`() {
         var pokemon: Pokemon
 
         runBlocking {
             withContext(Dispatchers.IO) {
-                repository.getOriginalPokemonFromNetwork()
                 pokemon = repository.getPokemonByName(name = "Lapras").first()
             }
         }
 
-        assert(pokemon.url == dummyPokemonList[2].url)
+        assert(pokemon.url == dummyKantoPokemonList[2].url)
     }
 
     @Test
     @Throws(Exception::class)
-    fun `insertPokemon correctly adds new pokemon to dao`() {
+    fun `insertPokemon correctly adds new pokemon to db`() {
         var pokemon: Pokemon
 
         runBlocking {
@@ -440,7 +440,7 @@ class PokemonRepositoryImplTest {
 
     @Test
     @Throws(Exception::class)
-    fun `deleteAllPokemon clears dao`() {
+    fun `deleteAllPokemon clears db`() {
         var pokemonNumber: Int
 
         runBlocking {

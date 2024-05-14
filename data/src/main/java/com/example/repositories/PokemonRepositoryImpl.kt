@@ -10,6 +10,7 @@ import com.example.database.PokemonRegion
 import com.example.database.PokemonType
 import com.example.datasource.localdatasource.PokemonLocalDataSource
 import com.example.datasource.remotedatasource.PokemonRemoteDataSource
+import com.example.helpers.Logger
 import com.example.tddnetworkpokedex.JohtoPokemonQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -21,7 +22,8 @@ import javax.inject.Inject
 
 class PokemonRepositoryImpl @Inject constructor(
     private val pokemonLocalDataSource: PokemonLocalDataSource,
-    private val pokemonRemoteDataSource: PokemonRemoteDataSource
+    private val pokemonRemoteDataSource: PokemonRemoteDataSource,
+    private val logger: Logger
 ) : PokemonRepository {
 
     companion object {
@@ -43,9 +45,9 @@ class PokemonRepositoryImpl @Inject constructor(
                                 )
                             }
                     } else {
-                        Log.e(TAG, pokemonResponse.code().toString())
+                        logger.e(TAG, pokemonResponse.code().toString())
                     }
-                }.onFailure { Log.e(TAG, it.message.toString()) }
+                }.onFailure { logger.e(TAG, it.message.toString()) }
 
             }
 
@@ -57,7 +59,7 @@ class PokemonRepositoryImpl @Inject constructor(
 
                     if (pokemonResponse.exception == null) {
                         if (pokemonResponse.hasErrors()) {
-                            Log.e(TAG, pokemonResponse.errors.toString())
+                            logger.e(TAG, pokemonResponse.errors.toString())
                         } else {
                             pokemonResponse.data?.gen3Species?.let {
                                 replaceIncompleteJohtoPokemonData(
@@ -68,9 +70,9 @@ class PokemonRepositoryImpl @Inject constructor(
                         }
 
                     } else {
-                        Log.e(TAG, pokemonResponse.exception.toString())
+                        logger.e(TAG, pokemonResponse.exception.toString())
                     }
-                }.onFailure { Log.e(TAG, it.message.toString()) }
+                }.onFailure { logger.e(TAG, it.message.toString()) }
             }
 
 
@@ -97,7 +99,7 @@ class PokemonRepositoryImpl @Inject constructor(
                     }
                 }
             }
-        }.onFailure { Log.e(TAG, it.message.toString()) }
+        }.onFailure { logger.e(TAG, it.message.toString()) }
     }
 
     private suspend fun replaceIncompleteKantoPokemonData(
@@ -177,9 +179,9 @@ class PokemonRepositoryImpl @Inject constructor(
                         )
                     }
                 } else {
-                    Log.e(TAG, pokemonDetailsResponse.code().toString())
+                    logger.e(TAG, pokemonDetailsResponse.code().toString())
                 }
-            }.onFailure { Log.e(TAG, it.message.toString()) }
+            }.onFailure { logger.e(TAG, it.message.toString()) }
         }
     }
 
