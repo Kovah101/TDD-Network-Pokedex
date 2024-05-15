@@ -37,6 +37,20 @@ class PokedexHomeViewModel @Inject constructor(
         getPokemon()
     }
 
+    override fun getPokemon() {
+        viewModelScope.launch {
+            pokemonRepository.getKantoPokemon().collect { kantoPokemon ->
+                updatePokemonList(newPokemonList = kantoPokemon)
+                pokemonRepository.getKantoPokemonDetails()
+            }
+        }
+        viewModelScope.launch {
+            pokemonRepository.getJohtoPokemon().collect { johtoPokemon ->
+                updatePokemonList(newPokemonList = johtoPokemon)
+            }
+        }
+    }
+
     override fun pokemonClicked(pokemon: Pokemon) {
         _state.update { it.copy(selectedPokemon = pokemon) }
 
@@ -63,20 +77,6 @@ class PokedexHomeViewModel @Inject constructor(
 
     override fun onClearClicked() {
         _state.update { it.copy(searchText = "") }
-    }
-
-    override fun getPokemon() {
-        viewModelScope.launch {
-            pokemonRepository.getKantoPokemon().collect { kantoPokemon ->
-                updatePokemonList(newPokemonList = kantoPokemon)
-                pokemonRepository.getKantoPokemonDetails()
-            }
-        }
-        viewModelScope.launch {
-            pokemonRepository.getJohtoPokemon().collect { johtoPokemon ->
-                updatePokemonList(newPokemonList = johtoPokemon)
-            }
-        }
     }
 
     private fun updatePokemonList(newPokemonList: List<Pokemon>) {
