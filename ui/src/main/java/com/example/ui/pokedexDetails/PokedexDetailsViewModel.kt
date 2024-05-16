@@ -1,10 +1,8 @@
 package com.example.ui.pokedexDetails
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.database.Pokemon
 import com.example.navigation.NavArguments
 import com.example.navigation.NavigateBack
 import com.example.navigation.NavigationRoute
@@ -39,13 +37,9 @@ class PokedexDetailsViewModel @Inject constructor(
     val navigationEvent = _navigationEvent.asSharedFlow()
 
     init {
-        Log.d(TAG, "init: $pokemonId")
-
         if (pokemonId != null) {
             getPokemonDetails()
         }
-
-
     }
 
     override fun backClicked() {

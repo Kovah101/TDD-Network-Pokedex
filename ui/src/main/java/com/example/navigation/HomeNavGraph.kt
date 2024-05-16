@@ -1,7 +1,6 @@
 package com.example.navigation
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext

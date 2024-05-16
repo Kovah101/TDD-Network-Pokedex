@@ -1,6 +1,5 @@
 package com.example.ui.pokedexDetails.composables
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -28,8 +27,6 @@ fun PokemonDetails(
     pokemon: Pokemon,
     events: PokedexDetailsEvents
 ) {
-    Log.d("PokemonDetails", "${pokemon.name} is from the ${pokemon.region} region")
-
     val backgroundColors = pokemonTypeColors(pokemon.types)
     val backgroundBrush = if (backgroundColors.size == 1) {
         SolidColor(backgroundColors.first())

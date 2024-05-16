@@ -1,6 +1,5 @@
 package com.example.ui.pokedexHome.composables
 
-import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
@@ -30,8 +29,6 @@ fun PokemonSprite(
             contentDescription = null
         )
     } else {
-        Log.d("PokemonSprite", "PokemonSprite: ${pokemon.sprite}")
-
             AnimatedContent(
                 modifier = modifier,
                 targetState = pokemon,

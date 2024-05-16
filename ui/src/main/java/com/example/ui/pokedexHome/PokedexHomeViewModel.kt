@@ -41,7 +41,6 @@ class PokedexHomeViewModel @Inject constructor(
         viewModelScope.launch {
             pokemonRepository.getKantoPokemon().collect { kantoPokemon ->
                 updatePokemonList(newPokemonList = kantoPokemon)
-                pokemonRepository.getKantoPokemonDetails()
             }
         }
         viewModelScope.launch {
@@ -82,8 +81,18 @@ class PokedexHomeViewModel @Inject constructor(
     private fun updatePokemonList(newPokemonList: List<Pokemon>) {
         val pokemonList = state.value.pokemon.toMutableList()
 
+//        newPokemonList.forEach { newPokemon ->
+//            if (!pokemonList.contains(newPokemon)) {
+//                pokemonList.add(newPokemon)
+//            }
+//        }
         newPokemonList.forEach { newPokemon ->
-            if (!pokemonList.contains(newPokemon)) {
+            val existingPokemonIndex = pokemonList.indexOfFirst { it.id == newPokemon.id }
+            if (existingPokemonIndex != -1) {
+                // Update the existing Pokemon with the new details
+                pokemonList[existingPokemonIndex] = newPokemon
+            } else {
+                // Add the new Pokemon to the list
                 pokemonList.add(newPokemon)
             }
         }

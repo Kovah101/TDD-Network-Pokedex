@@ -4,20 +4,9 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.annotations.ApolloExperimental
 import com.apollographql.apollo3.testing.QueueTestNetworkTransport
 import com.apollographql.apollo3.testing.enqueueTestResponse
-import com.example.data.network.retrofit.OfficialArtworkDto
-import com.example.data.network.retrofit.OtherSpritesDto
 import com.example.data.network.retrofit.PokeService
-import com.example.data.network.retrofit.PokemonDescriptionResponse
-import com.example.data.network.retrofit.PokemonDetailsResponse
 import com.example.data.network.retrofit.PokemonDto
-import com.example.data.network.retrofit.PokemonFlavorTextDto
 import com.example.data.network.retrofit.PokemonResponse
-import com.example.data.network.retrofit.PokemonSpritesDto
-import com.example.data.network.retrofit.PokemonStatDetailsDto
-import com.example.data.network.retrofit.PokemonStatDto
-import com.example.data.network.retrofit.PokemonTypeDetailsDto
-import com.example.data.network.retrofit.PokemonTypeDto
-import com.example.data.network.retrofit.PokemonVersionDto
 import com.example.database.Pokemon
 import com.example.database.PokemonRegion
 import com.example.database.PokemonType
@@ -138,7 +127,7 @@ class PokemonRepositoryTest {
         }
         println("Repository function called - $result")
 
-        verify(mockLocalDataSource, times(2)).getKantoPokemon()
+        verify(mockLocalDataSource, times(4)).getKantoPokemon()
         verify(mockLocalDataSource).insertAllPokemon(any())
 
         assert(result.size == 1)
@@ -295,34 +284,5 @@ class PokemonRepositoryTest {
         repository.insertPokemon(bulbasaur)
 
         verify(mockLocalDataSource).insertPokemon(bulbasaur)
-    }
-
-    @Test
-    fun `getKantoPokemonDetails updates incomplete pokemon details`() = runTest {
-        val incompletePokemon = bulbasaur.copy(height = 0.0, weight = 0.0, sprite = "", stats = emptyList(), description = "")
-        whenever(mockLocalDataSource.getKantoPokemon()).thenReturn(flowOf(listOf(incompletePokemon)))
-
-        val pokemonDetailsResponse = PokemonDetailsResponse(
-            id = 1,
-            name = "Bulbasaur",
-            height = 7,
-            weight = 69,
-            types = listOf(PokemonTypeDto(PokemonTypeDetailsDto(name = "grass")), PokemonTypeDto(
-                PokemonTypeDetailsDto(name = "poison")
-            )),
-            sprites = PokemonSpritesDto(OtherSpritesDto(OfficialArtworkDto("https://example.com/bulbasaur.png"))),
-            stats = listOf(PokemonStatDto(45, PokemonStatDetailsDto("hp")), PokemonStatDto(49, PokemonStatDetailsDto("attack")), PokemonStatDto(49, PokemonStatDetailsDto("defense")), PokemonStatDto(65, PokemonStatDetailsDto("spAtk")), PokemonStatDto(65, PokemonStatDetailsDto("spDef")), PokemonStatDto(45, PokemonStatDetailsDto("speed")),),
-            abilities = emptyList()
-        )
-        val pokemonDescriptionResponse = PokemonDescriptionResponse(
-            flavorTextEntries = listOf(PokemonFlavorTextDto("While it is young, it uses the nutrients that are stored in the seeds on its back in order to grow.", PokemonVersionDto("crystal")))
-        )
-
-        whenever(mockRemoteDataSource.getPokemonById(1)).thenReturn(Response.success(pokemonDetailsResponse))
-        whenever(mockRemoteDataSource.getPokemonDescription(1)).thenReturn(Response.success(pokemonDescriptionResponse))
-
-        repository.getKantoPokemonDetails()
-
-        verify(mockLocalDataSource).insertPokemon(any())
     }
 }
