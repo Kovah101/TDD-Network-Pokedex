@@ -4,9 +4,20 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.annotations.ApolloExperimental
 import com.apollographql.apollo3.testing.QueueTestNetworkTransport
 import com.apollographql.apollo3.testing.enqueueTestResponse
+import com.example.data.network.retrofit.OfficialArtworkDto
+import com.example.data.network.retrofit.OtherSpritesDto
 import com.example.data.network.retrofit.PokeService
+import com.example.data.network.retrofit.PokemonDescriptionResponse
+import com.example.data.network.retrofit.PokemonDetailsResponse
 import com.example.data.network.retrofit.PokemonDto
+import com.example.data.network.retrofit.PokemonFlavorTextDto
 import com.example.data.network.retrofit.PokemonResponse
+import com.example.data.network.retrofit.PokemonSpritesDto
+import com.example.data.network.retrofit.PokemonStatDetailsDto
+import com.example.data.network.retrofit.PokemonStatDto
+import com.example.data.network.retrofit.PokemonTypeDetailsDto
+import com.example.data.network.retrofit.PokemonTypeDto
+import com.example.data.network.retrofit.PokemonVersionDto
 import com.example.database.Pokemon
 import com.example.database.PokemonRegion
 import com.example.database.PokemonType
@@ -28,6 +39,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
@@ -57,7 +69,7 @@ class PokemonRepositoryTest {
         description = "While it is young, it uses the nutrients that are stored in the seeds on its back in order to grow.",
         region = PokemonRegion.KANTO
     )
-    private val ivysaur =  Pokemon(
+    private val ivysaur = Pokemon(
         id = 2,
         name = "Ivysaur",
         url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png",
@@ -69,10 +81,22 @@ class PokemonRepositoryTest {
         description = "The bulb on its back grows as it absorbs nutrients. The bulb gives off a pleasant aroma when it blooms.",
         region = PokemonRegion.KANTO
     )
+    private val chikorita = Pokemon(
+        id = 152,
+        name = "Chikorita",
+        url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/152.png",
+        height = 0.9,
+        weight = 6.4,
+        types = listOf(PokemonType.GRASS).toMutableList(),
+        sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/152.png",
+        stats = listOf(45, 49, 65, 49, 65, 45),
+        description = "A sweet aroma gently wafts from the leaf on its head.",
+        region = PokemonRegion.JOHTO
+    )
 
     @OptIn(ApolloExperimental::class)
     @Before
-    fun setUp(){
+    fun setUp() {
         mockLocalDataSource = mock()
         mockRemoteDataSource = mock()
         logger = mock()
@@ -96,8 +120,9 @@ class PokemonRepositoryTest {
 
     @Test
     fun `getKantoPokemon makes network request and updates local data source`() = runTest {
-        whenever(mockLocalDataSource.getKantoPokemon()).thenReturn(flowOf(emptyList()))
-
+        whenever(mockLocalDataSource.getKantoPokemon())
+            .thenReturn(flowOf(emptyList()))
+            .thenReturn(flowOf(listOf(bulbasaur)))
 
         val pokemonDtoList = listOf(
             PokemonDto(name = "Bulbasaur", url = "https://example.com/bulbasaur"),
@@ -107,24 +132,17 @@ class PokemonRepositoryTest {
         val expectedRemotePokemonList: Response<PokemonResponse> = Response.success(pokemonResponse)
         whenever(mockRemoteDataSource.getOriginalPokemon()).doReturn(expectedRemotePokemonList)
 
-        repository.getKantoPokemon().first()
+        var result = mutableListOf<Pokemon>()
+        repository.getKantoPokemon().collect{
+            result = it.toMutableList()
+        }
+        println("Repository function called - $result")
 
-        verify(mockLocalDataSource).insertAllPokemon(
-            listOf(
-                Pokemon(
-                    id = 1,
-                    name = "Bulbasaur",
-                    url = "https://example.com/bulbasaur",
-                    height = 0.0,
-                    weight = 0.0,
-                    types = mutableListOf(PokemonType.UNKNOWN),
-                    sprite = "",
-                    stats = emptyList(),
-                    description = "",
-                    region = PokemonRegion.KANTO
-                )
-            )
-        )
+        verify(mockLocalDataSource, times(2)).getKantoPokemon()
+        verify(mockLocalDataSource).insertAllPokemon(any())
+
+        assert(result.size == 1)
+        assert(result[0].name == "Bulbasaur")
     }
 
     @Test
@@ -143,6 +161,7 @@ class PokemonRepositoryTest {
         verify(mockLocalDataSource).getKantoPokemon()
         verify(mockRemoteDataSource).getOriginalPokemon()
         verifyNoMoreInteractions(mockLocalDataSource)
+        verify(logger, times(2)).e(any(), eq("Network error"))
     }
 
     @Test
@@ -160,22 +179,38 @@ class PokemonRepositoryTest {
     fun `getJohtoPokemon makes network request and updates local data source`() = runTest {
         val incompletePokemon = listOf(
             Pokemon(
-                id = 252,
-                name = "Chikorita"
+                id = 152,
+                name = "Chikorita",
+                url = "",
             )
         )
-        whenever(mockLocalDataSource.getJohtoPokemon()).thenReturn(flowOf(incompletePokemon))
+        whenever(mockLocalDataSource.getJohtoPokemon())
+            .thenReturn(flowOf(incompletePokemon))
+            .thenReturn(flowOf(listOf(chikorita)))
 
         val networkPokemon = listOf(
             JohtoPokemonQuery.Gen3Specy(
-                id = 252,
+                id = 152,
                 name = "Chikorita",
                 attributes = listOf(
                     JohtoPokemonQuery.Attribute(
-                        height = 7,
+                        height = 9,
                         weight = 64,
-                        stats = listOf(JohtoPokemonQuery.Stat(base_stat = 45)),
-                        types = listOf(JohtoPokemonQuery.Type(pokemon_v2_type = JohtoPokemonQuery.Pokemon_v2_type(name = "grass")))
+                        stats = listOf(
+                            JohtoPokemonQuery.Stat(base_stat = 45),
+                            JohtoPokemonQuery.Stat(base_stat = 49),
+                            JohtoPokemonQuery.Stat(base_stat = 65),
+                            JohtoPokemonQuery.Stat(base_stat = 49),
+                            JohtoPokemonQuery.Stat(base_stat = 65),
+                            JohtoPokemonQuery.Stat(base_stat = 45)
+                        ),
+                        types = listOf(
+                            JohtoPokemonQuery.Type(
+                                pokemon_v2_type = JohtoPokemonQuery.Pokemon_v2_type(
+                                    name = "grass"
+                                )
+                            )
+                        )
                     )
                 ),
                 flavorTexts = listOf(
@@ -196,86 +231,98 @@ class PokemonRepositoryTest {
 
         whenever(mockRemoteDataSource.getJohtoPokemon()).thenReturn(testResponse)
 
-        val result = repository.getJohtoPokemon().first()
+        var result = mutableListOf<Pokemon>()
+        repository.getJohtoPokemon().collect {
+            result = it.toMutableList()
+        }
 
-        // Verify the local data source was updated
-        verify(mockLocalDataSource).getJohtoPokemon()
-        verify(mockLocalDataSource).insertPokemon(any())
+        verify(mockLocalDataSource, times(2)).getJohtoPokemon()
+        verify(mockLocalDataSource).insertAllPokemon(any())
 
-        // Assert the result
-        assert(result.size == 2)
-        assert(result[1].name == "Chikorita")
-        assert(result[1].height == 7.0)
+        assert(result.size == 1)
+        assert(result[0].name == "Chikorita")
+        assert(result[0].height == 0.9)
     }
-//
-//    @Test
-//    fun `getJohtoPokemon handles network error`() = runTest {
-//        whenever(mockLocalDataSource.getJohtoPokemon()).thenReturn(flowOf(emptyList()))
-//        whenever(mockRemoteDataSource.getJohtoPokemon()).thenThrow(Exception("Network error"))
-//
-//        repository.getJohtoPokemon().first()
-//
-//        verify(logger).e(any(), eq("Network error"))
-//    }
-//
-//    @Test
-//    fun `deleteAllPokemon deletes all pokemon from local data source`() {
-//        repository.deleteAllPokemon()
-//
-//        verify(mockLocalDataSource).deleteAllPokemon()
-//    }
-//
-//    @Test
-//    fun `getPokemonById returns pokemon from local data source`() = runTest {
-//        val expectedPokemon = bulbasaur
-//        whenever(mockLocalDataSource.getPokemonById(1)).thenReturn(flowOf(expectedPokemon))
-//
-//        val result = repository.getPokemonById(1).first()
-//
-//        assertEquals(expectedPokemon, result)
-//    }
-//
-//    @Test
-//    fun `getPokemonByName returns pokemon from local data source`() = runTest {
-//        val expectedPokemon = bulbasaur
-//        whenever(mockLocalDataSource.getPokemonByName("Bulbasaur")).thenReturn(flowOf(expectedPokemon))
-//
-//        val result = repository.getPokemonByName("Bulbasaur").first()
-//
-//        assertEquals(expectedPokemon, result)
-//    }
-//
-//    @Test
-//    fun `insertPokemon inserts pokemon into local data source`() = runTest {
-//        repository.insertPokemon(bulbasaur)
-//
-//        verify(mockLocalDataSource).insertPokemon(bulbasaur)
-//    }
-//
-//    @Test
-//    fun `getKantoPokemonDetails updates incomplete pokemon details`() = runTest {
-//        val incompletePokemon = bulbasaur.copy(height = 0.0, weight = 0.0, sprite = "", stats = emptyList(), description = "")
-//        whenever(mockLocalDataSource.getKantoPokemon()).thenReturn(flowOf(listOf(incompletePokemon)))
-//
-//        val pokemonDetailsResponse = PokemonDetailsResponse(
-//            id = 1,
-//            name = "Bulbasaur",
-//            height = 7,
-//            weight = 69,
-//            types = listOf(PokemonTypeDto(Type(name = "grass")), PokemonTypeDto(Type(name = "poison"))),
-//            sprites = PokemonSpritesDto(OfficialArtwork("https://example.com/bulbasaur.png")),
-//            stats = listOf(PokemonStatDto(45), PokemonStatDto(49), PokemonStatDto(49), PokemonStatDto(65), PokemonStatDto(65), PokemonStatDto(45)),
-//            abilities = emptyList()
-//        )
-//        val pokemonDescriptionResponse = PokemonDescriptionResponse(
-//            flavorTextEntries = listOf(PokemonFlavorTextEntry("While it is young, it uses the nutrients that are stored in the seeds on its back in order to grow.", Version("crystal")))
-//        )
-//
-//        whenever(mockRemoteDataSource.getPokemonById(1)).thenReturn(Response.success(pokemonDetailsResponse))
-//        whenever(mockRemoteDataSource.getPokemonDescription(1)).thenReturn(Response.success(pokemonDescriptionResponse))
-//
-//        repository.getKantoPokemonDetails()
-//
-//        verify(mockLocalDataSource).insertPokemon(any())
-//    }
+
+    @Test
+    fun `getJohtoPokemon handles network error`() = runTest {
+        whenever(mockLocalDataSource.getJohtoPokemon()).thenReturn(flowOf(emptyList()))
+        whenever(mockRemoteDataSource.getJohtoPokemon()).thenThrow(RuntimeException("Network error"))
+
+        try {
+            repository.getJohtoPokemon().collect()
+            fail("Expected an exception to be thrown")
+        } catch (e: Exception) {
+            assertTrue(e is RuntimeException)
+            assertEquals("Network error", e.message)
+        }
+
+        verify(mockLocalDataSource).getJohtoPokemon()
+        verify(mockRemoteDataSource).getJohtoPokemon()
+        verifyNoMoreInteractions(mockLocalDataSource)
+        verify(logger, times(2)).e(any(), eq("Network error"))
+    }
+
+    @Test
+    fun `deleteAllPokemon deletes all pokemon from local data source`() {
+        repository.deleteAllPokemon()
+
+        verify(mockLocalDataSource).deleteAllPokemon()
+    }
+
+    @Test
+    fun `getPokemonById returns pokemon from local data source`() = runTest {
+        val expectedPokemon = bulbasaur
+        whenever(mockLocalDataSource.getPokemonById(1)).thenReturn(flowOf(expectedPokemon))
+
+        val result = repository.getPokemonById(1).first()
+
+        assertEquals(expectedPokemon, result)
+    }
+
+    @Test
+    fun `getPokemonByName returns pokemon from local data source`() = runTest {
+        val expectedPokemon = bulbasaur
+        whenever(mockLocalDataSource.getPokemonByName("Bulbasaur")).thenReturn(flowOf(expectedPokemon))
+
+        val result = repository.getPokemonByName("Bulbasaur").first()
+
+        assertEquals(expectedPokemon, result)
+    }
+
+    @Test
+    fun `insertPokemon inserts pokemon into local data source`() = runTest {
+        repository.insertPokemon(bulbasaur)
+
+        verify(mockLocalDataSource).insertPokemon(bulbasaur)
+    }
+
+    @Test
+    fun `getKantoPokemonDetails updates incomplete pokemon details`() = runTest {
+        val incompletePokemon = bulbasaur.copy(height = 0.0, weight = 0.0, sprite = "", stats = emptyList(), description = "")
+        whenever(mockLocalDataSource.getKantoPokemon()).thenReturn(flowOf(listOf(incompletePokemon)))
+
+        val pokemonDetailsResponse = PokemonDetailsResponse(
+            id = 1,
+            name = "Bulbasaur",
+            height = 7,
+            weight = 69,
+            types = listOf(PokemonTypeDto(PokemonTypeDetailsDto(name = "grass")), PokemonTypeDto(
+                PokemonTypeDetailsDto(name = "poison")
+            )),
+            sprites = PokemonSpritesDto(OtherSpritesDto(OfficialArtworkDto("https://example.com/bulbasaur.png"))),
+            stats = listOf(PokemonStatDto(45, PokemonStatDetailsDto("hp")), PokemonStatDto(49, PokemonStatDetailsDto("attack")), PokemonStatDto(49, PokemonStatDetailsDto("defense")), PokemonStatDto(65, PokemonStatDetailsDto("spAtk")), PokemonStatDto(65, PokemonStatDetailsDto("spDef")), PokemonStatDto(45, PokemonStatDetailsDto("speed")),),
+            abilities = emptyList()
+        )
+        val pokemonDescriptionResponse = PokemonDescriptionResponse(
+            flavorTextEntries = listOf(PokemonFlavorTextDto("While it is young, it uses the nutrients that are stored in the seeds on its back in order to grow.", PokemonVersionDto("crystal")))
+        )
+
+        whenever(mockRemoteDataSource.getPokemonById(1)).thenReturn(Response.success(pokemonDetailsResponse))
+        whenever(mockRemoteDataSource.getPokemonDescription(1)).thenReturn(Response.success(pokemonDescriptionResponse))
+
+        repository.getKantoPokemonDetails()
+
+        verify(mockLocalDataSource).insertPokemon(any())
+    }
 }
