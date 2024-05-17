@@ -26,7 +26,9 @@ Welcome to the Pokedex App! This application showcases all the Pokémon from the
 
 ## Future Plans
 
-- **Compose Navigation Animations**: Integrate smooth navigation animations with Compose when they come out of alpha.
+- **Compose Navigation Animations**: Integrate smooth navigation animations with Compose when they come out of beta - [Navigation Versions](https://developer.android.com/jetpack/androidx/releases/navigation).
+- **Compose UI Tests**: Fully test all screens with [Compose Testing](https://developer.android.com/develop/ui/compose/testing)
+- **Update Dependencies**: Stay on top of dependencies and keep the project up to date and bug free!
 
 ## Getting Started
 
@@ -91,10 +93,12 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ## Contact
 
-For any questions or feedback, please contact me at elliotthompson101@gmail.com
+For any questions or feedback, please contact me at [elliotthompson101@gmail.com](mailto:elliotthompson101@gmail.com).
+
 ---
 
 Thank you for checking out the Pokedex App! I hope you enjoy using it as much as I enjoyed building it.
+
 
 
 
