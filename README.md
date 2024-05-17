@@ -39,7 +39,7 @@ Welcome to the Pokedex App! This application showcases all the Pokémon from the
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/pokedex-app.git
+   git clone https://github.com/Kovah101/TDD-Network-Pokedex.git
 2. Open the project in Android Studio.
 3. Build and run the app on your device or emulator.
 
@@ -91,8 +91,7 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ## Contact
 
-For any questions or feedback, please contact me at et_boy101@hotmail.com
-
+For any questions or feedback, please contact me at elliotthompson101@gmail.com
 ---
 
 Thank you for checking out the Pokedex App! I hope you enjoy using it as much as I enjoyed building it.
