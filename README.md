@@ -11,6 +11,19 @@ Welcome to the Pokedex App! This application showcases all the Pokémon from the
 - **Test Coverage**: Extensive testing on Retrofit service, database, and repository layers.
 - **Modular Architecture**: Built with modular components to ensure scalability.
 
+## Image Gallery
+
+<table>
+  <tr>
+    <td><img src="https://github.com/Kovah101/Kovah101/blob/main/Pokedex%20App/pokedex%20app%201.png" alt="Image 1" width="400" /></td>
+    <td><img src="https://github.com/Kovah101/Kovah101/blob/main/Pokedex%20App/pokedex%20app%202.png" alt="Image 2" width="400" /></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/Kovah101/Kovah101/blob/main/Pokedex%20App/pokedex%20app%203.png" alt="Image 3" width="400" /></td>
+    <td><img src="https://github.com/Kovah101/Kovah101/blob/main/Pokedex%20App/pokedex%20app%204.png" alt="Image 4" width="400" /></td>
+  </tr>
+</table>
+
 ## Future Plans
 
 - **Compose Navigation Animations**: Integrate smooth navigation animations with Compose when they come out of alpha.
