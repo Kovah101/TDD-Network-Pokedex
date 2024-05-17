@@ -1,6 +1,5 @@
 package com.example.ui.pokedexHome.composables
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -48,8 +47,6 @@ fun PokemonGrid(
         initialPageOffsetFraction = 0f,
         pageCount = { tabs.size }
     )
-
-    Log.d("PokemonGrid", "state.pokemon: ${state.pokemon.size}")
 
     val pokemonList = state.pokemon.filter {
         when (state.searchMode) {
@@ -126,7 +123,6 @@ fun PokemonGrid(
             when (page) {
                 0 -> {
                     regionPokemon = pokemonList.filter { it.region == PokemonRegion.KANTO }
-                    Log.d("PokemonGrid", "Kanto regionPokemon: ${regionPokemon.size}")
 
                     PokemonGridList(
                         pokemonList = regionPokemon,
@@ -136,7 +132,6 @@ fun PokemonGrid(
 
                 1 -> {
                     regionPokemon = pokemonList.filter { it.region == PokemonRegion.JOHTO }
-                    Log.d("PokemonGrid", "Johto regionPokemon: ${regionPokemon.size}")
 
                     PokemonGridList(
                         pokemonList = regionPokemon,

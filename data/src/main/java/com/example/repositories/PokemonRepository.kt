@@ -1,6 +1,7 @@
 package com.example.repositories
 
 import com.example.database.Pokemon
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.flow.Flow
 
 interface PokemonRepository {
@@ -16,7 +17,4 @@ interface PokemonRepository {
     fun deleteAllPokemon()
 
     suspend fun insertPokemon(pokemon: Pokemon)
-
-    suspend fun getKantoPokemonDetails()
-
 }

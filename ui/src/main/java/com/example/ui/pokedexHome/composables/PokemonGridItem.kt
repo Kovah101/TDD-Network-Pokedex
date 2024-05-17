@@ -1,7 +1,5 @@
 package com.example.ui.pokedexHome.composables
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -19,10 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.example.database.Pokemon
 import com.example.ui.R
 
@@ -31,7 +26,6 @@ fun PokemonGridItem(
     pokemon: Pokemon,
     onClick: () -> Unit
 ) {
-
     Surface(
         modifier = Modifier.clip(RoundedCornerShape(8.dp)),
     ) {

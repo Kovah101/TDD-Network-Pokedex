@@ -3,6 +3,7 @@ package com.example.data.network.apollo
 import android.os.Looper
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 
 class ApolloService {
 
@@ -12,6 +13,9 @@ class ApolloService {
         }
         val BASE_URL = "https://beta.pokeapi.co/graphql/v1beta"
         val okHttpClient = okhttp3.OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
             .build()
 
         return ApolloClient.Builder()
