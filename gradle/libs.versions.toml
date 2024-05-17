@@ -54,6 +54,7 @@ androidx-test-espresso = { module = "androidx.test.espresso:espresso-core", vers
 
 apollo3-core = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo"}
 apollo3-testing = { module = "com.apollographql.apollo3:apollo-testing-support", version.ref = "apollo"}
+apollo3-mockserver = { module = "com.apollographql.apollo3:apollo-mockserver", version.ref = "apollo"}
 
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose"}
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose"}

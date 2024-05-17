@@ -79,4 +79,5 @@ dependencies {
     // Apollo
     implementation libs.apollo3.core
     testImplementation libs.apollo3.testing
+    testImplementation libs.apollo3.mockserver
 }

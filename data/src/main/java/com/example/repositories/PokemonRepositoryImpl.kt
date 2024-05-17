@@ -52,7 +52,6 @@ class PokemonRepositoryImpl @Inject constructor(
                 throw exception
             }
         } else {
-            logger.e("Elliot", "Local data: $localData")
             emit(localData)
         }
 
