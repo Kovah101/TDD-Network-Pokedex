@@ -1,6 +1,6 @@
 # Pokedex App
 
-Welcome to the Pokedex App! This application showcases all the Pokémon from the Kanto and Johto regions in two separate tabs. It features a robust search functionality allowing users to search by both name and number. Initially built to practice Test-Driven Development (TDD), this project now includes enhanced UI with Compose animations and a comparison between GraphQL and Retrofit for networking.
+Welcome to the Pokedex App! This application showcases all the Pokémon from the Kanto and Johto regions in two separate tabs. All data comes form the excellent [PokeAPI](https://pokeapi.co/). It features a robust search functionality allowing users to search by both name and number. Initially built to practice Test-Driven Development (TDD), this project now includes enhanced UI with Compose animations and a comparison between GraphQL and Retrofit for networking. The classic Kanto Region uses Retrofit while the newer Johto Region uses GraphQL to retrieve its data. Let me know if theres anything to add or bugs to fix!
 
 ## Features
 
@@ -8,7 +8,7 @@ Welcome to the Pokedex App! This application showcases all the Pokémon from the
 - **Search Functionality**: Search for Pokémon by name or number.
 - **Modern UI**: Enjoy a beautiful and responsive UI with Compose animations.
 - **GraphQL Integration**: Faster and more efficient data loading with GraphQL.
-- **Test Coverage**: Extensive testing on Retrofit service, database, and repository layers.
+- **Test Coverage**: Extensive testing on Retrofit & Apollo service, database, and repository layers.
 - **Modular Architecture**: Built with modular components to ensure scalability.
 
 ## Image Gallery
@@ -26,7 +26,9 @@ Welcome to the Pokedex App! This application showcases all the Pokémon from the
 
 ## Future Plans
 
-- **Compose Navigation Animations**: Integrate smooth navigation animations with Compose when they come out of alpha.
+- **Compose Navigation Animations**: Integrate smooth navigation animations with Compose when they come out of beta - [Navigation Versions](https://developer.android.com/jetpack/androidx/releases/navigation).
+- **Compose UI Tests**: Fully test all screens with [Compose Testing](https://developer.android.com/develop/ui/compose/testing)
+- **Update Dependencies**: Stay on top of dependencies and keep the project up to date and bug free!
 
 ## Getting Started
 
@@ -39,7 +41,7 @@ Welcome to the Pokedex App! This application showcases all the Pokémon from the
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/pokedex-app.git
+   git clone https://github.com/Kovah101/TDD-Network-Pokedex.git
 2. Open the project in Android Studio.
 3. Build and run the app on your device or emulator.
 
@@ -91,11 +93,12 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ## Contact
 
-For any questions or feedback, please contact me at et_boy101@hotmail.com
+For any questions or feedback, please contact me at [elliotthompson101@gmail.com](mailto:elliotthompson101@gmail.com).
 
 ---
 
 Thank you for checking out the Pokedex App! I hope you enjoy using it as much as I enjoyed building it.
+
 
 
 
