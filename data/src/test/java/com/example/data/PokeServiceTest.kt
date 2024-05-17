@@ -1,10 +1,21 @@
 package com.example.data
 
 
+import com.example.data.network.retrofit.OfficialArtworkDto
+import com.example.data.network.retrofit.OtherSpritesDto
 import com.example.data.network.retrofit.PokeService
+import com.example.data.network.retrofit.PokemonAbilityDetailsDto
+import com.example.data.network.retrofit.PokemonAbilityDto
 import com.example.data.network.retrofit.PokemonDescriptionResponse
 import com.example.data.network.retrofit.PokemonDetailsResponse
+import com.example.data.network.retrofit.PokemonFlavorTextDto
 import com.example.data.network.retrofit.PokemonResponse
+import com.example.data.network.retrofit.PokemonSpritesDto
+import com.example.data.network.retrofit.PokemonStatDetailsDto
+import com.example.data.network.retrofit.PokemonStatDto
+import com.example.data.network.retrofit.PokemonTypeDetailsDto
+import com.example.data.network.retrofit.PokemonTypeDto
+import com.example.data.network.retrofit.PokemonVersionDto
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import kotlinx.coroutines.runBlocking
