@@ -110,7 +110,7 @@ fun PokemonDetailsResponse.toDataModel(): Pokemon {
     return Pokemon(
         id = id,
         name = name,
-        url = "", //TODO sort on details data section
+        url = "",
         height = pokemonAttributeToDataModel(height),
         weight = pokemonAttributeToDataModel(weight),
         types = types.map { it.type.name }.map { PokemonType.valueOf(it.uppercase()) }.toMutableList(),
