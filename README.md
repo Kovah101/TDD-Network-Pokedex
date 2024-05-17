@@ -1,6 +1,6 @@
 # Pokedex App
 
-Welcome to the Pokedex App! This application showcases all the Pokémon from the Kanto and Johto regions in two separate tabs. It features a robust search functionality allowing users to search by both name and number. Initially built to practice Test-Driven Development (TDD), this project now includes enhanced UI with Compose animations and a comparison between GraphQL and Retrofit for networking.
+Welcome to the Pokedex App! This application showcases all the Pokémon from the Kanto and Johto regions in two separate tabs. It features a robust search functionality allowing users to search by both name and number. Initially built to practice Test-Driven Development (TDD), this project now includes enhanced UI with Compose animations and a comparison between GraphQL and Retrofit for networking. The classic Kanto Region uses Retrofit while the newer Johto Region uses GraphQL to retrieve its data. Let me know if theres anything to add or bugs to fix!
 
 ## Features
 
@@ -8,7 +8,7 @@ Welcome to the Pokedex App! This application showcases all the Pokémon from the
 - **Search Functionality**: Search for Pokémon by name or number.
 - **Modern UI**: Enjoy a beautiful and responsive UI with Compose animations.
 - **GraphQL Integration**: Faster and more efficient data loading with GraphQL.
-- **Test Coverage**: Extensive testing on Retrofit service, database, and repository layers.
+- **Test Coverage**: Extensive testing on Retrofit & Apollo service, database, and repository layers.
 - **Modular Architecture**: Built with modular components to ensure scalability.
 
 ## Image Gallery
