@@ -1,12 +1,9 @@
 package com.example.tddnetworkpokedex
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.navigation.compose.rememberNavController
-import com.example.navigation.AppNavigation
+import androidx.appcompat.app.AppCompatActivity
 import com.example.tddnetworkpokedex.core.PokedexApp
-import com.example.ui.pokedexHome.PokedexHomeScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -9,7 +9,5 @@ fun PokedexApp() {
 
     val navController = rememberNavController()
 
-    AppNavigation(
-        navController = navController
-    )
+    AppNavigation(navController = navController)
 }

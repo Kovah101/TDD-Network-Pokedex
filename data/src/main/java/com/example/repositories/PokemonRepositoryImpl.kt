@@ -27,6 +27,8 @@ class PokemonRepositoryImpl @Inject constructor(
     private val pokemonRemoteDataSource: PokemonRemoteDataSource,
     private val logger: Logger
 ) : PokemonRepository {
+    //TODO make repository use its own coroutine scope so functions are not tied to viewmodel lifecycle
+    // TODO clean app module of needless code
 
     companion object {
         private val TAG = PokemonRepositoryImpl::class.java.simpleName
